@@ -1,6 +1,9 @@
-﻿using System;
+﻿using EyeBoard.Logic.Repositories;
+using EyeBoard.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,23 +11,20 @@ namespace EyeBoard.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private readonly WeatherRepository _weatherRepository = new WeatherRepository();
+
+        public async Task<ActionResult> Index()
         {
-            return View();
-        }
+            var weather = await _weatherRepository.GetWeatherInfo(2744819);
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+            var viewModel = new BoardViewModel()
+            {
+                WeatherInfo = weather.WeatherInfo[0],
+                CurrentTemp = (int)Math.Round(weather.Main.Temp, 0),
+                City = weather.Name
+            };
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(viewModel);
         }
     }
 }

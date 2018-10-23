@@ -1,0 +1,20 @@
+﻿@model EyeBoard.Models.BoardViewModel
+
+@{ 
+    
+}
+
+@using EyeBoard.Helpers
+
+<div class="weather_left">
+    <img src="@WeatherHelper.Icon(Model.WeatherInfo.Icon)" />
+    <p class="weather_current_temp">
+        @Model.CurrentTemp °C
+    </p>
+</div>
+
+<div class="weather_right">
+    <p class="weather_city">@Model.City</p>
+    <div>@Model.WeatherInfo.Description</div>
+    <div></div>
+</div>
