@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   namespace="EyeBoard.Logic.Models"
+                   assembly="EyeBoard.Logic">
+  <class name="AdminModel">
+    <id name="Id">
+      <generator class="identity"/>
+    </id>
+
+    <property name="State"/>
+    <property name="Created"/>
+    <property name="CreatedBy"/>
+    <property name="Modified"/>
+    <property name="ModifiedBy"/>
+  </class>
+</hibernate-mapping>

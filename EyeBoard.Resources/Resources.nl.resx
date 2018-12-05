@@ -123,17 +123,149 @@
   <data name="Articles" xml:space="preserve">
     <value>Artikelen</value>
   </data>
+  <data name="Author" xml:space="preserve">
+    <value>Auteur</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Terug naar de lijst</value>
+  </data>
   <data name="Birthdays" xml:space="preserve">
     <value>Verjaardagen</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Bevestig wachtwoord</value>
+  </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>Nieuw</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Volledige naam</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Wijzig</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Groep</value>
+  </data>
+  <data name="GroupEdit" xml:space="preserve">
+    <value>Wijzig groep</value>
+  </data>
+  <data name="GroupNew" xml:space="preserve">
+    <value>Nieuwe groep</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Groepen</value>
+  </data>
+  <data name="HostName" xml:space="preserve">
+    <value>Hostnaam</value>
+  </data>
+  <data name="HostNameLong" xml:space="preserve">
+    <value>Hostanaam moet minder zijn dan 50 tekens</value>
+  </data>
+  <data name="HostNameRequired" xml:space="preserve">
+    <value>Hostnaam is verplicht</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Locatie</value>
+  </data>
+  <data name="LocationLong" xml:space="preserve">
+    <value>Moet minder zijn dan 255 karakters</value>
+  </data>
+  <data name="LocationRequired" xml:space="preserve">
+    <value>Locatie is verplicht</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Inloggen</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Uitloggen</value>
+  </data>
+  <data name="NoGroups" xml:space="preserve">
+    <value>Er zijn geen groepen gevonden</value>
+  </data>
+  <data name="NoNotifications" xml:space="preserve">
+    <value>Er zijn geen aankondigingen gevonden</value>
+  </data>
+  <data name="NoScreens" xml:space="preserve">
+    <value>Er zijn geen beeldschermen gevonden</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Aankondiging</value>
+  </data>
+  <data name="NotificationEdit" xml:space="preserve">
+    <value>Wijzig aankondiging</value>
+  </data>
+  <data name="NotificationNew" xml:space="preserve">
+    <value>Nieuwe aankondiging</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Aankondigingen</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Wachtwoord</value>
+  </data>
   <data name="Photos" xml:space="preserve">
     <value>Foto's</value>
   </data>
+  <data name="Presentation" xml:space="preserve">
+    <value>Presentatie</value>
+  </data>
+  <data name="PresentationEdit" xml:space="preserve">
+    <value>Wijzig presentatie</value>
+  </data>
+  <data name="PresentationNew" xml:space="preserve">
+    <value>Nieuwe presentatie</value>
+  </data>
+  <data name="Presentations" xml:space="preserve">
+    <value>Presentaties</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Rol</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Opslaan</value>
+  </data>
+  <data name="Screen" xml:space="preserve">
+    <value>Beeldscherm</value>
+  </data>
+  <data name="ScreenEdit" xml:space="preserve">
+    <value>Wijzig beeldscherm</value>
+  </data>
+  <data name="ScreenNew" xml:space="preserve">
+    <value>Nieuw beeldscherm</value>
+  </data>
+  <data name="Screens" xml:space="preserve">
+    <value>Beeldschermen</value>
+  </data>
   <data name="Tickers" xml:space="preserve">
     <value>Lichtkranten</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="TitleLong" xml:space="preserve">
+    <value>Moet minder zijn dan 255 karakters</value>
+  </data>
+  <data name="TitleRequired" xml:space="preserve">
+    <value>Titel is verplicht</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Gebruikersnaam</value>
+  </data>
+  <data name="UserNew" xml:space="preserve">
+    <value>Nieuwe gebruiker</value>
   </data>
   <data name="Videos" xml:space="preserve">
     <value>Video's</value>

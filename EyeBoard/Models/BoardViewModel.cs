@@ -8,9 +8,17 @@ namespace EyeBoard.Models
 {
     public class BoardViewModel
     {
-        public WeatherItemInfo WeatherInfo { get; set; }
+        public ScreenGroup Group { get; set; }
+        public string HostName { get; set; }
+
+        public Weather Weather { get; set; }
         public int CurrentTemp { get; set; }
         public string City { get; set; }
         public string Condition { get; set; }
+        public int CityId { get; set; }
+
+        public string FeedUrl { get; set; }
+
+        public IEnumerable<Medium> Presentations { get; set; }
     }
 }

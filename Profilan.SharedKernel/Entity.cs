@@ -4,66 +4,49 @@ using System.Collections.Generic;
 
 namespace Profilan.SharedKernel
 {
-    public abstract class Entity
+    public abstract class Entity<TId> : IEquatable<Entity<TId>>
     {
-        public virtual int Id { get; protected set; }
+        public virtual TId Id { get; set; }
 
-        private readonly List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
-        public virtual IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
-
-        public override bool Equals(object obj)
+        protected Entity(TId id)
         {
-            var other = obj as Entity;
+            if (object.Equals(id, default(TId)))
+            {
+                throw new ArgumentException("The ID cannot be the type's default value.", "id");
+            }
 
-            if (ReferenceEquals(other, null))
-                return false;
-
-            if (ReferenceEquals(this, other))
-                return true;
-
-            if (GetRealType() != other.GetRealType())
-                return false;
-
-            if (Id == 0 || other.Id == 0)
-                return false;
-
-            return Id == other.Id;
+            this.Id = id;
         }
 
-        public static bool operator ==(Entity a, Entity b)
+        // EF requires an empty constructor
+        protected Entity()
         {
-            if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
-                return true;
-
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
-                return false;
-
-            return a.Equals(b);
         }
 
-        public static bool operator !=(Entity a, Entity b)
+        // For simple entities, this may suffice
+        // As Evans notes earlier in the course, equality of Entities is frequently not a simple operation
+        public override bool Equals(object otherObject)
         {
-            return !(a == b);
+            var entity = otherObject as Entity<TId>;
+            if (entity != null)
+            {
+                return this.Equals(entity);
+            }
+            return base.Equals(otherObject);
         }
 
         public override int GetHashCode()
         {
-            return (GetRealType().ToString() + Id).GetHashCode();
+            return this.Id.GetHashCode();
         }
 
-        private Type GetRealType()
+        public virtual bool Equals(Entity<TId> other)
         {
-            return NHibernateProxyHelper.GetClassWithoutInitializingProxy(this);
-        }
-
-        protected virtual void AddDomainEvent(IDomainEvent newEvent)
-        {
-            _domainEvents.Add(newEvent);
-        }
-
-        public virtual void ClearEvents()
-        {
-            _domainEvents.Clear();
+            if (other == null)
+            {
+                return false;
+            }
+            return this.Id.Equals(other.Id);
         }
     }
 }

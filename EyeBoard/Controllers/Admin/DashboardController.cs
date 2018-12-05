@@ -1,5 +1,9 @@
 ﻿using EyeBoard.Helpers;
+using EyeBoard.Logic.Repositories;
+using EyeBoard.Models;
 using System;
+using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Web;
 using System.Web.Mvc;
 
@@ -7,29 +11,53 @@ namespace EyeBoard.Controllers.Admin
 {
     public class DashboardController : BaseController
     {
-        // GET: Dashboard
+        private readonly ScreenRepository _screenRepository = new ScreenRepository();
+
+        [Authorize]
         public ActionResult Index()
         {
-            return View();
+            var screenItems = _screenRepository.List();
+            var screens = new List<ScreenViewModel>();
+            foreach (var screen in screenItems)
+            {
+                screens.Add(new ScreenViewModel()
+                {
+                    Id = screen.Id,
+                    HostName = screen.HostName,
+                    IsReachable = IsHostReachable(screen.HostName)
+                });
+            }
+
+            var dashboardViewModel = new DashboardViewModel()
+            {
+                Screens = screens
+            };
+
+            return View(dashboardViewModel);
         }
 
-        public ActionResult SetCulture(string culture)
+        private bool IsHostReachable(string hostname)
         {
-            // Validate input
-            culture = CultureHelper.GetImplementedCulture(culture);
-            // Save culture in a cookie
-            HttpCookie cookie = Request.Cookies["_culture"];
-            if (cookie != null)
-                cookie.Value = culture;   // update cookie value
-            else
-            {
-                cookie = new HttpCookie("_culture");
-                cookie.Value = culture;
-                cookie.Expires = DateTime.Now.AddYears(1);
-            }
-            Response.Cookies.Add(cookie);
 
-            return RedirectToAction("Index");
+            try
+            {
+                Ping ping = new Ping();
+                PingReply pingReply = ping.Send(hostname);
+
+                if (pingReply.Status == IPStatus.Success)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
         }
     }
 }

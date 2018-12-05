@@ -1,66 +1,68 @@
-﻿using System.Threading;
+﻿using System;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using NHibernate.Event;
+using NHibernate.Impl;
+using NHibernate.Persister.Entity;
 
 namespace Profilan.SharedKernel
 {
     internal class EventListener :
-        IPostInsertEventListener,
-        IPostDeleteEventListener,
-        IPostUpdateEventListener,
-        IPostCollectionUpdateEventListener
+        IPreInsertEventListener,
+        IPreUpdateEventListener
     {
-        public void OnPostDelete(PostDeleteEvent ev)
-        {
-            DispatchEvents(ev.Entity as Entity);
-        }
+        private static readonly string ModificationDatePropertyName = GetPropertyName<ISystemInfo>(val => val.Modified),
+                                       CreationDatePropertyName = GetPropertyName<ISystemInfo>(val => val.Created);
+        private static readonly string CreatorPropertyName = GetPropertyName<ISystemInfo>(val => val.CreatedBy),
+                                       ModifierPropertyName = GetPropertyName<ISystemInfo>(val => val.ModifiedBy);
 
-        public Task OnPostDeleteAsync(PostDeleteEvent ev, CancellationToken cancellationToken)
+        public bool OnPreInsert(PreInsertEvent ev)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnPostInsert(PostInsertEvent ev)
-        {
-            DispatchEvents(ev.Entity as Entity);
-        }
-
-        public Task OnPostInsertAsync(PostInsertEvent ev, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnPostUpdate(PostUpdateEvent ev)
-        {
-            DispatchEvents(ev.Entity as Entity);
-        }
-
-        public Task OnPostUpdateAsync(PostUpdateEvent ev, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnPostUpdateCollection(PostCollectionUpdateEvent ev)
-        {
-            DispatchEvents(ev.AffectedOwnerOrNull as Entity);
-        }
-
-        public Task OnPostUpdateCollectionAsync(PostCollectionUpdateEvent ev, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void DispatchEvents(Entity entity)
-        {
-            if (entity == null)
-                return;
-
-            foreach (IDomainEvent domainEvent in entity.DomainEvents)
+            ISystemInfo entity = ev.Entity as ISystemInfo;
+            if (entity != null)
             {
-                DomainEvents.Dispatch(domainEvent);
+                var currentDate = DateTime.Now;
+                entity.Created = entity.Modified = currentDate;
+                SetState(ev.Persister, ev.State, ModificationDatePropertyName, currentDate);
+                SetState(ev.Persister, ev.State, CreationDatePropertyName, currentDate);
             }
+            return false;
+        }
 
-            entity.ClearEvents();
+        public Task<bool> OnPreInsertAsync(PreInsertEvent ev, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool OnPreUpdate(PreUpdateEvent ev)
+        {
+            ISystemInfo entity = ev.Entity as ISystemInfo;
+            if (entity != null)
+            {
+                var currentDate = DateTime.Now;
+                entity.Modified = currentDate;
+                SetState(ev.Persister, ev.State, ModificationDatePropertyName, currentDate);
+            }
+            return false;
+        }
+
+        public Task<bool> OnPreUpdateAsync(PreUpdateEvent ev, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void SetState(IEntityPersister persister, object[] state, string propertyName, object value)
+        {
+            var index = Array.IndexOf(persister.PropertyNames, propertyName);
+            if (index == -1)
+                return;
+            state[index] = value;
+        }
+
+        private static string GetPropertyName<TType>(Expression<Func<TType, object>> expression)
+        {
+            return ExpressionProcessor.FindPropertyExpression(expression.Body);
         }
     }
 }

@@ -2,21 +2,13 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
                    namespace="EyeBoard.Logic.Models"
                    assembly="EyeBoard.Logic">
-  <class name="Article" table="Articles">
-    <id name="Id">
-      <generator class="identity"/>
-    </id>
+  <joined-subclass name="Article" extends="AdminModel" table="Articles">
+    <key column="Id" />
 
     <property name="Title"/>
     <property name="FullText"/>
-    <property name="State"/>
     <property name="PublishUp"/>
     <property name="PublishDown"/>
     <property name="Ordering"/>
-    
-    <property name="Created"/>
-    <property name="CreatedBy"/>
-    <property name="Modified"/>
-    <property name="ModifiedBy"/>
-  </class>
+  </joined-subclass>
 </hibernate-mapping>

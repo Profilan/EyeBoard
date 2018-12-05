@@ -123,17 +123,149 @@
   <data name="Articles" xml:space="preserve">
     <value>Articles</value>
   </data>
+  <data name="Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Back to List</value>
+  </data>
   <data name="Birthdays" xml:space="preserve">
     <value>Birthdays</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>New</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="GroupEdit" xml:space="preserve">
+    <value>Edit Group</value>
+  </data>
+  <data name="GroupNew" xml:space="preserve">
+    <value>New Group</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="HostName" xml:space="preserve">
+    <value>Hostname</value>
+  </data>
+  <data name="HostNameLong" xml:space="preserve">
+    <value>Hostname must be less than 50 characters</value>
+  </data>
+  <data name="HostNameRequired" xml:space="preserve">
+    <value>Hostname is required</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="LocationLong" xml:space="preserve">
+    <value>Must be less than 255 characters</value>
+  </data>
+  <data name="LocationRequired" xml:space="preserve">
+    <value>Location is required</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Log Off</value>
+  </data>
+  <data name="NoGroups" xml:space="preserve">
+    <value>No groups found</value>
+  </data>
+  <data name="NoNotifications" xml:space="preserve">
+    <value>No notifications found</value>
+  </data>
+  <data name="NoScreens" xml:space="preserve">
+    <value>No screens found</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="NotificationNew" xml:space="preserve">
+    <value>New Notification</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="NotificatonEdit" xml:space="preserve">
+    <value>Edit Notification</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="Photos" xml:space="preserve">
     <value>Photos</value>
   </data>
+  <data name="Presentation" xml:space="preserve">
+    <value>Presentation</value>
+  </data>
+  <data name="PresentationEdit" xml:space="preserve">
+    <value>Edit Presentation</value>
+  </data>
+  <data name="PresentationNew" xml:space="preserve">
+    <value>New Presentation</value>
+  </data>
+  <data name="Presentations" xml:space="preserve">
+    <value>Presentations</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Screen" xml:space="preserve">
+    <value>Screen</value>
+  </data>
+  <data name="ScreenEdit" xml:space="preserve">
+    <value>Edit Screen</value>
+  </data>
+  <data name="ScreenNew" xml:space="preserve">
+    <value>New Screen</value>
+  </data>
+  <data name="Screens" xml:space="preserve">
+    <value>Screens</value>
+  </data>
   <data name="Tickers" xml:space="preserve">
     <value>Tickers</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="TitleLong" xml:space="preserve">
+    <value>Must be less than 255 characters</value>
+  </data>
+  <data name="TitleRequired" xml:space="preserve">
+    <value>Title is required</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="UserNew" xml:space="preserve">
+    <value>New User</value>
   </data>
   <data name="Videos" xml:space="preserve">
     <value>Videos</value>

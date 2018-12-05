@@ -70,7 +70,7 @@ namespace EyeBoard.Logic.Models
         [JsonProperty("main")]
         public WeatherItemMain Main { get; set; }
         [JsonProperty("weather")]
-        public WeatherItemInfo Weather { get; set; }
+        public IList<WeatherItemInfo> Weather { get; set; }
         [JsonProperty("clouds")]
         public WeatherItemClouds Clouds { get; set; }
         [JsonProperty("wind")]
@@ -130,7 +130,7 @@ namespace EyeBoard.Logic.Models
         [JsonProperty("temp_max")]
         public float TempMax { get; set; } // Maximum temperature at the moment of calculation. This is deviation from 'temp' that is possible for large cities and megalopolises geographically expanded (use these parameter optionally). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
         [JsonProperty("pressure")]
-        public float pressure { get; set; } // Atmospheric pressure on the sea level by default, hPa
+        public float Pressure { get; set; } // Atmospheric pressure on the sea level by default, hPa
         [JsonProperty("sea_level")]
         public float SeaLevel { get; set; } //  Atmospheric pressure on the sea level, hPa
         [JsonProperty("grnd_level")]

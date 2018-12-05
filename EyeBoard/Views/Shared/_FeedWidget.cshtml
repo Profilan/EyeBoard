@@ -1,0 +1,61 @@
+﻿@model EyeBoard.Models.BoardViewModel
+
+<canvas id="feeds"></canvas>
+
+<script src="~/Scripts/preloadjs.min.js"></script>
+<script src="~/Scripts/easeljs.min.js"></script>
+<script>
+    function refreshFeed(vector, fontsize, fontColor, canvasHeight, canvasWidth, stage) {
+        var xOffset = 0;
+
+        $.get("/api/feed?url=" + "@Model.FeedUrl", function (data) {
+                
+            createjs.Ticker.off("tick");
+            stage.removeAllChildren();
+            var container = new createjs.Container();
+            stage.addChild(container);
+
+            $.each(data, function (index, value) {
+
+                var bitmap = new createjs.Bitmap(value.ImageUrl);
+                bitmap.scaleX = 0.390625;
+                bitmap.scaleY = 0.390625;
+                bitmap.x = xOffset;
+                bitmap.y = 32;
+                container.addChild(bitmap);
+
+                var text = new createjs.Text(value.Title, fontsize + 'px Helvetica', fontColor);
+                text.x = xOffset + 120;
+                text.y = (canvasHeight - fontsize) / 2;
+                container.addChild(text);
+
+                xOffset += 160 + text.getMeasuredWidth();
+            });
+            container.setBounds(canvasWidth, 0, xOffset, canvasHeight);
+
+            createjs.Ticker.on("tick", function () {
+                    
+                container.x += vector;
+
+                if (container.x < 0 - xOffset) { container.x = canvasWidth }
+
+                stage.update();
+            });
+            createjs.Ticker.framerate = 60;
+        });
+    }
+
+    $(function () {
+
+        // Correct size of canvas
+        var wrapper = $('#bottom1');
+        var canvasHeight = wrapper.height();
+        var canvasWidth = wrapper.width();
+        $('#feeds').attr('width', canvasWidth).attr('height', canvasHeight);
+
+        var stage = new createjs.Stage('feeds');
+        
+        setInterval(refreshFeed, 15 * 60 * 1000, -3, 50, "#ffffff", canvasHeight, canvasWidth, stage);
+        refreshFeed(-3, 50, "#ffffff", canvasHeight, canvasWidth, stage);
+    });
+</script>

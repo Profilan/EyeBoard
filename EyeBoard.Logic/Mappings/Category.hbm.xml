@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   namespace="EyeBoard.Logic.Models"
+                   assembly="EyeBoard.Logic">
+  <joined-subclass name="Article" extends="AdminModel" table="Articles">
+    <key column="Id" />
+
+    <property name="Title"/>
+  </joined-subclass>
+</hibernate-mapping>

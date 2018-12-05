@@ -1,0 +1,48 @@
+﻿@model EyeBoard.Models.ScreenViewModel
+
+@{
+    ViewBag.Title = Resources.ScreenEdit;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@Resources.ScreenEdit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@Resources.Screen</h4>
+        <p>
+            <input type="submit" value="@Resources.Save" class="btn btn-primary" />
+            @Html.ActionLink(Resources.BackToList, "Index", null, new { @class = "btn btn-link" })
+        </p>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HostName, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.HostName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.HostName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GroupId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(x => Model.GroupId, new SelectList(Model.Groups, "Id", "Title"), htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.GroupId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}

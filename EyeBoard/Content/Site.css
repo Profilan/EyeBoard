@@ -1,4 +1,71 @@
-﻿body {
+﻿html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    overflow: hidden;
+}
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    max-height: 100%;
+    background-color: rgb(91, 155, 213);
+    float: left;
+    width: 100%;
+}
+
+scrollbar {
+    overflow: visible !important;
+}
+
+#bottom1 {
+    position: absolute;
+    bottom: 82px;
+    height: 164px;
+    line-height: 164px;
+    background-color: rgb(91, 155, 213);
+    width: 100%;
+}
+
+#bottom2 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 82px;
+    line-height: 82px;
+    background-color: rgb(91, 155, 213);
+}
+
+/* Weather Widget */
+#weather-widget {
+    color: #fff;
+    font-size: 30px;
+}
+
+#weather-widget .weather_image {
+    width: 100px;
+    height: 100px;
+}
+
+#weather-widget  .weather_current_temp {
+    font-weight: 600;
+    font-size: 70px;
+    line-height: 1;
+    width: auto;
+    letter-spacing: -5px;
+    text-align: center;
+}
+
+.weather_city {
     
 }
 
+#weather-widget .weather_description {
+    font-size: 24px;
+}
+
+#weather-widget .weather_details {
+    font-size: 24px;
+}

@@ -1,20 +1,60 @@
 ﻿@model EyeBoard.Models.BoardViewModel
 
-@{ 
-    
+@{
+
 }
 
 @using EyeBoard.Helpers
 
-<div class="weather_left">
-    <img src="@WeatherHelper.Icon(Model.WeatherInfo.Icon)" />
-    <p class="weather_current_temp">
-        @Model.CurrentTemp °C
-    </p>
+<div id="weather-widget" style="display: table-cell; vertical-align: middle;">
+    <div class="row">
+        <div class="col-md-auto">
+            <div class="weather_city"></div>
+            <div class="weather_description"></div>
+        </div>
+        <div class="col-md-auto">
+            <img class="weather_image" src="" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-auto">
+            <div class="weather_current_temp">
+
+            </div>
+        </div>
+        <div class="col-md-auto">
+            <table class="weather_details">
+                
+                <tr>
+                    <td style="padding-right: 1em;">Vochtigheid</td>
+                    <td class="weather_humidity"></td>
+                </tr>
+                <tr>
+                    <td>Druk </td>
+                    <td class="weather_pressure"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 
-<div class="weather_right">
-    <p class="weather_city">@Model.City</p>
-    <div>@Model.WeatherInfo.Description</div>
-    <div></div>
-</div>
+<script>
+
+    function refreshWeather() {
+        $.get("/api/weather/" + "@Model.CityId", function (data) {
+            console.log(data);
+            $(".weather_image").attr("src", "//openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/" + data.Weather.weather[0].icon + ".png");
+            $(".weather_current_temp").text(data.CurrentTemp + "°C");
+            $(".weather_city").text(data.City);
+            $(".weather_description").text(data.Weather.weather[0].description);
+            $(".weather_pressure").text(data.Weather.main.pressure + " hPa");
+            $(".weather_humidity").text(data.Weather.main.humidity + " %");
+        });
+    }
+
+    $(function () {
+
+        setInterval(refreshWeather, 15 * 60 * 1000);
+        refreshWeather();
+    });
+</script>

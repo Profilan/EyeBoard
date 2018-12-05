@@ -1,0 +1,21 @@
+﻿@model EyeBoard.Models.FileInfoModel
+
+<script src="~/Backload/Client/blueimp/fileupload/js/jquery.fileupload.js"></script>
+<script src="~/Backload/Client/blueimp/fileupload/js/jquery.fileupload-process.js"></script>
+<script>
+    $(function () {
+        var fileCount = @Model.Media.Count();
+
+        $("#fileupload").fileupload({
+            url: "@Model.UploadUrl",
+            dataType: "json",
+            formData: { userId: @Model.UserId },
+            acceptFileTypes: @Model.AcceptFileTypes,
+            maxFileSize: @Model.MaxFileSize * 1024 * 1024,
+            dropZone: $("#uploader-dropzone"),
+            fail: function (e, data) {
+                console.log(data);
+            }
+        });
+    });
+</script>

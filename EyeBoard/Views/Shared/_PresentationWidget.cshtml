@@ -1,0 +1,44 @@
+﻿@model EyeBoard.Models.BoardViewModel
+
+<video id="presentation" class="card-img" muted></video>
+<script>
+    var presentationUrls = [];
+    var currentPresentation = 0;
+    var presentation = document.getElementById("presentation");
+    presentation.addEventListener("ended", function () {
+        if (currentPresentation < presentationUrls.length - 1) {
+            ++currentPresentation;
+        } else {
+            currentPresentation = 0;
+        }
+        showPresentation();
+    });
+
+    function showPresentation() {
+        $("#presentation").empty();
+        var source = $("<source />").attr("src", presentationUrls[currentPresentation]).attr("type", "video/mp4");
+        $("#presentation").append(source);
+        presentation.load();
+        presentation.play();
+    }
+
+    // Get the presentations to show
+    function refreshPresentations() {
+        $.get("/api/presentation/" + "@Model.Group.Id", function (data) {
+            presentationUrls = [];
+            currentPresentation = 0;
+            $.each(data, function (key, value) {
+                presentationUrls.push(value.Url);
+            });
+            showPresentation();
+        });
+    }
+
+    $(function () {
+        // Presentation Handling
+
+        // Start
+        refreshPresentations();
+    });
+</script>
+
