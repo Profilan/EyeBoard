@@ -1,0 +1,33 @@
+﻿<div id="delivered-packages-widget" style="display: table-cell; vertical-align: middle;">
+    <div class="row">
+        <div class="col-12">
+            <h2>Pakketten Geleverd</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-auto">
+            <img src="~/images/Delivered-Orders.png" height="150" />
+        </div>
+        <div class="col-md-auto">
+            <div class="delivered-packages-total mt-5"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    function refreshDeliveredPackages() {
+        $.get("/api/delivered-package/total", function (data) {
+            $(".delivered-packages-total").text(data.TotalDeliveredPackages.toLocaleString("nl-NL"));
+        });
+    }
+
+    $(function () {
+
+        setInterval(refreshDeliveredPackages, 10 * 1000);
+        refreshDeliveredPackages();
+
+    });
+
+</script>

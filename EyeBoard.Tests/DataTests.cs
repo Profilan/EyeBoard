@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DeEekhoorn.Logic.Repositories;
 using EyeBoard.Logic.Models;
 using EyeBoard.Logic.Repositories;
 using FluentAssertions;
@@ -106,7 +107,7 @@ namespace EyeBoard.Tests
         public void AddToRoleUserToRole()
         {
 
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -159,6 +160,17 @@ namespace EyeBoard.Tests
 
             item.Should().NotBeNull();
         }
+
+        [TestMethod]
+        public void ListDeliveredOrders()
+        {
+            var rep = new DeliveredOrderRepository();
+
+            var total = rep.GetTotalDeliveredColli(2018, 50);
+
+            total.Should().BeGreaterThan(0);
+        }
+
 
     }
 }

@@ -1,0 +1,88 @@
+﻿@model EyeBoard.Models.BoardViewModel
+
+<div id="feeds">
+    
+</div>
+
+<script src="~/Scripts/jquery.easy-ticker.min.js"></script>
+<script>
+    function refreshFeed() {
+
+        $("#feeds li:visible").remove();
+
+        $.get("/api/feed?url=" + "@Model.FeedUrl", function (data) {
+
+            var colCount = 2;
+            var rowCount = Math.ceil(data.length / 2);
+            var wrapper = $("<ul />").addClass("list-unstyled");
+            var i = 0;
+            for (row = 0; row < rowCount; row++) {
+                var block = $("<li />").addClass("media mt-5");
+                for (col = 0; col < colCount; col++) {
+                    var item = $("<div />").addClass("col-6").css("height", "164px");
+                    var image = $("<img />").attr("height", 100).attr("src", data[i].ImageUrl).addClass("ml-3 mr-3 float-left");
+                    var mediaBody = $("<div />").addClass("media-body");
+                    var title = $("<h3 />").css("color", "#fff").text(data[i].Title).addClass("mt-0 mb-1");
+                    
+                    mediaBody.append(title);
+                   
+                    item.append(image);
+                    item.append(mediaBody);
+                    block.append(item);
+                    ++i;
+                }
+                wrapper.append(block);
+            }
+            $("#feeds").append(wrapper);
+
+            $("#feeds").easyTicker({
+                interval: 20 * 1000,
+                height: "auto",
+                visible: 1,
+                speed: "slow",
+                mousePause: 0
+            });
+            /*
+            var columns = 0;
+            $.each(data, function (index, value) {
+
+                var description = value.Description.split('. ');
+
+                var block = $("<div />").addClass("row");
+                
+                var item = $("<div />").addClass("media col-6");
+                var image = $("<img />").attr("height", 100).attr("src", value.ImageUrl).addClass("ml-3 mr-3");
+                var mediaBody = $("<div />").addClass("media-body");
+                var title = $("<h3 />").css("color", "#fff").text(value.Title).addClass("mt-0 mb-1");
+                var shortDescription = $("<span />").text(description[0]).css("color", "#fff");
+                mediaBody.append(title);
+                mediaBody.append(value.Description);
+                item.append(image);
+                item.append(mediaBody);
+
+                if (colums < 2) {
+                    block.append(item);
+                    ++columns;
+                } else {
+                    block.append
+                }
+
+                $("#feeds").easyTicker({
+                    interval: 10 * 1000,
+                    height: "auto",
+                    visible: 1,
+                    speed: "slow"
+                });
+
+            });
+            */
+        });
+    }
+
+    $(function () {
+
+        
+        setInterval(refreshFeed, 15 * 60 * 1000);
+        refreshFeed();
+    });
+</script>

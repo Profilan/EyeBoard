@@ -14,8 +14,8 @@ namespace EyeBoard
     {
         public void Configuration(IAppBuilder app)
         {
-            app.CreatePerOwinContext(() => new ApplicationUserManager(new UserStore(SessionFactory.GetNewSession())));
-            app.CreatePerOwinContext(() => new ApplicationRoleManager(new RoleStore(SessionFactory.GetNewSession())));
+            app.CreatePerOwinContext(() => new ApplicationUserManager(new UserStore(SessionFactory.GetNewSession("db1"))));
+            app.CreatePerOwinContext(() => new ApplicationRoleManager(new RoleStore(SessionFactory.GetNewSession("db1"))));
             app.CreatePerOwinContext((IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context) => new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication));
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions

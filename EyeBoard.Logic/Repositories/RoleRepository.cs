@@ -36,7 +36,7 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<Role> ListBySearchstring(string searchstring)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = session.Query<Role>().OrderBy(x => x.Name).Where(x => x.Name.Like("%" + searchstring + "%"));
 

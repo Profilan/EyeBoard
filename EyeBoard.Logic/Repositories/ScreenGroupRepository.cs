@@ -14,7 +14,7 @@ namespace EyeBoard.Logic.Repositories
     {
         public void Delete(Guid id)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var item = session.Load<ScreenGroup>(id);
 
@@ -28,7 +28,7 @@ namespace EyeBoard.Logic.Repositories
 
         public ScreenGroup GetById(Guid id)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -44,7 +44,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Insert(ScreenGroup entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -61,7 +61,7 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<ScreenGroup> List()
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = session.Query<ScreenGroup>()
                     .FetchMany(x => x.Media)
@@ -79,7 +79,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Update(ScreenGroup entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {

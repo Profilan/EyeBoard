@@ -69,3 +69,21 @@ scrollbar {
 #weather-widget .weather_details {
     font-size: 24px;
 }
+
+/*
+    Delivered Orders Widget
+*/
+
+#delivered-orders-widget,
+#delivered-packages-widget {
+    color: #fff;
+}
+
+#delivered-orders-widget .delivered-orders-total,
+#delivered-packages-widget .delivered-packages-total {
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 1;
+    width: auto;
+    text-align: center;
+}

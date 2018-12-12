@@ -9,7 +9,7 @@ namespace Profilan.SharedKernel
     {
         public T GetById(TId id)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 return session.Get<T>(id);
             }
@@ -17,7 +17,7 @@ namespace Profilan.SharedKernel
 
         public void Save(T entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             using (ITransaction transaction = session.BeginTransaction())
             {
                 session.SaveOrUpdate(entity);
@@ -27,7 +27,7 @@ namespace Profilan.SharedKernel
 
         public IEnumerable<T> List()
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = from l in session.Query<T>()
                             select l;

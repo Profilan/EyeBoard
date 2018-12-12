@@ -16,7 +16,7 @@ namespace EyeBoard.Logic.Repositories
 
         public Screen GetById(Guid id)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -29,7 +29,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Insert(Screen entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -46,7 +46,7 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<Screen> List()
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = from l in session.Query<Screen>()
                             select l;
@@ -59,7 +59,7 @@ namespace EyeBoard.Logic.Repositories
 
         public Screen GetByHostName(string hostName)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var screen = session.QueryOver<Screen>()
                     .Where(s => s.HostName == hostName)
@@ -74,7 +74,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Update(Screen entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {

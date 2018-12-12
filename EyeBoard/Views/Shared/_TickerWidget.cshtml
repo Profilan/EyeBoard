@@ -16,20 +16,30 @@
             var container = new createjs.Container();
             stage.addChild(container);
 
-            $.each(data, function (idx, value) {
+            var count = 0;
+            do {
+                $.each(data, function (idx, value) {
 
-                var text = new createjs.Text(value.Title, fontsize + 'px Helvetica', fontColor);
-                text.x = xOffset;
-                text.y = (canvasHeight - fontsize) / 2;
-                container.addChild(text);
+                    var rect = new createjs.Shape();
+                    rect.graphics.beginFill("#fff").drawCircle(0, 0, 10);
+                    rect.x = xOffset;
+                    rect.y = (canvasHeight - fontsize);
+                    container.addChild(rect);
 
-                xOffset += 40 + text.getMeasuredWidth();
-            });
+                    var text = new createjs.Text(value.Title, fontsize + 'px Helvetica', fontColor);
+                    text.x = xOffset + fontsize;
+                    text.y = (canvasHeight - fontsize) / 2;
+                    container.addChild(text);
+
+                    xOffset += text.getMeasuredWidth() + fontsize * 2;
+                });
+            } while (xOffset < canvasWidth * 2);
+            
             container.setBounds(canvasWidth, 0, xOffset, canvasHeight);
 
             createjs.Ticker.on("tick", function () {
                 container.x += vector;
-                if (container.x < 0 - xOffset) { container.x = canvasWidth }
+                if (container.x + xOffset <= canvasWidth) { container.x = canvasWidth - xOffset / 2 }
                 stage.update();
             });
             createjs.Ticker.framerate = 60;
@@ -46,7 +56,7 @@
 
         var stage = new createjs.Stage('ticker');
 
-        refreshTicker(-2, 30, "#000000", canvasHeight, canvasWidth, stage);
+        refreshTicker(-2, 40, "#fff", canvasHeight, canvasWidth, stage);
     });
 </script>
 

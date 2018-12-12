@@ -16,7 +16,7 @@ namespace EyeBoard.Logic.Repositories
 
         public Medium GetById(Guid id)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -29,7 +29,7 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<Medium> ListByUser(int userId)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = from l in session.Query<Medium>()
                             select l;
@@ -44,7 +44,7 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<Medium> ListByGroup(ScreenGroup group)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = from l in session.Query<Medium>()
                             select l;
@@ -59,7 +59,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Insert(Medium entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -76,7 +76,7 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<Medium> List()
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = from l in session.Query<Medium>()
                             select l;
@@ -90,7 +90,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Update(Medium entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {

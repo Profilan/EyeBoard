@@ -24,17 +24,17 @@
                 <div class="col-12" style="height: 274px; display: table;">
                     @Html.Partial("_WeatherWidget")
                 </div>
-                <div class="col-12" style="height: 274px; display: table; background-color: gray;">
-                    Vlak 3
+                <div class="col-12" style="height: 274px; display: table; background-color: rgb(88, 149, 205);">
+                    @Html.Partial("_DeliveredOrdersWidget")
                 </div>
-                <div class="col-12" style="height: 275px; display: table; background-color: darkgray;">
-                    Vlak 4
+                <div class="col-12" style="height: 275px; display: table; background-color: rgb(79, 134, 184);">
+                    @Html.Partial("_DeliveredPackagesWidget")
                 </div>
             </div>
         </div>
     </div>
     <div id="bottom1">
-        @Html.Partial("_FeedWidget")
+        @Html.Partial("_VerticalFeedWidget")
     </div>
     <div id="bottom2">
         @Html.Partial("_TickerWidget")

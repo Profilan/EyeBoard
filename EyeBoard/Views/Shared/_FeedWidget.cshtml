@@ -18,6 +18,22 @@
             $.each(data, function (index, value) {
 
                 var bitmap = new createjs.Bitmap(value.ImageUrl);
+                bitmap.scaleX = 0.3;
+                bitmap.scaleY = 0.3;
+                bitmap.x = xOffset;
+                bitmap.y = 40;
+                container.addChild(bitmap);
+
+                var text = new createjs.Text(value.Title, fontsize + 'px Helvetica', fontColor);
+                text.x = xOffset + 120;
+                text.y = (canvasHeight - fontsize) / 2;
+                container.addChild(text);
+
+                xOffset += 160 + text.getMeasuredWidth();
+            });
+            $.each(data, function (index, value) {
+
+                var bitmap = new createjs.Bitmap(value.ImageUrl);
                 bitmap.scaleX = 0.390625;
                 bitmap.scaleY = 0.390625;
                 bitmap.x = xOffset;
@@ -37,7 +53,7 @@
                     
                 container.x += vector;
 
-                if (container.x < 0 - xOffset) { container.x = canvasWidth }
+                if (container.x + xOffset <= canvasWidth) { container.x = canvasWidth }
 
                 stage.update();
             });

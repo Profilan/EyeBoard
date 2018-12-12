@@ -1,0 +1,33 @@
+﻿<div id="delivered-orders-widget" style="display: table-cell; vertical-align: middle;">
+    <div class="row">
+        <div class="col-12">
+            <h2>Orders Geleverd</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-auto">
+            <img src="~/images/Delivered-Packages.png" height="150" />
+        </div>
+        <div class="col-md-auto">
+            <div class="delivered-orders-total mt-5"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    function refreshDeliveredOrders() {
+        $.get("/api/delivered-order/total", function (data) {
+            $(".delivered-orders-total").text(data.TotalDeliveredColli.toLocaleString("nl-NL"));
+        });
+    }
+
+    $(function () {
+
+        setInterval(refreshDeliveredOrders, 10 * 1000);
+        refreshDeliveredOrders();
+
+    });
+
+</script>

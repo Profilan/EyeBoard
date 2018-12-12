@@ -14,8 +14,6 @@ namespace Profilan.SharedKernel
 {
     public class SessionFactory
     {
-        private static ISessionFactory _factory;
-
         private static readonly ISessionFactory _globalSessionFactory = new Configuration().Configure().BuildSessionFactory();
         private static IDictionary<string, ISessionFactory> _allFactories = LoadAllFactories();
 
@@ -27,7 +25,7 @@ namespace Profilan.SharedKernel
             FluentConfiguration configuration = Fluently.Configure()
                            .Database(MsSqlConfiguration.MsSql2012.ConnectionString(cs => cs.FromConnectionStringWithKey("db2")))
                            .Mappings(m => m.FluentMappings
-                                .AddFromAssembly(Assembly.Load("EyeBoard.Logic"))
+                                .AddFromAssembly(Assembly.Load("DeEekhoorn.Logic"))
                                 .Conventions.Add(
                                    ForeignKey.EndsWith("Id"),
                                    ConventionBuilder.Property

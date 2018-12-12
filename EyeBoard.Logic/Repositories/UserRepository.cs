@@ -11,7 +11,7 @@ namespace EyeBoard.Logic.Repositories
     {
         public void Delete(int id)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var item = session.Load<User>(id);
 
@@ -26,7 +26,7 @@ namespace EyeBoard.Logic.Repositories
 
         public User GetById(int id)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var item = session.Get<User>(id);
 
@@ -36,7 +36,7 @@ namespace EyeBoard.Logic.Repositories
 
         public User GetByUsername(string username)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = from u in session.Query<User>()
                             select u;
@@ -58,7 +58,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Insert(User entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
@@ -71,7 +71,7 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<User> List()
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 var query = session.Query<User>().OrderBy(x => x.UserName);
 
@@ -87,7 +87,7 @@ namespace EyeBoard.Logic.Repositories
 
         public void Update(User entity)
         {
-            using (ISession session = SessionFactory.GetNewSession())
+            using (ISession session = SessionFactory.GetNewSession("db1"))
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
