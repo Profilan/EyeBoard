@@ -1,0 +1,77 @@
+﻿@model EyeBoard.Areas.Admin.Models.DashboardViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<table class="table" id="screens">
+    @foreach (var screen in Model.Screens)
+    {
+        <tr class="screen-status" data-id="@screen.Id">
+            <td class="screen-status-image">
+                @if (screen.IsReachable)
+                {
+                    <img src="~/images/computeronlinelist56.png" />
+                }
+                else
+                {
+                    <img src="~/images/oncritical56.png" />
+                }
+            </td>
+            <td class="screen-status-hostname">
+                @screen.HostName
+            </td>
+            <td class="actions"><a href="#" class="btn-reset btn btn-link" data-id="@screen.Id">Reset</a></td>
+        </tr>
+    }
+    <!--Proto template for screen status -->
+    <tr class="screen-status prototype d-none">
+        <td class="screen-status-image"></td>
+        <td class="screen-status-hostname"></td>
+        <td class="actions"></td>
+    </tr>
+</table>
+
+@section scripts
+{
+    <script>
+        function refreshScreens() {
+            $.getJSON("/api/screen", function (data) {
+                $.each(data, function (index, value) {
+                    var screen = $("#screens").find("tr[data-id='" + value.Id + "']");
+                    if (screen != undefined) {
+                        // Change existing row
+                        var imageUrl = "/images/computeronlinelist56.png";
+                        if (value.IsReachable == false) {
+                            imageUrl = "/images/oncritical56.png";
+                        }
+                        var image = screen.find(".screen-status-image img").attr("src", imageUrl);
+                    }
+                    else {
+                        // Add a new row
+                    }
+                });
+            });
+        }
+
+        $(function () {
+
+            setInterval(refreshScreens, 10000);
+
+            $('.btn-reset').click(function (e) {
+                e.preventDefault();
+
+                var screenId = $(this).attr('data-id');
+
+                $.post('/api/screen/reset/' + screenId, function (result) {
+                    console.log(result);
+                });
+            });
+
+        });
+    </script>
+}
+
+
+

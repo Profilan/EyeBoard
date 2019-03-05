@@ -40,7 +40,7 @@ namespace EyeBoard.Logic.Models
         public static ScreenGroup Create(string title)
         {
             Guard.ForNullOrEmpty(title, "title");
-            var screenGroup = new ScreenGroup(Guid.NewGuid());
+            ScreenGroup screenGroup = new ScreenGroup(Guid.NewGuid());
             screenGroup.Title = title;
             return screenGroup;
         }

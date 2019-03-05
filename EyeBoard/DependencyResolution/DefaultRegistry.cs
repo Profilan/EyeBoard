@@ -16,11 +16,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace EyeBoard.DependencyResolution {
+    using EyeBoard.Areas.Admin.Models.Identity;
+    using EyeBoard.Logic.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.Owin.Security;
+    using NHibernate;
     using Profilan.SharedKernel;
     using StructureMap;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
-	
+    using System.Web;
+
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors
 
@@ -34,6 +40,10 @@ namespace EyeBoard.DependencyResolution {
                     scan.ConnectImplementationsToTypesClosing(typeof(IHandle<>));
                 });
             //For<IExample>().Use<Example>();
+            For<IUserStore<User, int>>().Use<UserStore>();
+            For<IRoleStore<Role, int>>().Use<RoleStore>();
+            For<ISession>().Use(() => SessionFactory.GetNewSession("db1"));
+            For<IAuthenticationManager>().Use(() => HttpContext.Current.GetOwinContext().Authentication);
         }
 
         #endregion

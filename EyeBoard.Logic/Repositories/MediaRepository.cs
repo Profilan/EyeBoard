@@ -11,7 +11,16 @@ namespace EyeBoard.Logic.Repositories
     {
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ISession session = SessionFactory.GetNewSession("db1"))
+            {
+                var item = session.Load<Medium>(id);
+
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    session.Delete(item);
+                    transaction.Commit();
+                }
+            }
         }
 
         public Medium GetById(Guid id)

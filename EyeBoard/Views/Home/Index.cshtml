@@ -51,6 +51,8 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the the page.-->
     <script>
+        var screenId = '@Model.ScreenId';
+
         $(function () {
 
             
@@ -62,7 +64,13 @@
             screenHub.client.updateGroup = function (id) {
                 console.log("updated");
                 refreshPresentations();
-                refreshTicker();
+                refreshTicker(-1, 40, "#fff");
+            };
+
+            screenHub.client.updateScreen = function (id) {
+                if (id == screenId) {
+                    window.location.reload();
+                }
             };
 
             // Start the connection

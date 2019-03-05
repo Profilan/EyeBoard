@@ -27,6 +27,7 @@ scrollbar {
     line-height: 164px;
     background-color: rgb(91, 155, 213);
     width: 100%;
+    overflow: hidden;
 }
 
 #bottom2 {

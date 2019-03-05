@@ -42,5 +42,11 @@ namespace EyeBoard.Logic.Models
             screen.Group = group;
             return screen;
         }
+
+        public virtual void Update()
+        {
+            var screenUpdatedEvent = new ScreenUpdatedEvent(this);
+            DomainEvents.Raise(screenUpdatedEvent);
+        }
     }
 }

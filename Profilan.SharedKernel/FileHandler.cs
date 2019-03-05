@@ -1,5 +1,7 @@
 ﻿using Microsoft.Office.Core;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -7,6 +9,28 @@ namespace Profilan.SharedKernel
 {
     public static class FileHandler
     {
+        public static bool ConvertVideoToMP4(string inputFile, string outputVideo)
+        {
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = @"C:\Program Files\ffmpeg\bin\ffmpeg.exe";
+                process.StartInfo.Arguments = "-i \"" + inputFile + "\" -r 30 \"" + outputVideo + "\"";
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                var result = process.Start();
+                process.WaitForExit();
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public static bool ConvertPPTToMP4(string inputFile, string outputVideo)
         {
             try
@@ -43,6 +67,20 @@ namespace Profilan.SharedKernel
             {
                 var temp = e;
                  return false;
+            }
+        }
+
+        public static bool Save(string path, string physicalPath)
+        {
+            try
+            {
+                File.Copy(path, physicalPath);
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

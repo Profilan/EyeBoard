@@ -11,7 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using EyeBoard.Models;
-using EyeBoard.Models.Identity;
+using EyeBoard.Areas.Admin.Models.Identity;
 
 namespace EyeBoard
 {

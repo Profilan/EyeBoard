@@ -120,6 +120,9 @@
   <data name="Agenda" xml:space="preserve">
     <value>Agenda</value>
   </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Weet je het zeker?</value>
+  </data>
   <data name="Articles" xml:space="preserve">
     <value>Artikelen</value>
   </data>
@@ -131,6 +134,12 @@
   </data>
   <data name="Birthdays" xml:space="preserve">
     <value>Verjaardagen</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuleren</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Wijzig wachtwoord</value>
   </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Bevestig wachtwoord</value>
@@ -146,6 +155,9 @@
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Verwijderen</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>is verwijderd</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
@@ -216,6 +228,9 @@
   <data name="Password" xml:space="preserve">
     <value>Wachtwoord</value>
   </data>
+  <data name="PasswordSaved" xml:space="preserve">
+    <value>Wachtwoord is met succes gewijzigd</value>
+  </data>
   <data name="Photos" xml:space="preserve">
     <value>Foto's</value>
   </data>
@@ -237,6 +252,9 @@
   <data name="Save" xml:space="preserve">
     <value>Opslaan</value>
   </data>
+  <data name="Saved" xml:space="preserve">
+    <value>is opgeslagen</value>
+  </data>
   <data name="Screen" xml:space="preserve">
     <value>Beeldscherm</value>
   </data>
@@ -248,6 +266,12 @@
   </data>
   <data name="Screens" xml:space="preserve">
     <value>Beeldschermen</value>
+  </data>
+  <data name="SevereError" xml:space="preserve">
+    <value>Er is een ernstige fout opgetreden</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistieken</value>
   </data>
   <data name="Tickers" xml:space="preserve">
     <value>Lichtkranten</value>
@@ -261,13 +285,34 @@
   <data name="TitleRequired" xml:space="preserve">
     <value>Titel is verplicht</value>
   </data>
+  <data name="Updated" xml:space="preserve">
+    <value>is bijgewerkt</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Gebruiker</value>
+  </data>
+  <data name="UserEdit" xml:space="preserve">
+    <value>Wijzig gebruiker</value>
+  </data>
   <data name="UserName" xml:space="preserve">
     <value>Gebruikersnaam</value>
   </data>
   <data name="UserNew" xml:space="preserve">
     <value>Nieuwe gebruiker</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Gebruikers</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="VideoEdit" xml:space="preserve">
+    <value>Wijzig video</value>
+  </data>
   <data name="Videos" xml:space="preserve">
     <value>Video's</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
   </data>
 </root>

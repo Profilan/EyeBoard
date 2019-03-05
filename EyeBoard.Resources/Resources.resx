@@ -120,6 +120,9 @@
   <data name="Agenda" xml:space="preserve">
     <value>Agenda</value>
   </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
   <data name="Articles" xml:space="preserve">
     <value>Articles</value>
   </data>
@@ -131,6 +134,12 @@
   </data>
   <data name="Birthdays" xml:space="preserve">
     <value>Birthdays</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
   </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
@@ -146,6 +155,9 @@
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>is deleted</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
@@ -216,6 +228,9 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="PasswordSaved" xml:space="preserve">
+    <value>Password has been succesfully changed</value>
+  </data>
   <data name="Photos" xml:space="preserve">
     <value>Photos</value>
   </data>
@@ -237,6 +252,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Saved" xml:space="preserve">
+    <value>is saved</value>
+  </data>
   <data name="Screen" xml:space="preserve">
     <value>Screen</value>
   </data>
@@ -248,6 +266,12 @@
   </data>
   <data name="Screens" xml:space="preserve">
     <value>Screens</value>
+  </data>
+  <data name="SevereError" xml:space="preserve">
+    <value>There has been a severe error</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
   </data>
   <data name="Tickers" xml:space="preserve">
     <value>Tickers</value>
@@ -261,13 +285,34 @@
   <data name="TitleRequired" xml:space="preserve">
     <value>Title is required</value>
   </data>
+  <data name="Updated" xml:space="preserve">
+    <value>is updated</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="UserEdit" xml:space="preserve">
+    <value>Edit User</value>
+  </data>
   <data name="UserName" xml:space="preserve">
     <value>Username</value>
   </data>
   <data name="UserNew" xml:space="preserve">
     <value>New User</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="VideoEdit" xml:space="preserve">
+    <value>Edit Video</value>
+  </data>
   <data name="Videos" xml:space="preserve">
     <value>Videos</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

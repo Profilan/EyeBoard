@@ -1,4 +1,4 @@
-﻿using EyeBoard.Models.Identity;
+﻿using EyeBoard.Areas.Admin.Models.Identity;
 using Profilan.SharedKernel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;

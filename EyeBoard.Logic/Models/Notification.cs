@@ -1,4 +1,5 @@
-﻿using Profilan.SharedKernel;
+﻿using EyeBoard.Logic.Events;
+using Profilan.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,9 +43,18 @@ namespace EyeBoard.Logic.Models
         public static Notification Create(string title)
         {
             Guard.ForNullOrEmpty(title, "title");
-            var notification = new Notification(Guid.NewGuid());
-            notification.Title = title;
+            Notification notification = new Notification(Guid.NewGuid())
+            {
+                Title = title
+            };
             return notification;
+        }
+
+        public virtual void Update()
+        {
+            var notificationUpdatedEvent = new NotificationUpdatedEvent(this);
+
+            DomainEvents.Raise(notificationUpdatedEvent);
         }
     }
 }

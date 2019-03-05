@@ -8,6 +8,7 @@ namespace EyeBoard.Models
 {
     public class BoardViewModel
     {
+        public Guid ScreenId { get; set; }
         public ScreenGroup Group { get; set; }
         public string HostName { get; set; }
 

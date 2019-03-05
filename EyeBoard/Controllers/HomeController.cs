@@ -42,7 +42,8 @@ namespace EyeBoard.Controllers
 
                 var viewModel = new BoardViewModel()
                 {
-                    Presentations = screen.Group.Media.Where(x => x.GetType().Name == "Presentation"),
+                    ScreenId = screen.Id,
+                    Presentations = screen.Group.Media.Where(x => x.GetType().Name == "Presentation" || x.GetType().Name == "Movie"),
                     Group = screen.Group,
                     FeedUrl = Server.UrlEncode("http://www.nu.nl/rss/Algemeen"),
                     CityId = 2744819

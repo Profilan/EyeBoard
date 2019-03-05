@@ -1,0 +1,58 @@
+﻿@model EyeBoard.Areas.Admin.Models.NotificationViewModel
+
+@{
+    ViewBag.Title = "CreateView";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@Resources.CreateNew</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>@Resources.Notification</h4>
+    <p>
+        <input type="submit" value="@Resources.Save" class="btn btn-primary" />
+        @Html.ActionLink(Resources.BackToList, "Index", null, new { @class = "btn btn-link" })
+    </p>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PublishUp, htmlAttributes: new { @class = "control-label" })
+
+        @Html.EditorFor(model => model.PublishUp, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PublishUp, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PublishDown, htmlAttributes: new { @class = "control-label" })
+
+        @Html.EditorFor(model => model.PublishDown, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PublishDown, "", new { @class = "text-danger" })
+
+    </div>
+
+    <ul class="list-group list-unstyled">
+        @foreach (var group in Model.Groups)
+        {
+            <li class="list-group-item">
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" name="Groups[]" value="@group.Id">
+                    <label class="form-check-label" for="exampleCheck1">@group.Title</label>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+}

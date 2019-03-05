@@ -6,48 +6,8 @@
 <script src="~/Scripts/easeljs.min.js"></script>
 
 <script>
-    function refreshTicker(vector, fontsize, fontColor, canvasHeight, canvasWidth, stage) {
+    function refreshTicker(vector, fontsize, fontColor) {
         var xOffset = 0;
-
-        $.get("/api/notification/" + "@Model.Group.Id", function (data) {
-            
-            createjs.Ticker.off("tick");
-            stage.removeAllChildren();
-            var container = new createjs.Container();
-            stage.addChild(container);
-
-            var count = 0;
-            do {
-                $.each(data, function (idx, value) {
-
-                    var rect = new createjs.Shape();
-                    rect.graphics.beginFill("#fff").drawCircle(0, 0, 10);
-                    rect.x = xOffset;
-                    rect.y = (canvasHeight - fontsize);
-                    container.addChild(rect);
-
-                    var text = new createjs.Text(value.Title, fontsize + 'px Helvetica', fontColor);
-                    text.x = xOffset + fontsize;
-                    text.y = (canvasHeight - fontsize) / 2;
-                    container.addChild(text);
-
-                    xOffset += text.getMeasuredWidth() + fontsize * 2;
-                });
-            } while (xOffset < canvasWidth * 2);
-            
-            container.setBounds(canvasWidth, 0, xOffset, canvasHeight);
-
-            createjs.Ticker.on("tick", function () {
-                container.x += vector;
-                if (container.x + xOffset <= canvasWidth) { container.x = canvasWidth - xOffset / 2 }
-                stage.update();
-            });
-            createjs.Ticker.framerate = 60;
-        });
-    }
-
-
-    $(function () {
 
         var wrapper = $('#bottom2');
         var canvasHeight = wrapper.height();
@@ -55,8 +15,48 @@
         $('#ticker').attr('width', canvasWidth).attr('height', canvasHeight);
 
         var stage = new createjs.Stage('ticker');
+        $.get("/api/notification/" + "@Model.Group.Id", function (data) {
 
-        refreshTicker(-2, 40, "#fff", canvasHeight, canvasWidth, stage);
+            if (data.length > 0) {
+                createjs.Ticker.off("tick");
+                stage.removeAllChildren();
+                var container = new createjs.Container();
+                stage.addChild(container);
+
+                var count = 0;
+                do {
+                    $.each(data, function (idx, value) {
+
+                        var rect = new createjs.Shape();
+                        rect.graphics.beginFill("#fff").drawCircle(0, 0, 10);
+                        rect.x = xOffset;
+                        rect.y = (canvasHeight - fontsize);
+                        container.addChild(rect);
+
+                        var text = new createjs.Text(value.Title, fontsize + 'px Helvetica', fontColor);
+                        text.x = xOffset + fontsize;
+                        text.y = (canvasHeight - fontsize) / 2;
+                        container.addChild(text);
+
+                        xOffset += text.getMeasuredWidth() + fontsize * 2;
+                    });
+                } while (xOffset < canvasWidth * 2);
+
+                container.setBounds(canvasWidth, 0, xOffset, canvasHeight);
+
+                createjs.Ticker.on("tick", function () {
+                    container.x += vector;
+                    if (container.x + xOffset <= canvasWidth) { container.x = canvasWidth - xOffset / 2 }
+                    stage.update();
+                });
+                createjs.Ticker.framerate = 60;
+            }
+        });
+    }
+
+
+    $(function () {
+        refreshTicker(-1, 40, "#fff");
     });
 </script>
 

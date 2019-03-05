@@ -6,7 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using EyeBoard.Models;
-using EyeBoard.Models.Identity;
+using EyeBoard.Areas.Admin.Models.Identity;
 
 namespace EyeBoard
 {

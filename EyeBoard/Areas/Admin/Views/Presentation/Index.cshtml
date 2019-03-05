@@ -1,0 +1,124 @@
+﻿@model EyeBoard.Areas.Admin.Models.FileInfoModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@Resources.Presentations</h2>
+
+<div id="uploader-dropzone" class="card text-center" style="border: 4px dashed #b4b9be;">
+    <div class="card-header" style="border: none; background-color: transparent;">
+        <button class="close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+    <div class="uploader-inline-content no-upload-message">
+
+        <div class="upload-ui">
+            <h2 class="upload-instructions drop-instructions mt-3">Bestanden hierheen verslepen</h2>
+            <p class="upload-instructions drop-instructions">of</p>
+            <span class="btn btn-primary fileinput-button">
+                <span>Bestanden selecteren</span>
+                <input type="file" id="fileupload" name="files[]" multiple>
+            </span>
+        </div>
+        <div class="upload-inline-status"></div>
+        <div class="post-upload mt-3">
+
+            <p class="max-upload-size">Maximale bestandsgrootte van upload: @Model.MaxFileSize MB.</p>
+
+        </div>
+
+    </div>
+</div>
+
+<div id="presentations" class="row mt-3 mb-5">
+
+    @foreach (var presentation in Model.Media)
+    {
+        <div class="video col-md-2 mb-3" style="text-align: center;" data-id="@presentation.Id">
+            <div class="card" style="min-height: 280px;">
+                <a href="/Admin/Presentation/Edit/@presentation.Id" data-id="@presentation.Id">
+                    <video class="card-img-top" muted="muted">
+                        <source src="@Url.Content(presentation.Url)#t=2" type="video/mp4" />
+                    </video>
+                </a>
+                <div class="card-body">
+                   
+                </div>
+                <div class="card-footer">
+                    
+                    <button data-id="@presentation.Id" class="btn btn-dark btn-sm btn-delete">@Resources.Delete</button>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="video-prototype col-md-2 mb-3 d-none" style="text-align: center;">
+        <div class="card">
+            <a href="#">
+
+            </a>
+            <div class="card-body">
+
+            </div>
+            <div class="card-footer">
+                <small class="text-muted"></small>
+                <button class="btn btn-dark btn-sm btn-delete">@Resources.Delete</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@Html.Partial("_FileUploadPartial", Model)
+
+<script>
+    function deletePresentation(id) {
+        $.post('/api/presentation/delete/' + id, function (result) {
+            var presentation = $("div[data-id='" + result + "']");
+            presentation.remove();
+        });
+    }
+
+    $(function () {
+        
+        var uploadCount = 0;
+        var uploadPath = "@System.Configuration.ConfigurationManager.AppSettings["PresentationsFolder"]";
+
+
+        $('.btn-delete').click(function (e) {
+            e.preventDefault();
+           
+            deletePresentation($(this).attr('data-id'));
+        });
+
+        $("#fileupload").bind("fileuploadadd", function (e, data) {
+            // console.log(data.files[0].name);
+            ++uploadCount;
+            var proto = $("#presentations .video-prototype").clone();
+            proto.attr("data-filename", data.files[0].name);
+            var spinner = $("<img />").attr("src", "/images/upload-spinner.gif").attr("width", 64).addClass("upload-spinner");
+            proto.find("a").append(spinner);
+            proto.removeClass("video-prototype d-none").addClass("video");
+
+            $("#presentations").prepend(proto);
+        });
+
+        $("#fileupload").bind("fileuploaddone", function (e, data) {
+            var video = $("<video />").addClass("card-img").attr("muted", "muted");
+            var source = $("<source />").attr("src", data.result.path + "#t=2").attr("type", "video/mp4");
+            video.append(source);
+
+            var proto = $("div[data-filename='" + data.result.name + "']");
+            var spinner = proto.find("img");
+            var href = proto.find("a").attr("data-id", data.result.id).attr("href", "/Admin/Presentation/Edit/" + data.result.id);
+            spinner.replaceWith(video);
+
+            proto.find(".btn-delete").attr('data-id', data.result.id).click(function (e) {
+                e.preventDefault();
+                deletePresentation(btoa(data.result.id));
+            });
+        });
+    });
+</script>
+

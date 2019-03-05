@@ -1,0 +1,120 @@
+﻿@{ 
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+
+    var mainClass = "col-md-12";
+    if (Request.IsAuthenticated)
+    {
+        mainClass = "col-md-9 ml-sm-auto col-lg-10 px-4";
+    }
+}
+
+@helper selected(string c, string culture)
+{
+    if (c == culture)
+    {
+        @:checked="checked"
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>@ViewBag.Title - EyeBoard Management</title>
+    
+    @Styles.Render("~/Admin/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+</head>
+<body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">EyeBoard</a>
+        @Html.Partial("_LoginPartial")
+    </nav>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            @if (Request.IsAuthenticated)
+            {
+                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/admin/dashboard">
+                                    <i class="fa fa-home"></i>
+                                    @Resources.Dashboard <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            @if (User.IsInRole("superuser"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/group">
+                                        <i class="fa fa-cloud"></i>
+                                        @Resources.Groups
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/screen">
+                                        <i class="fa fa-tv"></i>
+                                        @Resources.Screens
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("superuser") || User.IsInRole("administrator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/presentation">
+                                        <i class="fa fa-file-powerpoint-o"></i>
+                                        @Resources.Presentations
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/video">
+                                        <i class="fa fa-file-movie-o"></i>
+                                        @Resources.Videos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/notification">
+                                        <i class="fa fa-bullhorn"></i>
+                                        @Resources.Notifications
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("superuser"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/user">
+                                        <i class="fa fa-user"></i>
+                                        @Resources.Users
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </nav>
+            }
+                <main role="main" class="@mainClass">
+                    <div class="mt-4">
+                        @foreach (var flash in Request.GetFlashMessages())
+                        {
+                            <div class="alert @(flash.Type == "success" ? "alert-success" : "alert-danger")" role="alert">
+                                @flash.Message
+                            </div>
+                        }
+                    </div>
+
+                    @RenderBody()
+                </main>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
