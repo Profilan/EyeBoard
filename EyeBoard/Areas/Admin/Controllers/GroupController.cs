@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "GRolNarrowcastBeheerder")]
     public class GroupController : BaseController
     {
         private readonly ScreenGroupRepository _screenGroupRepository;
@@ -27,6 +27,8 @@ namespace EyeBoard.Areas.Admin.Controllers
         {
             var items = _screenGroupRepository.List();
 
+            var user = GetCurrentUser().User.ToString();
+
             var groups = new List<GroupViewModel>();
             foreach (var item in items)
             {
@@ -34,7 +36,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 {
                     Id = item.Id,
                     Title = item.Title,
-                    CreatedBy = GetCurrentUser().DisplayName,
+                    CreatedBy = GetCurrentUser().User.ToString(),
                     Modified = item.Modified,
                 });
 
@@ -51,7 +53,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 MaxFileSize = 512,
                 AcceptFileTypes = @"/(\.|\/)(ppt?x)$/i",
                 Media = new List<Medium>(),
-                UserId = GetCurrentUser().Id
+                UserId = GetCurrentUser().User.ToString()
             };
 
             return View(groupViewModel);
@@ -63,7 +65,7 @@ namespace EyeBoard.Areas.Admin.Controllers
             try
             {
                 var group = ScreenGroup.Create(collection["Title"]);
-                group.CreatedBy = GetCurrentUser().Id;
+                group.CreatedBy = GetCurrentUser().User.ToString();
                 group.ModifiedBy = group.CreatedBy;
                 _screenGroupRepository.Insert(group);
 
@@ -97,11 +99,17 @@ namespace EyeBoard.Areas.Admin.Controllers
             try
             {
                 var group = _screenGroupRepository.GetById(id);
+                var videos = _mediaRepository.ListByUser(GetCurrentUser().User.ToString()).Where(p => p.GetType() == typeof(Movie));
+                var presentations = _mediaRepository.ListByUser(GetCurrentUser().User.ToString()).Where(p => p.GetType() == typeof(Presentation));
 
                 var model = new GroupViewModel()
                 {
                     Id = group.Id,
-                    Title = group.Title
+                    Title = group.Title,
+                    Videos = videos,
+                    SelectedVideos = group.Media.Where(v => v.GetType() == typeof(Movie)),
+                    Presentations = presentations,
+                    SelectedPresentations = group.Media.Where(p => p.GetType() == typeof(Presentation))
                 };
 
                 return View(model);
@@ -121,8 +129,82 @@ namespace EyeBoard.Areas.Admin.Controllers
             {
                 var group = _screenGroupRepository.GetById(new Guid(collection["Id"]));
 
+                var selectedPresentations = collection["Presentations[]"];
+                var presentations = _mediaRepository.List().Where(p => p.GetType() == typeof(Presentation));
+                if (!String.IsNullOrEmpty(selectedPresentations))
+                {
+                    foreach (var presentation in presentations)
+                    {
+                        // Is the presentation checked
+                        if (IsChecked(presentation, selectedPresentations))
+                        {
+                            if (!group.Media.Contains(presentation))
+                            {
+                                presentation.AddNewGroup(group);
+                                _mediaRepository.Update(presentation);
+                            }
+                        }
+                        else
+                        {
+                            if (group.Media.Contains(presentation))
+                            {
+                                presentation.DeleteGroup(group);
+                                _mediaRepository.Update(presentation);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var presentation in presentations)
+                    {
+                        if (group.Media.Contains(presentation))
+                        {
+                            presentation.DeleteGroup(group);
+                            _mediaRepository.Update(presentation);
+                        }
+                    }
+                }
+
+                var selectedVideos = collection["Videos[]"];
+                var videos = _mediaRepository.List().Where(p => p.GetType() == typeof(Movie));
+                if (!String.IsNullOrEmpty(selectedVideos))
+                {
+                    foreach (var video in videos)
+                    {
+                        // Is the presentation checked
+                        if (IsChecked(video, selectedVideos))
+                        {
+                            if (!group.Media.Contains(video))
+                            {
+                                video.AddNewGroup(group);
+                                _mediaRepository.Update(video);
+                            }
+                        }
+                        else
+                        {
+                            if (group.Media.Contains(video))
+                            {
+                                video.DeleteGroup(group);
+                                _mediaRepository.Update(video);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var video in videos)
+                    {
+                        if (group.Media.Contains(video))
+                        {
+                            video.DeleteGroup(group);
+                            _mediaRepository.Update(video);
+                        }
+                    }
+                }
+
                 group.Title = collection["Title"];
-                group.ModifiedBy = GetCurrentUser().Id;
+                group.ModifiedBy = GetCurrentUser().User.ToString();
 
                 _screenGroupRepository.Update(group);
 
@@ -137,5 +219,19 @@ namespace EyeBoard.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        private bool IsChecked(Medium medium, string media)
+        {
+            foreach (var mediumId in media.Split(','))
+            {
+                if (medium.Id == new Guid(mediumId))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

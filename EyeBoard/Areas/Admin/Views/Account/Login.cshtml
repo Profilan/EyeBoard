@@ -1,4 +1,4 @@
-﻿@model EyeBoard.Areas.Admin.Models.Identity.LoginViewModel
+﻿@model EyeBoard.Areas.Admin.Models.LoginViewModel
 
 @{
     ViewBag.Title = "Login";
@@ -10,16 +10,16 @@
 @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-signin text-center" }))
 {
     @Html.AntiForgeryToken()
+    @Html.Hidden("returnUrl", Request.Params["ReturnUrl"])
 
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    @Html.LabelFor(m => m.UserName, htmlAttributes: new { @class = "sr-only" })
-    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.LabelFor(m => m.Username, htmlAttributes: new { @class = "sr-only" })
+    @Html.EditorFor(m => m.Username, new { htmlAttributes = new { @class = "form-control" } })
     @Html.LabelFor(m => m.Password, htmlAttributes: new { @class = "sr-only" })
     @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @class = "form-control" } })
-    <div class="checkbox mb-3">
-        <label>
-            <input value="remember-me" type="checkbox"> Remember me
-        </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }

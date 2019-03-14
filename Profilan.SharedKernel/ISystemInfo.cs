@@ -6,8 +6,8 @@ namespace Profilan.SharedKernel
     {
         int State { get; set; }
         DateTime Created { get; set; }
-        int CreatedBy { get; set; }
+        string CreatedBy { get; set; }
         DateTime Modified { get; set; }
-        int ModifiedBy { get; set; }
+        string ModifiedBy { get; set; }
     }
 }

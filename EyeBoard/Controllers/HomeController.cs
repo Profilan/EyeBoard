@@ -17,7 +17,7 @@ namespace EyeBoard.Controllers
         private readonly MediaRepository _mediaRepository = new MediaRepository();
         private readonly ScreenGroupRepository _screenGroupRepository = new ScreenGroupRepository();
 
-        [HttpGet]
+        [AllowAnonymous]
         public ActionResult Index()
         {
             string IP = Request.UserHostName;

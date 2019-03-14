@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "superuser")]
+    [Authorize(Roles = "GRolNarrowcastBeheerder")]
     public class ScreenController : BaseController
     {
         private readonly ScreenRepository _screenRepository;
@@ -67,7 +67,7 @@ namespace EyeBoard.Areas.Admin.Controllers
             {
                 var group = _screenGroupRepository.GetById(new Guid(collection["GroupId"]));
                 var screen = Screen.Create(collection["Title"], collection["Location"], group);
-                screen.CreatedBy = GetCurrentUser().Id;
+                screen.CreatedBy = GetCurrentUser().User.ToString();
                 screen.ModifiedBy = screen.CreatedBy;
                 screen.HostName = collection["HostName"];
 
@@ -131,10 +131,12 @@ namespace EyeBoard.Areas.Admin.Controllers
 
                 var group = _screenGroupRepository.GetById(new Guid(collection["GroupId"]));
 
+                group.Screens.Remove(screen);
+
                 screen.Title = collection["Title"];
                 screen.Location = collection["Location"];
                 screen.HostName = collection["HostName"];
-                screen.ModifiedBy = GetCurrentUser().Id;
+                screen.ModifiedBy = GetCurrentUser().User.ToString();
                 
                 screen.Group = group;
 

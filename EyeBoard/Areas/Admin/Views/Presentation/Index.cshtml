@@ -44,7 +44,7 @@
                     </video>
                 </a>
                 <div class="card-body">
-                   
+                   @presentation.Title
                 </div>
                 <div class="card-footer">
                     
@@ -112,6 +112,7 @@
             var proto = $("div[data-filename='" + data.result.name + "']");
             var spinner = proto.find("img");
             var href = proto.find("a").attr("data-id", data.result.id).attr("href", "/Admin/Presentation/Edit/" + data.result.id);
+            var body = proto.find(".card-body").text(data.result.title);
             spinner.replaceWith(video);
 
             proto.find(".btn-delete").attr('data-id', data.result.id).click(function (e) {
@@ -119,6 +120,15 @@
                 deletePresentation(btoa(data.result.id));
             });
         });
+
+        $("#fileupload").bind("fileuploadprogressall", function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            //$('#progress .progress-bar').css(
+            //    'width',
+            //    progress + '%'
+            console.log(progress);
+        });
+        
     });
 </script>
 

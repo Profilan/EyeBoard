@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "superuser, administrator")]
+    [Authorize(Roles = "GRolNarrowcastBeheerder, GRolNarrowcastRedacteur")]
     public class NotificationController :  BaseController
     {
         private readonly NotificationRepository _notificationRepository = new NotificationRepository();
@@ -52,7 +52,7 @@ namespace EyeBoard.Areas.Admin.Controllers
             try
             {
                 var notification = Notification.Create(collection["Title"]);
-                notification.CreatedBy = GetCurrentUser().Id;
+                notification.CreatedBy =GetCurrentUser().User.ToString();
                 notification.ModifiedBy = notification.CreatedBy;
                 _notificationRepository.Insert(notification);
 

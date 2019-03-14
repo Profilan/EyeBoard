@@ -93,46 +93,6 @@ namespace EyeBoard.Tests
             rep.Insert(item);
         }
 
-        [TestMethod]
-        public void ListRolesBySearchstring()
-        {
-            var rep = new RoleRepository();
-
-            var items = rep.ListBySearchstring("sup");
-
-            items.Should().NotBeNullOrEmpty();
-        }
-
-        [TestMethod]
-        public void AddToRoleUserToRole()
-        {
-
-            using (ISession session = SessionFactory.GetNewSession("db1"))
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    var user = session.QueryOver<User>()
-                       .Where(r => r.UserName == "Administrator")
-                       .SingleOrDefault();
-                    var role = session.QueryOver<Role>()
-                        .Where(r => r.Name == "superuser")
-                        .SingleOrDefault();
-
-
-                    if (role != null)
-                    {
-                       
-
-                        user.Roles.Clear();
-                        user.Roles.Add(role);
-
-                        session.SaveOrUpdate(user);
-                        transaction.Commit();
-
-                    }
-                }
-            }
-        }
 
         [TestMethod]
         public void GetGroupById()
@@ -148,15 +108,6 @@ namespace EyeBoard.Tests
         {
             var rep = new MediaRepository();
             var item = rep.GetById(new Guid("6E982077-3C20-4126-9BF2-4E7B594C5CD1"));
-
-            item.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void GetUserById()
-        {
-            var rep = new UserRepository();
-            var item = rep.GetById(1);
 
             item.Should().NotBeNull();
         }

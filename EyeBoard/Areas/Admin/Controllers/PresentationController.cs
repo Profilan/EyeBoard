@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "administrator,superuser")]
+    [Authorize(Roles = "GRolNarrowcastBeheerder, GRolNarrowcastRedacteur")]
     public class PresentationController : BaseController
     {
         private readonly MediaRepository _mediaRepository;
@@ -24,7 +24,8 @@ namespace EyeBoard.Areas.Admin.Controllers
         // GET: Presentation
         public ActionResult Index()
         {
-            var presentations = _mediaRepository.ListByUser(GetCurrentUser().Id);
+            var user = GetCurrentUser();
+            var presentations = _mediaRepository.ListByUser(GetCurrentUser().User.ToString());
 
             var viewModel = new FileInfoModel()
             {
@@ -32,7 +33,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 MaxFileSize = 512,
                 AcceptFileTypes = @"/(\.|\/)(ppt?x)$/i",
                 Media = presentations.Where(x => x.GetType().Name == "Presentation"),
-                UserId = GetCurrentUser().Id
+                UserId = GetCurrentUser().User.ToString()
             };
 
             return View(viewModel);

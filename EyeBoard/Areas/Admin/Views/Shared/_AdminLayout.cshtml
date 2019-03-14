@@ -21,7 +21,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>@ViewBag.Title - EyeBoard Management</title>
+    <title>@ViewBag.Title - Narrowcasting Management</title>
     
     @Styles.Render("~/Admin/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -33,7 +33,7 @@
 </head>
 <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">EyeBoard</a>
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Narrowcasting Manager</a>
         @Html.Partial("_LoginPartial")
     </nav>
 
@@ -51,7 +51,7 @@
                                     @Resources.Dashboard <span class="sr-only">(current)</span>
                                 </a>
                             </li>
-                            @if (User.IsInRole("superuser"))
+                            @if (User.IsInRole("GRolNarrowcastBeheerder"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" href="/admin/group">
@@ -66,7 +66,7 @@
                                     </a>
                                 </li>
                             }
-                            @if (User.IsInRole("superuser") || User.IsInRole("administrator"))
+                            @if (User.IsInRole("GRolNarrowcastBeheerder") || User.IsInRole("GRolNarrowcastRedacteur"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" href="/admin/presentation">
@@ -84,15 +84,6 @@
                                     <a class="nav-link" href="/admin/notification">
                                         <i class="fa fa-bullhorn"></i>
                                         @Resources.Notifications
-                                    </a>
-                                </li>
-                            }
-                            @if (User.IsInRole("superuser"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/admin/user">
-                                        <i class="fa fa-user"></i>
-                                        @Resources.Users
                                     </a>
                                 </li>
                             }

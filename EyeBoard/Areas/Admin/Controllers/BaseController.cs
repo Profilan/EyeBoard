@@ -1,8 +1,5 @@
 ﻿using EyeBoard.Helpers;
 using EyeBoard.Logic.Models;
-using EyeBoard.Areas.Admin.Models.Identity;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Threading;
 using System.Web;
@@ -12,33 +9,14 @@ namespace EyeBoard.Areas.Admin.Controllers
 {
     public class BaseController : Controller
     {
-        private ApplicationUserManager _userManager;
-
         public BaseController()
         {
 
         }
 
-        public BaseController(ApplicationUserManager userManager)
+        protected System.Security.Principal.WindowsIdentity GetCurrentUser()
         {
-            UserManager = userManager;
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
-
-        protected User GetCurrentUser()
-        {
-            return UserManager.FindByName(User.Identity.Name);
+            return System.Security.Principal.WindowsIdentity.GetCurrent();
         }
 
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)

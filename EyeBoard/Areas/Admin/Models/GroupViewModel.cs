@@ -27,6 +27,14 @@ namespace EyeBoard.Areas.Admin.Models
         public IEnumerable<Medium> Media { get; set; }
         public string AcceptFileTypes { get; set; }
         public int MaxFileSize { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
+
+        [Display(Name = "Presentations", ResourceType = typeof(Resources.Resources))]
+        public IEnumerable<Medium> Presentations { get; set; }
+        public IEnumerable<Medium> SelectedPresentations { get; set; }
+
+        [Display(Name = "Videos", ResourceType = typeof(Resources.Resources))]
+        public IEnumerable<Medium> Videos { get; set; }
+        public IEnumerable<Medium> SelectedVideos { get; set; }
     }
 }

@@ -9,7 +9,7 @@
         $("#fileupload").fileupload({
             url: "@Model.UploadUrl",
             dataType: "json",
-            formData: { userId: @Model.UserId },
+            formData: { userId: "@Model.UserId" },
             acceptFileTypes: @Model.AcceptFileTypes,
             maxFileSize: @Model.MaxFileSize * 1024 * 1024,
             dropZone: $("#uploader-dropzone"),

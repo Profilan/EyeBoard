@@ -14,8 +14,6 @@ namespace Profilan.SharedKernel
     {
         private static readonly string ModificationDatePropertyName = GetPropertyName<ISystemInfo>(val => val.Modified),
                                        CreationDatePropertyName = GetPropertyName<ISystemInfo>(val => val.Created);
-        private static readonly string CreatorPropertyName = GetPropertyName<ISystemInfo>(val => val.CreatedBy),
-                                       ModifierPropertyName = GetPropertyName<ISystemInfo>(val => val.ModifiedBy);
 
         public bool OnPreInsert(PreInsertEvent ev)
         {

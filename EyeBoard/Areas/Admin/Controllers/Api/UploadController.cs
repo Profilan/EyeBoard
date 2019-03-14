@@ -34,7 +34,7 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             var provider = new MultipartFormDataStreamProvider(root);
             var result = await Request.Content.ReadAsMultipartAsync(provider);
 
-            int userId = Convert.ToInt32(result.FormData["userId"]);
+            string userId = result.FormData["userId"];
 
             var videosFolder = System.Configuration.ConfigurationManager.AppSettings["VideosFolder"];
 
@@ -63,7 +63,7 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
 
                     File.Delete(path);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = medium.Id }, JsonMediaTypeFormatter.DefaultMediaType);
+                    return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = medium.Id, title = medium.Title }, JsonMediaTypeFormatter.DefaultMediaType);
                 }
  
             return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -77,7 +77,7 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             var provider = new MultipartFormDataStreamProvider(root);
             var result = await Request.Content.ReadAsMultipartAsync(provider);
 
-            int userId = Convert.ToInt32(result.FormData["userId"]);
+            string userId = result.FormData["userId"];
 
             var presentationsFolder = System.Configuration.ConfigurationManager.AppSettings["PresentationsFolder"];
 
@@ -104,7 +104,7 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
 
                 File.Delete(path);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = medium.Id }, JsonMediaTypeFormatter.DefaultMediaType);
+                return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = medium.Id, title = medium.Title }, JsonMediaTypeFormatter.DefaultMediaType);
             }
 
             return Request.CreateResponse(HttpStatusCode.BadRequest);

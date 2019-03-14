@@ -1,10 +1,8 @@
 ﻿
-using EyeBoard.Logic.Models;
-using EyeBoard.Areas.Admin.Models.Identity;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Owin.Security;
+using EyeBoard.Areas.Admin.Models;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
@@ -14,65 +12,51 @@ namespace EyeBoard.Areas.Admin.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = SignInManager.PasswordSignIn(model.UserName, model.Password, false, false);
-                if (result == SignInStatus.Success)
-                {
-                    return RedirectToAction("Index", "Dashboard");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
-                }
-            }
-            return View(model);
-        }
 
-        public ActionResult Register()
-        {
-            return View();
-        }
         [HttpPost]
-        public ActionResult Register(RegisterViewModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                var user = new User() { UserName = model.UserName };
-                var result = UserManager.Create(user, model.Password);
-                if (result.Succeeded)
-                {
-                    SignInManager.SignIn(user, false, false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
+                return View(model);
             }
+
+            // usually this will be injected via DI. but creating this manually now for brevity
+            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+            var authService = new AdAuthenticationService(authenticationManager);
+
+            var authenticationResult = authService.SignIn(model.Username, model.Password);
+
+            if (authenticationResult.IsSuccess)
+            {
+                // we are in!
+                return Redirect(returnUrl);
+            }
+
+            ModelState.AddModelError("", authenticationResult.ErrorMessage);
             return View(model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            SignInManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut(MyAuthentication.ApplicationCookie);
+
+            return this.RedirectToAction("Login", "Account");
         }
 
-        public ApplicationSignInManager SignInManager
+        private ActionResult RedirectToLocal(string returnUrl)
         {
-            get { return HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
-        }
-        public ApplicationUserManager UserManager
-        {
-            get { return HttpContext.GetOwinContext().GetUserManager<Models.Identity.ApplicationUserManager>(); }
+            //            if (Url.IsLocalUrl(returnUrl))
+            //            {
+            //                return Redirect(returnUrl);
+            //            }
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 }

@@ -170,6 +170,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -238,7 +239,6 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
@@ -248,12 +248,12 @@
     <Compile Include="Areas\Admin\Controllers\Api\GroupController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\VideoController.cs" />
     <Compile Include="Areas\Admin\Controllers\VideoController.cs" />
+    <Compile Include="Areas\Admin\Models\LoginViewModel.cs" />
     <Compile Include="Controllers\Api\DeliveredPackageController.cs" />
     <Compile Include="Controllers\Api\DeliveredOrderController.cs" />
     <Compile Include="Controllers\Api\FeedController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\NotificationController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\PresentationController.cs" />
-    <Compile Include="Areas\Admin\Controllers\Api\RoleController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\ScreenController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\UploadController.cs" />
     <Compile Include="Controllers\Api\WeatherController.cs" />
@@ -263,7 +263,6 @@
     <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
     <Compile Include="Areas\Admin\Controllers\PresentationController.cs" />
     <Compile Include="Areas\Admin\Controllers\ScreenController.cs" />
-    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DependencyResolution\ControllerConvention.cs" />
@@ -280,8 +279,8 @@
     <Compile Include="Hubs\NotificationUpdateHandler.cs" />
     <Compile Include="Hubs\ScreenHub.cs" />
     <Compile Include="Hubs\GroupUpdateHandler.cs" />
-    <Compile Include="Areas\Admin\Models\AccountViewModels.cs" />
     <Compile Include="Hubs\ScreenUpdateHandler.cs" />
+    <Compile Include="Areas\Admin\Models\ADAuthenticationService.cs" />
     <Compile Include="Models\Api\DeliveredPackageViewModel.cs" />
     <Compile Include="Models\Api\PresentationModel.cs" />
     <Compile Include="Models\BoardViewModel.cs" />
@@ -289,23 +288,11 @@
     <Compile Include="Models\Api\DeliveredOrderViewModel.cs" />
     <Compile Include="Areas\Admin\Models\FileInfoModel.cs" />
     <Compile Include="Areas\Admin\Models\GroupViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\IdentityModels.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\CustomPasswordHasher.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\RoleStore.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\UserStore.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\LoginViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\PasswordViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\RegisterViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\ApplicationRoleManager.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\ApplicationSignInManager.cs" />
-    <Compile Include="Areas\Admin\Models\Identity\ApplicationUserManager.cs" />
-    <Compile Include="Areas\Admin\Models\ManageViewModels.cs" />
     <Compile Include="Areas\Admin\Models\NotificationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MediumViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ScreenViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
+    <Compile Include="App_Start\Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backload\Client\blueimp\blob\js\canvas-to-blob.js" />
@@ -527,18 +514,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Areas\Admin\Views\Account\Login.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\Register.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\ResetPassword.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\SendCode.cshtml" />
-    <Content Include="Areas\Admin\Views\Account\VerifyCode.cshtml" />
     <Content Include="Areas\Admin\Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Areas\Admin\Views\Manage\ChangePassword.cshtml" />
     <Content Include="Areas\Admin\Views\Manage\Index.cshtml" />
@@ -554,10 +530,6 @@
     <Content Include="Areas\Admin\Views\Screen\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Presentation\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_FileUploadPartial.cshtml" />
-    <Content Include="Areas\Admin\Views\User\ChangePassword.cshtml" />
-    <Content Include="Areas\Admin\Views\User\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Group\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Group\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Screen\Edit.cshtml" />

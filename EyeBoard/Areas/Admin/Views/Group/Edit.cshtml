@@ -17,11 +17,54 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                
+            </div>
+        </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Presentations, htmlAttributes: new { @class = "control-label" })
+            <ul class="list-group list-unstyled">
+                @foreach (var presentation in Model.Presentations)
+                {
+                    var isChecked = "";
+                    if (Model.SelectedPresentations.Contains(presentation))
+                    {
+                        isChecked = "checked";
+                    }
+                    <li class="list-group-item">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" name="Presentations[]" value="@presentation.Id" @isChecked>
+                            <label class="form-check-label" for="exampleCheck1">@presentation.Title</label>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Videos, htmlAttributes: new { @class = "control-label" })
+            <ul class="list-group list-unstyled">
+                @foreach (var video in Model.Videos)
+                {
+                    var isChecked = "";
+                    if (Model.SelectedVideos.Contains(video))
+                    {
+                        isChecked = "checked";
+                    }
+                    <li class="list-group-item">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" name="Videos[]" value="@video.Id" @isChecked>
+                            <label class="form-check-label" for="exampleCheck1">@video.Title</label>
+                        </div>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 

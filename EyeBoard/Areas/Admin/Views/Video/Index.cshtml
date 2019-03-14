@@ -44,7 +44,7 @@
                     </video>
                 </a>
                 <div class="card-body">
-                   
+                   @video.Title
                 </div>
                 <div class="card-footer">
                     
@@ -97,8 +97,12 @@
             ++uploadCount;
             var proto = $("#videos .video-prototype").clone();
             proto.attr("data-filename", data.files[0].name);
-            var spinner = $("<img />").attr("src", "/images/upload-spinner.gif").attr("width", 64).addClass("upload-spinner");
-            proto.find("a").append(spinner);
+            // var spinner = $("<img />").attr("src", "/images/upload-spinner.gif").attr("width", 64).addClass("upload-spinner");
+            var progress = $("<div />").addClass("progress");
+            var progressBar = $("<div />").addClass("progress-bar").css("width", "0%");
+            progress.append(progressBar);
+            // proto.find("a").append(spinner);
+            proto.find("a").append(progress);
             proto.removeClass("video-prototype d-none").addClass("video");
 
             $("#videos").prepend(proto);
@@ -110,14 +114,23 @@
             video.append(source);
 
             var proto = $("div[data-filename='" + data.result.name + "']");
-            var spinner = proto.find("img");
+            var progress = proto.find(".progress");
             var href = proto.find("a").attr("data-id", data.result.id).attr("href", "/Admin/Video/Edit/" + data.result.id);
-            spinner.replaceWith(video);
+            var body = proto.find(".card-body").text(data.result.title);
+            progress.replaceWith(video);
 
             proto.find(".btn-delete").attr('data-id', data.result.id).click(function (e) {
                 e.preventDefault();
                 deleteVideo(btoa(data.result.id));
             });
+        });
+
+        $("#fileupload").bind("fileuploadprogressall", function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            
+            $('.video .progress-bar').css(
+                'width',
+                progress + '%');
         });
     });
 </script>

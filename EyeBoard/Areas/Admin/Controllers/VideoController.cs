@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "administrator,superuser")]
+    [Authorize(Roles = "GRolNarrowcastBeheerder, GRolNarrowcastRedacteur")]
     public class VideoController : BaseController
     {
         private readonly MediaRepository _mediaRepository = new MediaRepository();
@@ -17,7 +17,7 @@ namespace EyeBoard.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            var videos = _mediaRepository.ListByUser(GetCurrentUser().Id);
+            var videos = _mediaRepository.ListByUser(GetCurrentUser().User.ToString());
 
             var viewModel = new FileInfoModel()
             {
@@ -25,7 +25,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 MaxFileSize = 512,
                 AcceptFileTypes = @"/(\.|\/)(mp4|mkv|avi)$/i",
                 Media = videos.Where(x => x.GetType().Name == "Movie"),
-                UserId = GetCurrentUser().Id
+                UserId = GetCurrentUser().User.ToString()
             };
 
             return View(viewModel);

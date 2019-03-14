@@ -1,5 +1,6 @@
 ﻿using EyeBoard.Logic.Models;
 using NHibernate;
+using NHibernate.Linq;
 using Profilan.SharedKernel;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace EyeBoard.Logic.Repositories
             }
         }
 
-        public IEnumerable<Medium> ListByUser(int userId)
+        public IEnumerable<Medium> ListByUser(string userId)
         {
             using (ISession session = SessionFactory.GetNewSession("db1"))
             {
@@ -87,10 +88,10 @@ namespace EyeBoard.Logic.Repositories
         {
             using (ISession session = SessionFactory.GetNewSession("db1"))
             {
-                var query = from l in session.Query<Medium>()
-                            select l;
-
-                query = query.OrderBy(l => l.Title);
+                var query = session.Query<Medium>()
+                    .FetchMany(x => x.Groups)
+                    .ToFuture()
+                    .OrderBy(x => x.Title);
 
                 return query.ToList();
 

@@ -1,5 +1,6 @@
 ﻿
 using EyeBoard.Logic.Models;
+using System;
 using System.Collections.Generic;
 
 namespace EyeBoard.Areas.Admin.Models
@@ -10,6 +11,6 @@ namespace EyeBoard.Areas.Admin.Models
         public IEnumerable<Medium> Media { get; set; }
         public string AcceptFileTypes { get; set; }
         public int MaxFileSize { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }
