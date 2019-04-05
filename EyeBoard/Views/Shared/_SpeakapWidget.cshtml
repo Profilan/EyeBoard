@@ -1,0 +1,44 @@
+﻿<div id="speakap-widget" class="carousel slide carousel-fade" style="height: 275px;">
+    <div class="carousel-inner">
+        
+    </div>
+</div>
+
+<script>
+
+    function refreshSpeakapMessages() {
+
+        $('.carousel-inner').empty();
+
+        $.get("/api/speakap/messages", function (data) {
+
+            $.each(data, function (index, message) {
+                var carouselItem = $('<div />').addClass('carousel-item');
+                var image = $('<img />').addClass('d-block').css('width', '100%');
+                if (message.Images.length > 0) {
+                    image.attr('src', 'data:image/jpeg;base64,' + message.Images[0]).attr('height', '275').attr('width', '100%');
+                } else {
+                    image.attr('src', '/images/dummy1080.jpg');
+                }
+                var caption = $('<div />').addClass('carousel-caption');
+                var text = $('<p />').text(message.FullText);
+                caption.append(text);
+                carouselItem.append(image);
+                carouselItem.append(caption);
+                $('.carousel-inner').append(carouselItem);
+            });
+
+            $('.carousel-item:first-child').addClass('active');
+            $('.carousel').carousel('cycle');
+
+        });
+    }
+
+    $(function () {
+
+        // setInterval(refreshSpeakapMessages, 10 * 1000);
+        refreshSpeakapMessages();
+
+    });
+
+</script>

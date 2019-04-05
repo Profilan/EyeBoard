@@ -52,11 +52,12 @@ scrollbar {
 
 #weather-widget  .weather_current_temp {
     font-weight: 600;
-    font-size: 70px;
+    font-size: 60px;
     line-height: 1;
     width: auto;
     letter-spacing: -5px;
     text-align: center;
+    margin-top: 15px;
 }
 
 .weather_city {

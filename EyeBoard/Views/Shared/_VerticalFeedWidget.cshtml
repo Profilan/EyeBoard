@@ -1,12 +1,26 @@
 ﻿@model EyeBoard.Models.BoardViewModel
 
-<div id="feeder" style="margin-top: 15px;">
-    
+<div style="margin-top: 15px; display: flex; flex-wrap: wrap;" class="feedblock">
+    <div id="feeder-type" style="width: 130px; float: left; overflow: hidden; margin-left: 15px;">
+        <img src="~/images/logosprite.svg?v=4" style="max-width: none !important; height: 130px; vertical-align: unset;">
+    </div>
+    <div id="feeder" style="width: 1760px; float: right;">
+
+    </div>
+</div>
+
+<div style="margin-top: 15px; display: flex; flex-wrap: wrap; display: none;" class="feedblock">
+    <div id="feeder-type" style="width: 130px; float: left; overflow: hidden; margin-left: 15px;">
+        <img src="~/images/SA-logo-fc-white.svg?v=4" style="max-width: none !important; height: 130px; vertical-align: unset;">
+    </div>
+    <div id="speakap-feeder" style="width: 1760px; float: right;">
+
+    </div>
 </div>
 
 <script src="~/Scripts/jquery.easy-ticker.min.js"></script>
 <script>
- 
+
     function slide(rowCount) {
 
         var currentTop = parseInt($("#feeds ul").css("marginTop"));
@@ -41,24 +55,26 @@
 
                 var block = $("<li />").addClass("media").css({ height: "130px" });
                 for (col = 0; col < colCount; col++) {
-                    var item = $("<div />").addClass("col-6");
-                    var inner = $("<div />").css("backgroundColor", "rgb(79, 134, 184)").css("padding", "15px").css("height", "130px").css("borderRadius", "10px");
-                    var image = $("<img />").css("height", "100px").css("width", "100px").attr("src", data[i].ImageUrl).addClass("mr-3 float-left").css("display", "inline-block");
-                    var mediaBody = $("<div />").addClass("media-body");
-                    var title = $("<h3 />").css("color", "#fff").text(data[i].Title).addClass("mt-0 mb-1");
-                    
-                    mediaBody.append(title);
+                    if (i < data.length) {
+                        var item = $("<div />").addClass("col-6");
+                        var inner = $("<div />").css("backgroundColor", "rgb(79, 134, 184)").css("padding", "15px").css("height", "130px").css("borderRadius", "10px");
+                        var image = $("<img />").css("height", "100px").css("width", "100px").attr("src", data[i].ImageUrl).addClass("mr-3 float-left").css("display", "inline-block");
+                        var mediaBody = $("<div />").addClass("media-body");
+                        var title = $("<h3 />").css("color", "#fff").text(data[i].Title).addClass("mt-0 mb-1");
 
-                    item.append(inner);
-                    inner.append(image);
-                    inner.append(mediaBody);
-                    block.append(item);
+                        mediaBody.append(title);
+
+                        item.append(inner);
+                        inner.append(image);
+                        inner.append(mediaBody);
+                        block.append(item);
+                    }
                     ++i;
                 }
                 wrapper.append(block);
-                
+
             }
-            
+
             feeder.append(wrapper);
             $("#feeder").append(feeder)
 
@@ -72,11 +88,83 @@
         });
     }
 
+    function refreshSpeakapMessages() {
+
+        $.removeData($('#speakap-feeds'), 'easyTicker');
+        $("#speakap-feeds").remove();
+
+        $.get("/api/speakap/messages", function (data) {
+
+            var colCount = 2;
+            var rowCount = Math.ceil(data.length / 2);
+            
+            var feeder = $('<div />').attr('id', 'speakap-feeds');
+            var wrapper = $("<ul />").addClass("list-unstyled").css({ width: "100%", height: "130px", margin: "0" });
+            var i = 0;
+
+            var dateOptions = { weekday: 'long', day: 'numeric', month: 'long',  hour: 'numeric', minute: 'numeric'}
+
+            for (row = 0; row < rowCount; row++) {
+
+                var block = $("<li />").addClass("media").css({ height: "130px" });
+                for (col = 0; col < colCount; col++) {
+                    if (i < data.length) {
+                        var item = $("<div />").addClass("col-6");
+                        var inner = $("<div />").css("backgroundColor", "#fff").css("padding", "15px").css("height", "130px").css("borderRadius", "10px");
+                        var image = $("<img />").addClass("mr-3 float-left").css("display", "inline-block");
+
+                        if (data[i].Images.length > 0) {
+                            image.attr('src', 'data:image/jpeg;base64,' + data[i].Images[0]).css("height", "100px").css("width", "100px");
+                        } else {
+                            image.attr('src', '/images/dummy100x100.png').css("height", "100px").css("width", "100px");
+                        }
+                        var mediaBody = $("<div />").addClass("media-body");
+
+                        var created = new Date(data[i].Created);
+                        // console.log(created.toLocaleDateString("nl-NL", dateOptions));
+
+                        var title = $('<span />').html("<b>" + data[i].Author + "</b>" + ". <i style='margin-left: 1em;'>" + created.toLocaleDateString("nl-NL", dateOptions) + "  <i style='margin-left: 1em;'class='fa fa-thumbs-up'></i> " + data[i].Likes + "</i></span><br>").css("color", "#5B9BD5");
+                        var body = $("<h3 />").css("color", "#333").html(data[i].FullText).addClass("mt-0 mb-1");
+                        body.prepend(title);
+
+                        mediaBody.append(body);
+
+                        item.append(inner);
+                        inner.append(image);
+                        inner.append(mediaBody);
+                        block.append(item);
+                    }
+                    ++i;
+                }
+                wrapper.append(block);
+
+            }
+
+            feeder.append(wrapper);
+            $("#speakap-feeder").append(feeder)
+
+            $("#speakap-feeds").easyTicker({
+                interval: 10 * 1000,
+                height: "130px",
+                visible: 1,
+                speed: "slow",
+                mousePause: 0
+            });
+
+        });
+    }
+
+    function switchFeeds() {
+        $('.feedblock').fadeToggle(1000);
+    }
+
     $(function () {
 
         refreshFeed();
+        refreshSpeakapMessages();
 
         setInterval(refreshFeed, 10 * 60 * 1000);
-        
+        setInterval(refreshSpeakapMessages, 10 * 60 * 1000);
+        setInterval(switchFeeds, 60 * 1000);
     });
 </script>

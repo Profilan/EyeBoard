@@ -46,7 +46,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=5.2.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.5.2.3\lib\net461\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.5.2.4\lib\net461\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
@@ -54,11 +54,15 @@
     <Reference Include="Remotion.Linq.EagerFetching, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.EagerFetching.2.2.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=106.6.9.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.9\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,6 +75,7 @@
     <Compile Include="Events\NotificationUpdatedEvent.cs" />
     <Compile Include="Events\PresentationAddedEvent.cs" />
     <Compile Include="Events\ScreenUpdatedEvent.cs" />
+    <Compile Include="Events\TaskCreatedEvent.cs" />
     <Compile Include="Events\TaskFinishedEvent.cs" />
     <Compile Include="Events\TaskStartedEvent.cs" />
     <Compile Include="Helpers\Enums.cs" />
@@ -83,16 +88,24 @@
     <Compile Include="Mappings\ScreenGroupMap.cs" />
     <Compile Include="Mappings\ScreenMap.cs" />
     <Compile Include="Mappings\MediumMap.cs" />
+    <Compile Include="Mappings\TaskMap.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Feed.cs" />
     <Compile Include="Models\GeoLocation.cs" />
+    <Compile Include="Models\LinkApiModel.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Presentation.cs" />
+    <Compile Include="Models\Scheduler.cs" />
     <Compile Include="Models\Screen.cs" />
     <Compile Include="Models\Medium.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\ScreenGroup.cs" />
+    <Compile Include="Models\SpeakapAuthorApiModel.cs" />
+    <Compile Include="Models\SpeakapImageApiModel.cs" />
+    <Compile Include="Models\SpeakapMessage.cs" />
+    <Compile Include="Models\SpeakapMessageApiModel.cs" />
+    <Compile Include="Models\SpeakapMessagesApiModel.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Weather.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,6 +115,8 @@
     <Compile Include="Repositories\ScreenGroupRepository.cs" />
     <Compile Include="Repositories\ScreenRepository.cs" />
     <Compile Include="Repositories\MediaRepository.cs" />
+    <Compile Include="Repositories\SpeakapRepository.cs" />
+    <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="Repositories\WeatherRepository.cs" />
   </ItemGroup>
   <ItemGroup>

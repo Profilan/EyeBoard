@@ -19,12 +19,8 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
 {
     public class UploadController : ApiController
     {
-        private readonly MediaRepository _mediaRepository;
-
-        public UploadController()
-        {
-            _mediaRepository = new MediaRepository();
-        }
+        private readonly MediaRepository _mediaRepository = new MediaRepository();
+        private readonly TaskRepository _taskRepository = new TaskRepository();
 
         [Route("api/upload/video")]
         [HttpPost]
@@ -53,20 +49,12 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             string physicalPath = physicalDir + @"/" + fileName;
             string virtualPath = videosFolder + @"/" + userId + @"/" + fileName;
 
-                if (FileHandler.ConvertVideoToMP4(path, physicalPath))
-                {
+            var task = EyeBoard.Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
+            _taskRepository.Insert(task);
 
-                    var medium = Movie.Create(Path.GetFileNameWithoutExtension(originalFileName), DateTime.Now, DateTime.MaxValue, 0, virtualPath);
-                    medium.CreatedBy = userId;
-                    medium.ModifiedBy = userId;
-                    _mediaRepository.Insert(medium);
+            return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = task.Id }, JsonMediaTypeFormatter.DefaultMediaType);
 
-                    File.Delete(path);
-
-                    return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = medium.Id, title = medium.Title }, JsonMediaTypeFormatter.DefaultMediaType);
-                }
- 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            // return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         [Route("api/upload/presentation")]
@@ -94,20 +82,13 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             var fileName = Path.GetFileNameWithoutExtension(originalFileName) + ".mp4";
             string physicalPath = physicalDir + @"/" + fileName;
             string virtualPath = presentationsFolder + @"/" + userId + @"/" + fileName;
-            if (FileHandler.ConvertPPTToMP4(path, physicalPath))
-            {
-                
-                var medium = Presentation.Create(Path.GetFileNameWithoutExtension(originalFileName), DateTime.Now, DateTime.MaxValue, 0, virtualPath);
-                medium.CreatedBy = userId;
-                medium.ModifiedBy = userId;
-                _mediaRepository.Insert(medium);
 
-                File.Delete(path);
+            var task = EyeBoard.Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Presentation);
+            _taskRepository.Insert(task);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = medium.Id, title = medium.Title }, JsonMediaTypeFormatter.DefaultMediaType);
-            }
+            return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = task.Id }, JsonMediaTypeFormatter.DefaultMediaType);
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            // return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         private string GetDeserializedFileName(MultipartFileData multipartFileData)

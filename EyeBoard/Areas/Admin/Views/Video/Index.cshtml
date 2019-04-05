@@ -44,10 +44,10 @@
                     </video>
                 </a>
                 <div class="card-body">
-                   @video.Title
+                    @video.Title
                 </div>
                 <div class="card-footer">
-                    
+
                     <button data-id="@video.Id" class="btn btn-dark btn-sm btn-delete">@Resources.Delete</button>
                 </div>
             </div>
@@ -72,6 +72,13 @@
 
 @Html.Partial("_FileUploadPartial", Model)
 
+@section scripts
+{
+<!-- SignalR library. -->
+<script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+<!-- SignalR hub script automatisch gegenereerd door service -->
+<script src="@System.Configuration.ConfigurationManager.AppSettings["HubConnectionUrl"]/signalr/hubs"></script>
+<!-- Verbinding met SignalR en bericht update -->
 <script>
     function deleteVideo(id) {
         $.post('/api/video/delete/' + id, function (result) {
@@ -81,57 +88,102 @@
         }
 
     $(function () {
-        
+
         var uploadCount = 0;
         var uploadPath = "@System.Configuration.ConfigurationManager.AppSettings["VideosFolder"]";
 
+        // De url definieren waar de service wordt uitgevoerd
+        $.connection.hub.url = "@System.Configuration.ConfigurationManager.AppSettings["HubConnectionUrl"]/signalr";
 
-        $('.btn-delete').click(function (e) {
-            e.preventDefault();
+        // Verbinden met Hub
+        var scheduler = $.connection.taskSchedulerHub;
 
-            deleteVideo($(this).attr('data-id'));
-        });
+        scheduler.client.finishTask = function (id, path, name, title) {
+            console.log(name);
 
-        $("#fileupload").bind("fileuploadadd", function (e, data) {
-            // console.log(data.files[0].name);
-            ++uploadCount;
-            var proto = $("#videos .video-prototype").clone();
-            proto.attr("data-filename", data.files[0].name);
-            // var spinner = $("<img />").attr("src", "/images/upload-spinner.gif").attr("width", 64).addClass("upload-spinner");
-            var progress = $("<div />").addClass("progress");
-            var progressBar = $("<div />").addClass("progress-bar").css("width", "0%");
-            progress.append(progressBar);
-            // proto.find("a").append(spinner);
-            proto.find("a").append(progress);
-            proto.removeClass("video-prototype d-none").addClass("video");
-
-            $("#videos").prepend(proto);
-        });
-
-        $("#fileupload").bind("fileuploaddone", function (e, data) {
             var video = $("<video />").addClass("card-img").attr("muted", "muted");
-            var source = $("<source />").attr("src", data.result.path + "#t=2").attr("type", "video/mp4");
+            var source = $("<source />").attr("src", path + "#t=2").attr("type", "video/mp4");
             video.append(source);
 
-            var proto = $("div[data-filename='" + data.result.name + "']");
+            var proto = $("div[data-filename='" + name + "']");
+            proto.attr('data-id', id);
             var progress = proto.find(".progress");
-            var href = proto.find("a").attr("data-id", data.result.id).attr("href", "/Admin/Video/Edit/" + data.result.id);
-            var body = proto.find(".card-body").text(data.result.title);
+            var href = proto.find("a").attr("data-id", id).attr("href", "/Admin/Video/Edit/" + id);
+            var body = proto.find(".card-body").text(title);
             progress.replaceWith(video);
 
-            proto.find(".btn-delete").attr('data-id', data.result.id).click(function (e) {
+            proto.find(".btn-delete").attr('data-id', id).click(function (e) {
                 e.preventDefault();
-                deleteVideo(btoa(data.result.id));
+                deleteVideo(id);
             });
+        }
+
+        $.connection.hub.start().done(function () {
+            $('.btn-delete').click(function (e) {
+                e.preventDefault();
+
+                deleteVideo($(this).attr('data-id'));
+            });
+
+            $("#fileupload").bind("fileuploadadd", function (e, data) {
+                // console.log(data.files[0].name);
+                ++uploadCount;
+                var proto = $("#videos .video-prototype").clone();
+                proto.attr("data-filename", data.files[0].name);
+                
+                var progress = $("<div />").addClass("progress");
+                var progressBar = $("<div />").addClass("progress-bar").css("width", "0%");
+                progress.append(progressBar);
+                
+                proto.find("a").append(progress);
+                proto.removeClass("video-prototype d-none").addClass("video");
+
+                $("#videos").prepend(proto);
+
+
+            });
+
+            $("#fileupload").bind("fileuploaddone", function (e, data) {
+                var proto = $("div[data-filename='" + data.result.name + "']");
+                var progress = proto.find(".progress");
+                progress.html('Bezig met converteren...');
+
+                scheduler.server.runTask(data.result.id);
+             });
+
+            $("#fileupload").bind("fileuploadprogressall", function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+
+                $('.video .progress-bar').css(
+                    'width',
+                    progress + '%');
+            });
+
+            // Check if conversions are running
+            $.get('/api/task?taskType=0', function (response) {
+
+                $.each(response, function (i, task) {
+                    ++uploadCount;
+                    var proto = $("#videos .video-prototype").clone();
+                    proto.attr("data-filename", task.OriginalFile);
+
+                    var progress = $("<div />").addClass("progress");
+                    progress.html('Bezig met converteren...');
+
+                    proto.find("a").append(progress);
+                    proto.removeClass("video-prototype d-none").addClass("video");
+
+                    $("#videos").prepend(proto);
+                });
+
+            });
+
+
         });
 
-        $("#fileupload").bind("fileuploadprogressall", function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            
-            $('.video .progress-bar').css(
-                'width',
-                progress + '%');
-        });
+
+        
     });
 </script>
 
+}

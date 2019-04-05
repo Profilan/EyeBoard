@@ -6,8 +6,11 @@ using EyeBoard.Logic.Repositories;
 using FluentAssertions;
 using HibernatingRhinos.Profiler.Appender.NHibernate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using NHibernate;
 using Profilan.SharedKernel;
+
+using RestSharp;
 
 namespace EyeBoard.Tests
 {
@@ -20,12 +23,12 @@ namespace EyeBoard.Tests
             //            var captureProfilerOutput = new CaptureProfilerOutput(@"");
             //            captureProfilerOutput.StartListening();
 
-            NHibernateProfiler.Initialize();
+            // NHibernateProfiler.Initialize();
             
         }
 
         [TestMethod]
-        public async Task GetWeatherInfo()
+        public async System.Threading.Tasks.Task GetWeatherInfo()
         {
             var rep = new WeatherRepository();
 
@@ -35,7 +38,7 @@ namespace EyeBoard.Tests
         }
 
         [TestMethod]
-        public async Task GetForecastInfo()
+        public async System.Threading.Tasks.Task GetForecastInfo()
         {
             var rep = new WeatherRepository();
 
@@ -122,6 +125,72 @@ namespace EyeBoard.Tests
             // total.Should().BeGreaterThan(0);
         }
 
+        [TestMethod]
+        public void CreateTask()
+        {
+            var rep = new TaskRepository();
 
+            var task = EyeBoard.Logic.Models.Task.Create("Lorem", " Ipsum", "Dolor", TaskType.Video);
+
+            rep.Insert(task);
+        }
+
+        [TestMethod]
+        public void GetSpeakapMessagesByRep()
+        {
+            var rep = new SpeakapRepository();
+
+            var messages = rep.List();
+
+
+        }
+
+        [TestMethod]
+        public void GetSpeakapMessages()
+        {
+            var client = new RestClient("https://api.speakap.io/networks/2caf8309fb0004cc/messages/");
+            var request = new RestRequest(Method.GET);
+            
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("Authorization", "Bearer 2dcc4f63a00008c4_c217339e61e08a7512ab261fe3a11f6019a65a1b0e0affee4967bf2002c96ca8");
+            IRestResponse response = client.Execute(request);
+
+            SpeakapMessagesApiModel messages = JsonConvert.DeserializeObject<SpeakapMessagesApiModel>(response.Content);
+
+            foreach (var messageLink in messages.Links.Messages)
+            {
+                client.BaseUrl = new Uri("https://api.speakap.io" + messageLink.Href);
+
+                response = client.Execute(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    SpeakapMessageApiModel message = JsonConvert.DeserializeObject<SpeakapMessageApiModel>(response.Content);
+
+                    client.BaseUrl = new Uri("https://api.speakap.io" + message.Links.Author.Href);
+
+                    response = client.Execute(request);
+
+                    SpeakapAuthorApiModel author = JsonConvert.DeserializeObject<SpeakapAuthorApiModel>(response.Content);
+
+                    if (message.Links.Images != null)
+                    {
+                        foreach (var imageLink in message.Links.Images)
+                        {
+                            client.BaseUrl = new Uri("https://api.speakap.io" + imageLink.Href);
+
+                            response = client.Execute(request);
+
+                            SpeakapImageApiModel image = JsonConvert.DeserializeObject<SpeakapImageApiModel>(response.Content);
+
+                            client.BaseUrl = new Uri(image.SpeakapFile.DisplayUrls.Fullscreen1080p);
+
+
+                            response = client.Execute(request);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
