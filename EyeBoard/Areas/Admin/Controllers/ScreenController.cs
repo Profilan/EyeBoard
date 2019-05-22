@@ -70,6 +70,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 screen.CreatedBy = GetCurrentUser().User.ToString();
                 screen.ModifiedBy = screen.CreatedBy;
                 screen.HostName = collection["HostName"];
+                screen.RefreshTime = new RefreshTime(Convert.ToInt32(collection["RefreshHours"]), Convert.ToInt32(collection["RefreshMinutes"]), Convert.ToInt32(collection["RefreshSeconds"]));
 
                 _screenRepository.Insert(screen);
 
@@ -109,7 +110,10 @@ namespace EyeBoard.Areas.Admin.Controllers
                     Location = screen.Location,
                     HostName = screen.HostName,
                     GroupId = screen.Group != null ? screen.Group.Id.ToString() : "",
-                    Groups = groups
+                    Groups = groups,
+                    RefreshHours = screen.RefreshTime.Hours,
+                    RefreshMinutes = screen.RefreshTime.Minutes,
+                    RefreshSeconds = screen.RefreshTime.Seconds
                 };
 
                 return View(model);
@@ -137,6 +141,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 screen.Location = collection["Location"];
                 screen.HostName = collection["HostName"];
                 screen.ModifiedBy = GetCurrentUser().User.ToString();
+                screen.RefreshTime = new RefreshTime(Convert.ToInt32(collection["RefreshHours"]), Convert.ToInt32(collection["RefreshMinutes"]), Convert.ToInt32(collection["RefreshSeconds"]));
                 
                 screen.Group = group;
 

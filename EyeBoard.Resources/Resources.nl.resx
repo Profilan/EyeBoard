@@ -189,6 +189,9 @@
   <data name="HostNameRequired" xml:space="preserve">
     <value>Hostnaam is verplicht</value>
   </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Uren</value>
+  </data>
   <data name="Location" xml:space="preserve">
     <value>Locatie</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="LogOff" xml:space="preserve">
     <value>Uitloggen</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minuten</value>
   </data>
   <data name="NoGroups" xml:space="preserve">
     <value>Er zijn geen groepen gevonden</value>
@@ -266,6 +272,9 @@
   </data>
   <data name="Screens" xml:space="preserve">
     <value>Beeldschermen</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>Seconden</value>
   </data>
   <data name="SevereError" xml:space="preserve">
     <value>Er is een ernstige fout opgetreden</value>

@@ -18,6 +18,10 @@ namespace EyeBoard.Models
         public string Condition { get; set; }
         public int CityId { get; set; }
 
+        public int RefreshHours { get; set; }
+        public int RefreshMinutes { get; set; }
+        public int RefreshSeconds { get; set; }
+
         public string FeedUrl { get; set; }
 
         public IEnumerable<Medium> Presentations { get; set; }

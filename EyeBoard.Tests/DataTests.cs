@@ -120,6 +120,12 @@ namespace EyeBoard.Tests
         {
             var rep = new DeliveredOrderRepository();
 
+            var result = rep.GetTotal();
+
+            var rep2 = new DeliveredPackageRepository();
+
+            var result2 = rep2.GetTotal();
+
             // var total = rep.GetTotalDeliveredColli(2018, 50);
 
             // total.Should().BeGreaterThan(0);

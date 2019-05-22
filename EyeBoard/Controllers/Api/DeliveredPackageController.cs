@@ -19,7 +19,7 @@ namespace EyeBoard.Controllers.Api
         {
             var currentDate = DateTime.Now;
 
-            var total = _deliveredPackageRepository.GetTotalDeliveredPackages();
+            var total = _deliveredPackageRepository.GetTotal();
 
             var view = new DeliveredPackageViewModel()
             {

@@ -189,6 +189,9 @@
   <data name="HostNameRequired" xml:space="preserve">
     <value>Hostname is required</value>
   </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Hours</value>
+  </data>
   <data name="Location" xml:space="preserve">
     <value>Location</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="LogOff" xml:space="preserve">
     <value>Log Off</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
   </data>
   <data name="NoGroups" xml:space="preserve">
     <value>No groups found</value>
@@ -266,6 +272,9 @@
   </data>
   <data name="Screens" xml:space="preserve">
     <value>Screens</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>Seconds</value>
   </data>
   <data name="SevereError" xml:space="preserve">
     <value>There has been a severe error</value>

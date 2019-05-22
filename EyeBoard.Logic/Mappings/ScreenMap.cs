@@ -21,6 +21,13 @@ namespace EyeBoard.Logic.Mappings
             Map(x => x.Location);
             Map(x => x.HostName);
 
+            Component(x => x.RefreshTime, m =>
+            {
+                m.Map(x => x.Hours).Column("RefreshHours");
+                m.Map(x => x.Minutes).Column("RefreshMinutes");
+                m.Map(x => x.Seconds).Column("RefreshSeconds");
+            });
+
             References(x => x.Group).Column("GroupId").LazyLoad().Not.Cascade.SaveUpdate();
 
         }

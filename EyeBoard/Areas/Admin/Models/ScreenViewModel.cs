@@ -42,6 +42,15 @@ namespace EyeBoard.Areas.Admin.Models
         public string GroupId { get; set; }
         public IEnumerable<SelectListItem> Groups { get; set; }
 
+        [Display(Name = "Hours", ResourceType = typeof(Resources.Resources))]
+        public int RefreshHours { get; set; }
+
+        [Display(Name = "Minutes", ResourceType = typeof(Resources.Resources))]
+        public int RefreshMinutes { get; set; }
+
+        [Display(Name = "Seconds", ResourceType = typeof(Resources.Resources))]
+        public int RefreshSeconds { get; set; }
+
         public bool IsReachable { get; set; }
     }
 }

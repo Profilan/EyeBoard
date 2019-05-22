@@ -439,6 +439,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\slick.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -560,6 +561,8 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\preloadjs.js" />
     <Content Include="Scripts\preloadjs.min.js" />
+    <Content Include="Scripts\slick.js" />
+    <Content Include="Scripts\slick.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
@@ -622,6 +625,7 @@
     <Content Include="Views\Shared\_DeliveredPackagesWidget.cshtml" />
     <Content Include="Views\Shared\_VerticalFeedWidget.cshtml" />
     <Content Include="Views\Shared\_SpeakapWidget.cshtml" />
+    <Content Include="Views\Shared\_VerticalFeedWidget - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Presentations\" />

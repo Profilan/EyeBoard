@@ -132,6 +132,7 @@
     <Compile Include="Mappings\DeliveredPackageMap.cs" />
     <Compile Include="Models\DeliveredOrder.cs" />
     <Compile Include="Models\DeliveredPackage.cs" />
+    <Compile Include="Models\Delivery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DeliveredOrderRepository.cs" />
     <Compile Include="Repositories\DeliveredPackageRepository.cs" />

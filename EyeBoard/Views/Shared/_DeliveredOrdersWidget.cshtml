@@ -5,11 +5,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-auto">
+        <div class="col-md-3">
             <img src="~/images/Delivered-Packages.png" height="150" />
         </div>
-        <div class="col-md-auto">
-            <div class="delivered-orders-total mt-5"></div>
+        <div class="col-md-9">
+            <div class="delivered-orders-total mt-5" style="text-align: right; margin-right: 15px;"></div>
         </div>
     </div>
 
@@ -25,8 +25,9 @@
 
     $(function () {
 
-        setInterval(refreshDeliveredOrders, 10 * 1000);
         refreshDeliveredOrders();
+        setInterval(refreshDeliveredOrders, 60 * 1000);
+        
 
     });
 

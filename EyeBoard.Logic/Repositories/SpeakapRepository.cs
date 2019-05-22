@@ -45,7 +45,9 @@ namespace EyeBoard.Logic.Repositories
         {
             var items = new List<SpeakapMessage>();
 
-            client.BaseUrl = new Uri("https://api.speakap.io/networks/2caf8309fb0004cc/messages/");
+            var dateNow = DateTime.Now.AddMonths(-2);
+
+            client.BaseUrl = new Uri("https://api.speakap.io/networks/2caf8309fb0004cc/messages/?data_since=" + dateNow.ToString("yyyy-MM-dd"));
            
             IRestResponse response = client.Execute(request);
             

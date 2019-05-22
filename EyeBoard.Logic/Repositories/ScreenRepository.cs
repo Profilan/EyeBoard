@@ -51,7 +51,7 @@ namespace EyeBoard.Logic.Repositories
                 var query = from l in session.Query<Screen>()
                             select l;
 
-                query = query.OrderBy(l => l.Title);
+                query = query.OrderBy(l => l.HostName);
 
                 return query.ToList();
             }

@@ -85,6 +85,7 @@
     <Compile Include="Mappings\MovieMap.cs" />
     <Compile Include="Mappings\NotificationMap.cs" />
     <Compile Include="Mappings\PresentationMap.cs" />
+    <Compile Include="Models\RefreshTime.cs" />
     <Compile Include="Mappings\ScreenGroupMap.cs" />
     <Compile Include="Mappings\ScreenMap.cs" />
     <Compile Include="Mappings\MediumMap.cs" />

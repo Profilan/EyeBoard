@@ -57,9 +57,24 @@ namespace DeEekhoorn.Logic.Repositories
             }
         }
 
+        public int GetTotal()
+        {
+            using (ISession session = SessionFactory.GetNewSession("db2"))
+            {
+                var sql = "select PakkettenGeleverd, OrdersGeleverd" +
+                          " from EEK_vw_NarrowCast_Deliveries";
+
+                var query = session.CreateSQLQuery(sql);
+                object[] result = (object[])query.UniqueResult();
+
+                return Convert.ToInt32(result[1]);
+            }
+        }
+
         public void Update(DeliveredOrder entity)
         {
             throw new NotImplementedException();
         }
+
     }
 }

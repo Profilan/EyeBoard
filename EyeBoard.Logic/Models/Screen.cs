@@ -18,6 +18,8 @@ namespace EyeBoard.Logic.Models
         public virtual string Location { get; set; }
         public virtual string HostName { get; set; }
 
+        public virtual RefreshTime RefreshTime { get; set; }
+
         public virtual ScreenGroup Group { get; set; }
 
         protected Screen()
