@@ -27,6 +27,26 @@ namespace EyeBoard.Logic.Models
         }
     }
 
+    public class EmbeddedMessages
+    {
+        [JsonProperty("messages")]
+        public IList<SpeakapMessageApiModel> Messages { get; set; }
+    }
+
+    public class LinkGroups
+    {
+        [JsonProperty("self")]
+        public LinkHref Self { get; set; }
+
+        [JsonProperty("groups")]
+        public IList<LinkHref> Groups { get; set; }
+
+        public LinkGroups()
+        {
+            Groups = new List<LinkHref>();
+        }
+    }
+
     public class LinkMessage
     {
         [JsonProperty("self")]
@@ -48,4 +68,9 @@ namespace EyeBoard.Logic.Models
         public LinkHref Avatar { get; set; }
     }
 
+    public class Embed
+    {
+        [JsonProperty("desktopThumbnailUrl")]
+        public string DesktopThumbnailUrl { get; set; }
+    }
 }

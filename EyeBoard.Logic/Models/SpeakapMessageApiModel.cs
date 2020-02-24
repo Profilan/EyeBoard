@@ -23,5 +23,8 @@ namespace EyeBoard.Logic.Models
 
         [JsonProperty("created")]
         public string Created { get; set; }
+
+        [JsonProperty("embeds")]
+        public IList<Embed> Embeds { get; set; }
     }
 }

@@ -1,0 +1,222 @@
+﻿@model EyeBoard.Models.BoardViewModel
+
+<div style="margin-top: 15px; display: flex; flex-wrap: wrap;" id="feedBlock" class="feedblock">
+    <div id="feeder-type" style="width: 130px; float: left; overflow: hidden; margin-left: 15px;">
+        <img src="~/images/logosprite.svg?v=4" style="max-width: none !important; height: 130px; vertical-align: unset;">
+    </div>
+    <div id="feeder" style="width: 1760px; float: right;">
+
+    </div>
+</div>
+
+<div style="margin-top: 15px; display: flex; flex-wrap: wrap; display: none;" id="speakapBlock" class="feedblock">
+    <div id="feeder-type" style="width: 130px; float: left; overflow: hidden; margin-left: 15px;">
+        <img src="~/images/SA-logo-fc-white.svg?v=4" style="max-width: none !important; height: 130px; vertical-align: unset;">
+    </div>
+    <div id="speakap-feeder" style="width: 1760px; float: right;">
+
+    </div>
+</div>
+
+<script src="~/Scripts/slick.min.js"></script>
+<script>
+
+    var feedCount = 0;
+    var speakapCount = 0;
+
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds) {
+                break;
+            }
+        }
+    }
+
+     function refreshFeed() {
+
+         // $.removeData($('#feeds'), 'slick');
+         // $("#feeds").remove();
+
+        $.get("/api/feed?url=" + "@Model.FeedUrl", function (data) {
+
+            feedCount = data.length;
+
+            if (feedCount > 2) {
+                $('#feeds').slick('unslick');
+                
+            }
+            $("#feeds").remove();
+
+            var colCount = 2;
+            var rowCount = Math.ceil(data.length / 2);
+            // var feeder = $('<div />').attr('id', 'feeds');
+            var wrapper = $("<div />").attr('id', 'feeds');
+            var i = 0;
+            for (row = 0; row < rowCount; row++) {
+
+                var block = $("<div />").css({ height: "130px" });
+                for (col = 0; col < colCount; col++) {
+                    if (i < data.length) {
+                        var item = $("<div />").addClass("col-6");
+                        var inner = $("<div />").css("backgroundColor", "rgb(79, 134, 184)").css("padding", "15px").css("height", "130px").css("borderRadius", "10px");
+                        var image = $("<img />").css("height", "100px").css("width", "100px").attr("src", data[i].ImageUrl).addClass("mr-3 float-left").css("display", "inline-block");
+                        var mediaBody = $("<div />").addClass("media-body");
+                        var title = $("<h3 />").css("color", "#fff").text(data[i].Title).addClass("mt-0 mb-1");
+
+                        mediaBody.append(title);
+
+                        item.append(inner);
+                        inner.append(image);
+                        inner.append(mediaBody);
+                        block.append(item);
+                    }
+                    ++i;
+                }
+                wrapper.append(block);
+
+            }
+
+            // feeder.append(wrapper);
+            $("#feeder").append(wrapper)
+
+            if (feedCount > 2) {
+                $("#feeds").slick({
+                    dots: false,
+                    vertical: true,
+                    infinite: true,
+                    speed: 1000,
+                    autoplay: true,
+                    autoplaySpeed: 10000,
+                    arrows: false,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    pauseOnHover: false
+                });
+                /*
+                $('#feeds').on('afterChange', function (event, slick, currentSlide) {
+                    console.log("Feed " + currentSlide);
+                    if (currentSlide == rowCount - 1) {
+                        
+                        $('#feeds').slick('slickPause');
+                        if (speakapCount > 2) {
+                            $('#speakap-feeds').slick('slickPlay');
+                        }
+                        
+                        switchFeeds();
+                    }
+                });
+                */
+            }
+        });
+    }
+
+    function refreshSpeakapMessages() {
+
+        // $.removeData($('#speakap-feeds'), 'easyTicker');
+        
+
+        $.get("/api/speakap/messages", function (data) {
+
+            speakapCount = data.length;
+
+            if (speakapCount > 2) {
+                $("#speakap-feeds").slick('unslick');
+                
+            }
+            $('#speakap-feeds').remove();
+
+            var colCount = 2;
+            var rowCount = Math.ceil(data.length / 2);
+            
+            // var feeder = $('<div />').attr('id', 'speakap-feeds');
+            var wrapper = $('<div />').attr('id', 'speakap-feeds');
+            var i = 0;
+
+            var dateOptions = { weekday: 'long', day: 'numeric', month: 'long',  hour: 'numeric', minute: 'numeric'}
+
+            for (row = 0; row < rowCount; row++) {
+
+                var block = $("<div />").css({ height: "130px", display: "flex" });
+                for (col = 0; col < colCount; col++) {
+                    if (i < data.length) {
+                        var item = $("<div />").addClass("col-6");
+                        var inner = $("<div />").css("backgroundColor", "#fff").css("padding", "15px").css("height", "130px").css("borderRadius", "10px");
+                        var image = $("<img />").addClass("mr-3 float-left").css("display", "inline-block");
+
+                        if (data[i].Images.length > 0) {
+                            image.attr('src', 'data:image/jpeg;base64,' + data[i].Images[0]).css("height", "100px").css("width", "100px");
+                        } else {
+                            image.attr('src', '/images/dummy100x100.png').css("height", "100px").css("width", "100px");
+                        }
+                        var mediaBody = $("<div />").addClass("media-body");
+
+                        var created = new Date(data[i].Created);
+                        // console.log(created.toLocaleDateString("nl-NL", dateOptions));
+
+                        var title = $('<span />').html("<b>" + data[i].Author + "</b>" + ". <i style='margin-left: 1em;'>" + created.toLocaleDateString("nl-NL", dateOptions) + "  <i style='margin-left: 1em;'class='fa fa-thumbs-up'></i> " + data[i].Likes + "</i></span><br>").css("color", "#5B9BD5");
+                        var body = $("<h3 />").css("color", "#333").html(data[i].FullText).addClass("mt-0 mb-1");
+                        body.prepend(title);
+
+                        mediaBody.append(body);
+
+                        item.append(inner);
+                        inner.append(image);
+                        inner.append(mediaBody);
+                        block.append(item);
+                    }
+                    ++i;
+                }
+                wrapper.append(block);
+
+            }
+
+           // feeder.append(wrapper);
+            $("#speakap-feeder").append(wrapper)
+
+            if (speakapCount > 2) {
+                $("#speakap-feeds").slick({
+                    dots: false,
+                    vertical: true,
+                    infinite: true,
+                    speed: 1000,
+                    autoplay: false,
+                    autoplaySpeed: 10000,
+                    arrows: false,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    pauseOnHover: false
+                });
+
+                $('#speakap-feeds').on('afterChange', function (event, slick, currentSlide) {
+                    console.log("Speakap " + currentSlide);
+                    if (currentSlide == rowCount - 1) {
+                       
+                        $('#speakap-feeds').slick('slickPause');
+                        if (feedCount > 2) {
+                            $('#feeds').slick('slickPlay');
+                        }
+                        
+                        switchFeeds();
+                    }
+                });
+            }
+        });
+    }
+
+    function switchFeeds() {
+       
+
+        $('.feedblock').fadeToggle(1000);
+    }
+
+    $(function () {
+
+        refreshFeed();
+        refreshSpeakapMessages();
+
+        setInterval(refreshFeed, 10 * 60 * 1000);
+        setInterval(refreshSpeakapMessages, 10 * 60 * 1000);
+        // setInterval(switchFeeds, 2 * 60 * 1000);
+    });
+</script>

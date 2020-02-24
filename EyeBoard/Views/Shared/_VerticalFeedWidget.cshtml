@@ -44,7 +44,7 @@
 
             if (feedCount > 2) {
                 $('#feeds').slick('unslick');
-                
+
             }
             $("#feeds").remove();
 
@@ -93,19 +93,20 @@
                     slidesToScroll: 1,
                     pauseOnHover: false
                 });
-
+                /*
                 $('#feeds').on('afterChange', function (event, slick, currentSlide) {
                     console.log("Feed " + currentSlide);
                     if (currentSlide == rowCount - 1) {
-                        
+
                         $('#feeds').slick('slickPause');
                         if (speakapCount > 2) {
                             $('#speakap-feeds').slick('slickPlay');
                         }
-                        
+
                         switchFeeds();
                     }
                 });
+                */
             }
         });
     }
@@ -113,7 +114,7 @@
     function refreshSpeakapMessages() {
 
         // $.removeData($('#speakap-feeds'), 'easyTicker');
-        
+
 
         $.get("/api/speakap/messages", function (data) {
 
@@ -121,13 +122,13 @@
 
             if (speakapCount > 2) {
                 $("#speakap-feeds").slick('unslick');
-                
+
             }
             $('#speakap-feeds').remove();
 
             var colCount = 2;
             var rowCount = Math.ceil(data.length / 2);
-            
+
             // var feeder = $('<div />').attr('id', 'speakap-feeds');
             var wrapper = $('<div />').attr('id', 'speakap-feeds');
             var i = 0;
@@ -190,12 +191,12 @@
                 $('#speakap-feeds').on('afterChange', function (event, slick, currentSlide) {
                     console.log("Speakap " + currentSlide);
                     if (currentSlide == rowCount - 1) {
-                       
+
                         $('#speakap-feeds').slick('slickPause');
                         if (feedCount > 2) {
                             $('#feeds').slick('slickPlay');
                         }
-                        
+
                         switchFeeds();
                     }
                 });
@@ -204,7 +205,7 @@
     }
 
     function switchFeeds() {
-       
+
 
         $('.feedblock').fadeToggle(1000);
     }

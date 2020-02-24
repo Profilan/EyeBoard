@@ -18,9 +18,9 @@ namespace EyeBoard.Controllers.Api
         [Route("api/speakap/messages")]
         public IHttpActionResult GetMessages()
         {
-            var date = DateTime.Now.AddDays(-28);
+            var date = DateTime.Now.AddDays(-14);
 
-            var messages = _speakapRepository.List().OrderByDescending(x => x.Created);
+            var messages = _speakapRepository.ListByAge(date).OrderByDescending(x => x.Created).Where(x => x.Created >= date);
 
             return Ok(messages);
         }

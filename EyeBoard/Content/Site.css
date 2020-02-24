@@ -74,7 +74,9 @@ scrollbar {
 */
 
 #delivered-orders-widget,
-#delivered-packages-widget {
+#delivered-packages-widget,
+#delivered-widget {
+
     color: #fff;
 }
 
@@ -87,6 +89,49 @@ scrollbar {
     text-align: center;
 }
 
-* {
-    cursor: none;
+#delivered-widget {
+    font-size: 36px;
 }
+
+#delivered-widget .delivered-orders-total,
+#delivered-widget .delivered-packages-total {
+    font-weight: 600;
+}
+
+
+/*
+    Calendar Widget
+*/
+
+#calendar-events-widget h2,
+#delivered-widget h2
+{
+    color: #fff;
+    margin: 15px 15px 0 0;
+}
+
+#calendar-events-widget .calendar-events {
+    list-style: none;
+    padding: 0;
+    color: #fff;
+    margin: 15px 15px 15px 0;
+}
+
+#calendar-events-widget .calendar-events > li {
+
+}
+
+    #calendar-events-widget .calendar-events > li > h4 {
+        background-color: rgb(79, 134, 184);
+        padding: 5px 15px;
+        margin-bottom: 0;
+    }
+
+    #calendar-events-widget .calendar-events > li > h4 > i {
+        margin-right: 10px;
+    }
+
+    #calendar-events-widget .calendar-events > li .event-body {
+        margin-left: 50px;
+        font-size: 18px;
+    }

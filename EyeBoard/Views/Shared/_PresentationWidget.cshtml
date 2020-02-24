@@ -20,6 +20,13 @@
         $("#presentation").append(source);
         presentation.load();
         presentation.play();
+        
+        var videotag_height = $('#presentation').height();
+        var block_height = Math.round((videotag_height + 90) / 3);
+
+        $('#rightblock1').css('height', block_height + 'px');
+        $('#rightblock2').css('height', block_height + 'px');
+        $('#rightblock3').css('height', block_height + 'px');
     }
 
     // Get the presentations to show

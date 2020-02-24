@@ -1,6 +1,7 @@
 ﻿using EyeBoard.Areas.Admin.Models;
 using EyeBoard.Logic.Models;
 using EyeBoard.Logic.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -30,6 +31,23 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             }
 
             return Ok(tasks);
+        }
+
+        [HttpPost]
+        [Route("api/task/delete/{id}")]
+        public IHttpActionResult Delete(Guid id)
+        {
+            try
+            {
+                _taskRepository.Delete(id);
+
+                return Ok(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

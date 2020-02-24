@@ -6,6 +6,8 @@
     {
         mainClass = "col-md-9 ml-sm-auto col-lg-10 px-4";
     }
+
+    var pageName = ViewContext.RouteData.Values["controller"].ToString();
 }
 
 @helper selected(string c, string culture)
@@ -46,7 +48,7 @@
                     <div class="sidebar-sticky">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" href="/admin/dashboard">
+                                <a class="nav-link @(pageName == "dashboard" ? "active" : "")" href="/admin/dashboard">
                                     <i class="fa fa-home"></i>
                                     @Resources.Dashboard <span class="sr-only">(current)</span>
                                 </a>
@@ -54,13 +56,13 @@
                             @if (User.IsInRole("GRolNarrowcastBeheerder"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/admin/group">
+                                    <a class="nav-link @(pageName == "group" ? "active" : "")" href="/admin/group">
                                         <i class="fa fa-cloud"></i>
                                         @Resources.Groups
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/admin/screen">
+                                    <a class="nav-link @(pageName == "screen" ? "active" : "")" href="/admin/screen">
                                         <i class="fa fa-tv"></i>
                                         @Resources.Screens
                                     </a>
@@ -69,19 +71,19 @@
                             @if (User.IsInRole("GRolNarrowcastBeheerder") || User.IsInRole("GRolNarrowcastRedacteur"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/admin/presentation">
+                                    <a class="nav-link @(pageName == "presentation" ? "active" : "")" href="/admin/presentation">
                                         <i class="fa fa-file-powerpoint-o"></i>
                                         @Resources.Presentations
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/admin/video">
+                                    <a class="nav-link @(pageName == "video" ? "active" : "")" href="/admin/video">
                                         <i class="fa fa-file-movie-o"></i>
                                         @Resources.Videos
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/admin/notification">
+                                    <a class="nav-link @(pageName == "notification" ? "active" : "")" href="/admin/notification">
                                         <i class="fa fa-bullhorn"></i>
                                         @Resources.Notifications
                                     </a>

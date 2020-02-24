@@ -11,5 +11,8 @@ namespace EyeBoard.Logic.Models
     {
         [JsonProperty("_links")]
         public LinkMessages Links { get; set; }
+
+        [JsonProperty("_embedded")]
+        public EmbeddedMessages Embedded { get; set; }
     }
 }

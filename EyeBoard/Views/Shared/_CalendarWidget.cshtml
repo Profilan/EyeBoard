@@ -1,0 +1,60 @@
+﻿<div id="calendar-events-widget" style="display: table-cell;">
+    <h2 class="text-right">AGENDA</h2>
+    <ul class="calendar-events"></ul>
+</div>
+
+
+<script>
+
+    function formatDate(date) {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+
+        var dayNames = [ "ZO", "MA", "DI", "WO", "DO", "VR", "ZA"];
+
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        return dayNames[date.getDay()] + ' ' + day + '-' + month + '-' + year;
+    }
+
+    function refreshCalendarEvents() {
+
+        $('.calendar-events').empty();
+
+        $.get("/api/calendar/events", function (data) {
+
+            $.each(data, function (index, event) {
+                var listItem = $('<li />');
+                var icon = '<i class="fa fa-calendar"></i>';
+                var startDate = new Date(event.Start);
+                var endDate = new Date(event.End);
+                var html = icon + formatDate(startDate)
+                
+                if (endDate >= startDate) {
+                    html += ' - ' + formatDate(endDate);
+                }
+                var header = $('<h4 />').html(html);
+                var body = $('<div />').addClass('event-body').text(event.Subject);
+                listItem.append(header);
+                listItem.append(body);
+
+                $('.calendar-events').append(listItem);
+            });
+
+        });
+    }
+
+    $(function () {
+
+        setInterval(refreshCalendarEvents, 10 * 60 * 1000);
+        refreshCalendarEvents();
+
+    });
+
+</script>

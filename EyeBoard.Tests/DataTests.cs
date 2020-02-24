@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using DeEekhoorn.Logic.Repositories;
 using EyeBoard.Logic.Models;
 using EyeBoard.Logic.Repositories;
+using Facebook;
 using FluentAssertions;
-using HibernatingRhinos.Profiler.Appender.NHibernate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using NHibernate;
-using Profilan.SharedKernel;
 
 using RestSharp;
+using RestSharp.Authenticators;
 
 namespace EyeBoard.Tests
 {
@@ -146,9 +145,78 @@ namespace EyeBoard.Tests
         {
             var rep = new SpeakapRepository();
 
-            var messages = rep.List();
+            var dateNow = DateTime.Now.AddMonths(-2);
+            var messages = rep.ListByAge(dateNow);
 
 
+        }
+
+        [TestMethod]
+        public void GetSpeakakGroupsByRep()
+        {
+            var rep = new SpeakapRepository();
+
+            var groups = rep.ListGroups();
+        }
+
+        [TestMethod]
+        public void GetSpeakapMessagesByGroup()
+        {
+            var rep = new SpeakapRepository();
+
+            var messages = rep.GetEmbeddedMessages("2ce963a8ba0fb77c");
+        }
+
+        [TestMethod]
+        public void GetCalendarEventsByRep()
+        {
+            var rep = new CalendarRepository();
+
+            var events = rep.List();
+
+        }
+
+        [TestMethod]
+        public void GetCalendarEvents()
+        {
+            var client = new RestClient("https://ex-eek-zwd-04.zwd.deeekhoorn.com/api/v2.0/me/calendars");
+            client.Authenticator = new NtlmAuthenticator(@"EEKZWD\narrowcasting", "4qhFgbrvxs");
+            var request = new RestRequest(Method.GET);
+
+            IRestResponse response = client.Execute(request);
+
+            CalendarApiModel model = JsonConvert.DeserializeObject<CalendarApiModel>(response.Content);
+        }
+
+        [TestMethod]
+        public void GetSpeakapGroups()
+        {
+            var client = new RestClient("https://api.speakap.io/networks/2caf8309fb0004cc/groups/");
+            var request = new RestRequest(Method.GET);
+
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("Authorization", "Bearer 304ee848f700060c_182b8b5d41152ccf15e8149ea762ff4e81288ae8438e4f07ed829859e8a7d50f");
+            IRestResponse response = client.Execute(request);
+
+            SpeakapGroupsApiModel messages = JsonConvert.DeserializeObject<SpeakapGroupsApiModel>(response.Content);
+
+        }
+
+        [TestMethod]
+        public void GetFacebookPosts()
+        {
+            var fb = new FacebookClient("EAAGjkhJUj7IBAFVV4peDDXoUxNqgeTivlKMBSwmRTLzZCwCSYiY80qYOtjaxvHDfaykejfl9WXOVMFyE8aXEoEv0xTC2Bj4f4KgjaMWBZA0XHih5lg4DP47ZAGSxYwnTrYZBjnVA2xMcYPOMpOE4XEZCZACrZA2hZAgv06Rsyl0icAZDZD");
+
+            IDictionary<string, object> result;
+            fb.GetCompleted +=
+                (o, e) =>
+                {
+                    result = (IDictionary<string, object>)e.GetResultData();
+
+                };
+
+            fb.Get("me");
+            // fb.getAsync("me");
         }
 
         [TestMethod]

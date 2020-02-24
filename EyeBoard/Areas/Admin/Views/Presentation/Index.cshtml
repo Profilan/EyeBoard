@@ -163,17 +163,26 @@
                 $.each(response, function (i, task) {
                     ++uploadCount;
                     var proto = $("#presentations .video-prototype").clone();
-                    proto.attr("data-filename", task.OriginalFile);
+                    proto.attr("data-id", task.Id);
 
                     var progress = $("<div />").addClass("progress");
                     progress.html('Bezig met converteren...');
 
                     proto.find("a").append(progress);
-                    proto.removeClass("video-prototype d-none").addClass("video");
+                    proto.removeClass("video-prototype d-none").addClass("video converting");
+
+                    proto.find(".card-body").text(task.OriginalFile);
+
+                    proto.find(".btn-delete").attr('data-id', task.Id).click(function (e) {
+                        e.preventDefault();
+                        $.post('/api/task/delete/' + task.Id, function (result) {
+                            var presentation = $("div[data-id='" + task.Id + "']");
+                            presentation.remove();
+                        });
+                    });
 
                     $("#presentations").prepend(proto);
                 });
-               
             });
         });
     });

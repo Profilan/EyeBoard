@@ -306,9 +306,12 @@
     <Compile Include="Areas\Admin\Controllers\Api\GroupController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\TaskController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\VideoController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SpeakapController.cs" />
     <Compile Include="Areas\Admin\Controllers\VideoController.cs" />
     <Compile Include="Areas\Admin\Models\LoginViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\SpeakapGroupViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TaskViewModel.cs" />
+    <Compile Include="Controllers\Api\CalendarController.cs" />
     <Compile Include="Controllers\Api\DeliveredPackageController.cs" />
     <Compile Include="Controllers\Api\DeliveredOrderController.cs" />
     <Compile Include="Controllers\Api\FeedController.cs" />
@@ -508,6 +511,8 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Video\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Video\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Speakap\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Speakap\Edit.cshtml" />
     <None Include="packages.config" />
     <Content Include="images\computerofflinelist56.png" />
     <Content Include="images\computeronlinelist56.png" />
@@ -518,6 +523,7 @@
     <Content Include="images\logo_eekhoorn_staand.png" />
     <Content Include="images\oncritical56.png" />
     <Content Include="images\SA-logo-fc-white.svg" />
+    <Content Include="images\speakap_icon.png" />
     <Content Include="images\upload-spinner.gif" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -626,6 +632,10 @@
     <Content Include="Views\Shared\_VerticalFeedWidget.cshtml" />
     <Content Include="Views\Shared\_SpeakapWidget.cshtml" />
     <Content Include="Views\Shared\_VerticalFeedWidget - Copy.cshtml" />
+    <Content Include="Views\Shared\_CalendarWidget.cshtml" />
+    <Content Include="Views\Shared\_DeliveredWidget.cshtml" />
+    <Content Include="Views\Shared\_VerticalFeedWidget - Copy %282%29.cshtml" />
+    <Content Include="Views\Shared\_VerticalFeedWidget - Copy %283%29.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Presentations\" />
