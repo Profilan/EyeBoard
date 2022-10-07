@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text.RegularExpressions;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
@@ -51,6 +52,21 @@ namespace EyeBoard.Areas.Admin.Controllers
         {
             try
             {
+                // Check for placeholders
+                var paramx = new Regex(@"{/?.*}", RegexOptions.Compiled);
+                var paramMatches = paramx.Matches(collection["Title"]);
+                foreach (var paramMatch in paramMatches)
+                {
+                    // Check for SQL placeholders
+                    var sqlx = new Regex(@"[/?[A-z]+::[A-z]+]", RegexOptions.Compiled);
+                    var sqlMatches = sqlx.Matches(paramMatch.ToString());
+                    foreach (var sqlMatch in sqlMatches)
+                    {
+                        Console.WriteLine(sqlMatch.ToString());
+                    }
+                }
+                
+
                 var notification = Notification.Create(collection["Title"]);
                 notification.CreatedBy =GetCurrentUser().User.ToString();
                 notification.ModifiedBy = notification.CreatedBy;

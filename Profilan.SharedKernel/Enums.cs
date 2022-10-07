@@ -43,4 +43,10 @@
         Img2Img,
         Ppt2Vid
     }
+
+    public enum Theme
+    {
+        Dark = 1,
+        Blue = 2
+    }
 }

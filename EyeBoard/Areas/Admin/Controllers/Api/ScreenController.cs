@@ -32,6 +32,22 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             return Ok(screens);
         }
 
+        [Route("api/Screen/Delete/{id}")]
+        [HttpPost]
+        public IHttpActionResult Delete(Guid id)
+        {
+            try
+            {
+                _screenRepository.Delete(id);
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+
+            return Content(HttpStatusCode.NoContent, Resources.Resources.Screen + " " + Resources.Resources.Deleted);
+        }
+
         [HttpPost]
         [Route("api/screen/reset/{id}")]
         public IHttpActionResult Reset(Guid id)

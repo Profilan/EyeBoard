@@ -59,10 +59,10 @@
                 for (col = 0; col < colCount; col++) {
                     if (i < data.length) {
                         var item = $("<div />").addClass("col-6");
-                        var inner = $("<div />").css("backgroundColor", "rgb(79, 134, 184)").css("padding", "15px").css("height", "130px").css("borderRadius", "10px");
+                        var inner = $("<div />");
                         var image = $("<img />").css("height", "100px").css("width", "100px").attr("src", data[i].ImageUrl).addClass("mr-3 float-left").css("display", "inline-block");
                         var mediaBody = $("<div />").addClass("media-body");
-                        var title = $("<h3 />").css("color", "#fff").text(data[i].Title).addClass("mt-0 mb-1");
+                        var title = $("<h3 />").text(data[i].Title).addClass("mt-0 mb-1");
 
                         mediaBody.append(title);
 

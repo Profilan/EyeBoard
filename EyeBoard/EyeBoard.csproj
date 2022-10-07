@@ -170,6 +170,9 @@
     <Reference Include="Remotion.Linq.EagerFetching, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.EagerFetching.2.2.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=106.6.9.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.9\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StructureMap.4.7.0\lib\net45\StructureMap.dll</HintPath>
     </Reference>
@@ -319,7 +322,9 @@
     <Compile Include="Areas\Admin\Controllers\Api\PresentationController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\ScreenController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\UploadController.cs" />
+    <Compile Include="Controllers\Api\FinanceController.cs" />
     <Compile Include="Controllers\Api\SpeakapController.cs" />
+    <Compile Include="Controllers\Api\StockMarketController.cs" />
     <Compile Include="Controllers\Api\WeatherController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
@@ -520,11 +525,13 @@
     <Content Include="images\Delivered-Packages.png" />
     <Content Include="images\dummy100x100.png" />
     <Content Include="images\logosprite.svg" />
+    <Content Include="images\logo_eekhoorn_nieuw.png" />
     <Content Include="images\logo_eekhoorn_staand.png" />
     <Content Include="images\oncritical56.png" />
     <Content Include="images\SA-logo-fc-white.svg" />
     <Content Include="images\speakap_icon.png" />
     <Content Include="images\upload-spinner.gif" />
+    <Content Include="images\visgraat.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -636,6 +643,14 @@
     <Content Include="Views\Shared\_DeliveredWidget.cshtml" />
     <Content Include="Views\Shared\_VerticalFeedWidget - Copy %282%29.cshtml" />
     <Content Include="Views\Shared\_VerticalFeedWidget - Copy %283%29.cshtml" />
+    <Content Include="Views\Shared\_StockMarketWidget.cshtml" />
+    <Content Include="Views\Shared\_FinancialsWidget.cshtml" />
+    <Content Include="Views\Shared\_DeliveredWidget - Copy.cshtml" />
+    <Content Include="Views\Home\_PresentationOnly.cshtml" />
+    <Content Include="Views\Home\_CompanyInformation.cshtml" />
+    <Content Include="Views\Home\_FinancialInformation.cshtml" />
+    <Content Include="Views\Home\_ShowroomInformation.cshtml" />
+    <Content Include="Views\Home\_NotAssigned.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Presentations\" />

@@ -1,0 +1,87 @@
+﻿@model EyeBoard.Models.BoardViewModel
+
+@{
+    var currentDate = DateTime.Now;
+
+}
+
+<div class="row">
+    <div id="date" class="col">
+        <span>@currentDate.ToString("dddd")</span><br />
+        <span>@currentDate.ToString("dd.MM.yyyy")</span>
+    </div>
+</div>
+<div id="stock-market-widget" class="row">
+    <div class="col-md-4">
+        AEX<br />
+        <span class="aex-index"></span><br />
+        <span class="aex-diff"></span>
+    </div>
+    <div class="col-md-8">
+        US$<br />  
+        <span class="usd-index"></span><br />
+        <span class="usd-diff"></span>
+    </div>
+
+</div>
+
+<script>
+
+    function updateStockData() {
+         var formatter = new Intl.NumberFormat('nl-NL', {
+           minimumFractionDigits: 2,      
+           maximumFractionDigits: 2,
+         });
+
+       $.get('/api/stock-market/aex', function (data) {
+            var jsonData = data.substring(4);
+            var jsonObj = JSON.parse(jsonData);
+
+            var aexIndex = jsonObj['PriceUpdate'][0][0][0][17][3];
+            var aexChange = jsonObj['PriceUpdate'][0][0][0][17][5]
+            var aexPercentage = jsonObj['PriceUpdate'][0][0][0][17][6];
+            var aexDiff = '<span>' + aexChange + '</span> <span>(' + aexPercentage + ')</span>';
+            $('.aex-index').html(aexIndex);
+            $('.aex-diff').html(aexDiff);
+        });
+
+        $.get('/api/stock-market/usd', function (data) {
+            var jsonObj = JSON.parse(data);
+
+            /*
+            var oldUsdIndex = parseFloat($('.usd-index').html().replace(',','.'));
+            var usdIndex = jsonObj.rates.USD;
+
+            var usdChange = 0.00;
+            var usdPercentage = 0.00;
+            if (!isNaN(oldUsdIndex)) {
+                // usdChange = usdChange.replace(',', '.');
+                usdChange = parseFloat(oldUsdIndex) - usdIndex;
+                usdPercentage = (usdChange / usdIndex) * 100;
+            } 
+
+            var usdDiff = '<span>' + formatter.format(usdChange) + '</span> <span>(' + formatter.format(usdPercentage) + '%)</span>';
+            $('.usd-index').html(formatter.format(usdIndex));
+            $('.usd-diff').html(usdDiff);
+            */
+            
+            if (jsonObj.status == true) {
+                var usdIndex = jsonObj.response[0].price;
+                var usdChange = jsonObj.response[0].change;
+                var usdPercentage = jsonObj.response[0].chg_per;
+                var usdDiff = '<span>' + usdChange.replace('.', ',') + '</span> <span>(' + usdPercentage.replace('.', ',') + ')</span>';
+                $('.usd-index').html(usdIndex.replace('.', ','));
+                $('.usd-diff').html(usdDiff);
+            }
+
+
+        });
+    }
+
+    $(document).ready(function () {
+        updateStockData();
+
+        // setInterval(updateStockData, 30 * 60 * 1000);
+    });
+</script>
+

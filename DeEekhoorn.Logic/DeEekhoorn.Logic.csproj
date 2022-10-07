@@ -130,12 +130,24 @@
   <ItemGroup>
     <Compile Include="Mappings\DeliveredOrderMap.cs" />
     <Compile Include="Mappings\DeliveredPackageMap.cs" />
+    <Compile Include="Mappings\DeliveryMap.cs" />
+    <Compile Include="Mappings\PickedOrderMap.cs" />
+    <Compile Include="Mappings\TurnoverMap.cs" />
+    <Compile Include="Mappings\OrderIncomeMap.cs" />
+    <Compile Include="Mappings\WebshopImportMap.cs" />
+    <Compile Include="Mappings\WebshopImportPXLMap.cs" />
     <Compile Include="Models\DeliveredOrder.cs" />
     <Compile Include="Models\DeliveredPackage.cs" />
     <Compile Include="Models\Delivery.cs" />
+    <Compile Include="Models\PickedOrder.cs" />
+    <Compile Include="Models\Turnover.cs" />
+    <Compile Include="Models\OrderIncome.cs" />
+    <Compile Include="Models\WebshopImport.cs" />
+    <Compile Include="Models\WebshopImportPXL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DeliveredOrderRepository.cs" />
     <Compile Include="Repositories\DeliveredPackageRepository.cs" />
+    <Compile Include="Repositories\FinanceRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Profilan.SharedKernel\Profilan.SharedKernel.csproj">

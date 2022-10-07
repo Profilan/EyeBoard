@@ -1,0 +1,50 @@
+﻿<div id="delivered-widget" style="display: table-cell;">
+    
+    <h2 class="text-right">VANDAAG GELEVERD</h2>
+        
+    <div class="row">
+        <div class="col-md-3">
+            <img src="~/images/Delivered-Packages.png" height="150" />
+        </div>
+        <div class="col-md-9">
+            <table style="margin-top: 1em;">
+                <tbody>
+                    <tr>
+                        <td class="delivered-orders-total mt-5" style="text-align: right; margin-right: 15px;"></td>
+                        <td style="padding-left: 1rem;">orders</td>
+                    </tr>
+                    <tr>
+                        <td class="delivered-packages-total mt-5" style="text-align: right; margin-right: 15px;"></td>
+                        <td style="padding-left: 1rem;">pakketten</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function refreshDeliveredPackages() {
+        $.get("/api/delivered-package/total", function (data) {
+            $(".delivered-packages-total").text(data.TotalDeliveredPackages.toLocaleString("nl-NL"));
+        });
+    }
+
+    function refreshDeliveredOrders() {
+        $.get("/api/delivered-order/total", function (data) {
+            $(".delivered-orders-total").text(data.TotalDeliveredColli.toLocaleString("nl-NL"));
+        });
+    }
+
+    $(function () {
+
+        refreshDeliveredOrders();
+        setInterval(refreshDeliveredOrders, 60 * 1000);
+
+        refreshDeliveredPackages();
+        setInterval(refreshDeliveredPackages, 60 * 1000);
+
+    });
+
+</script>

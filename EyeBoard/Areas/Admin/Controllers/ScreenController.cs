@@ -133,17 +133,23 @@ namespace EyeBoard.Areas.Admin.Controllers
             {
                 var screen = _screenRepository.GetById(new Guid(collection["Id"]));
 
-                var group = _screenGroupRepository.GetById(new Guid(collection["GroupId"]));
-
-                group.Screens.Remove(screen);
-
                 screen.Title = collection["Title"];
                 screen.Location = collection["Location"];
                 screen.HostName = collection["HostName"];
                 screen.ModifiedBy = GetCurrentUser().User.ToString();
                 screen.RefreshTime = new RefreshTime(Convert.ToInt32(collection["RefreshHours"]), Convert.ToInt32(collection["RefreshMinutes"]), Convert.ToInt32(collection["RefreshSeconds"]));
-                
-                screen.Group = group;
+
+                var groupId = collection["GroupId"];
+                ScreenGroup group;
+                if (!String.IsNullOrEmpty(collection["GroupId"]))
+                {
+                    group = _screenGroupRepository.GetById(new Guid(collection["GroupId"]));
+                    // group.Screens.Remove(screen);
+                    if (!group.Equals(screen.Group))
+                    {
+                        screen.Group = group;
+                    }
+                }
 
                 _screenRepository.Update(screen);
 

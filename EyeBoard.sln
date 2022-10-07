@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeBoard", "EyeBoard\EyeBoard.csproj", "{5919F8C6-1940-4E95-8AC6-B9803EA5BDE5}"
 EndProject
@@ -16,8 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeEekhoorn.Logic", "DeEekhoorn.Logic\DeEekhoorn.Logic.csproj", "{1888335B-72C0-4684-8A0A-0CBDFFC36611}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeBoard.Service", "EyeBoard.Service\EyeBoard.Service.csproj", "{7C817CC7-EEA7-4DCE-8078-141803EADA10}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NarrowcastSetup", "NarrowcastSetup\NarrowcastSetup.vdproj", "{6E3E2375-5F4F-4D26-B0B4-1FA98A9EFC03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,8 +51,6 @@ Global
 		{7C817CC7-EEA7-4DCE-8078-141803EADA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C817CC7-EEA7-4DCE-8078-141803EADA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C817CC7-EEA7-4DCE-8078-141803EADA10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E3E2375-5F4F-4D26-B0B4-1FA98A9EFC03}.Debug|Any CPU.ActiveCfg = Debug
-		{6E3E2375-5F4F-4D26-B0B4-1FA98A9EFC03}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

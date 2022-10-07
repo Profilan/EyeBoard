@@ -75,16 +75,16 @@ else
             $('#deleteModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var name = button.data('url');
-                var id = button.attr('data-id');
+                var id = button.data('id');
                 
                 $('#titleName').text(name);
-                $('#okBtn').attr('data-id', id);
+                $('#okBtn').data('id', id);
             });
 
             $('#okBtn').click(function (event) {
                 event.preventDefault();
 
-                var id = $(this).attr('data-id');
+                var id = $(this).data('id');
                 $.post('/api/Notification/Delete/' + id, function () {
                     $('tr[data-id="' + id + '"]').remove();
                     $('#deleteModal').modal('hide');

@@ -181,6 +181,7 @@ namespace EyeBoard.Tests
         {
             var client = new RestClient("https://ex-eek-zwd-04.zwd.deeekhoorn.com/api/v2.0/me/calendars");
             client.Authenticator = new NtlmAuthenticator(@"EEKZWD\narrowcasting", "4qhFgbrvxs");
+            
             var request = new RestRequest(Method.GET);
 
             IRestResponse response = client.Execute(request);
@@ -265,6 +266,72 @@ namespace EyeBoard.Tests
                     }
                 }
             }
+        }
+ 
+        [TestMethod]
+        public void GetStockInfo()
+        {
+            // var client = new RestClient("https://fcsapi.com/api-v2/forex/latest?id=1&access_key=I2v4XRzrCAXR2oNBrjWc7MKm437Q6u3AYSLx1dlviYJH7h7");
+
+            var client = new RestClient("https://api.apilayer.com/exchangerates_data/latest?base=EUR&symbols=USD");
+            client.AddDefaultHeader("apikey", "OcaEBWtZcn14VOWm4JhVXREenQ9vZ12V");
+            // var client = new RestClient("https://api.exchangeratesapi.io/latest?base=EUR");
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+
+            var temp = "";
+        }
+
+        [TestMethod]
+        public void GetOrderIncome()
+        {
+            var rep = new FinanceRepository();
+
+            var item = rep.GetOrderIncome();
+
+
+        }
+
+        [TestMethod]
+        public void GetTurnover()
+        {
+            var rep = new FinanceRepository();
+
+            var item = rep.GetTurnover();
+
+
+        }
+
+        [TestMethod]
+        public void GetWebshopImport()
+        {
+            var rep = new FinanceRepository();
+
+            var item = rep.GetWebshopImport();
+        }
+
+        [TestMethod]
+        public void GetWebshopImportPXL()
+        {
+            var rep = new FinanceRepository();
+
+            var item = rep.GetWebshopImportPXL();
+        }
+
+        [TestMethod]
+        public void GetPickedOrder()
+        {
+            var rep = new FinanceRepository();
+
+            var item = rep.GetPickedOrder();
+        }
+
+        [TestMethod]
+        public void GetDelivery()
+        {
+            var rep = new FinanceRepository();
+
+            var item = rep.GetDelivery();
         }
     }
 }

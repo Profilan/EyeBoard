@@ -1,5 +1,6 @@
 ﻿
 using EyeBoard.Logic.Models;
+using Profilan.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,6 +17,9 @@ namespace EyeBoard.Areas.Admin.Models
         [StringLength(255, ErrorMessageResourceType = typeof(Resources.Resources),
               ErrorMessageResourceName = "TitleLong")]
         public string Title { get; set; }
+
+        [Display(Name = "Thema")]
+        public Theme Theme { get; set; }
 
         [Display(Name = "Author", ResourceType = typeof(Resources.Resources))]
         public string CreatedBy { get; set; }

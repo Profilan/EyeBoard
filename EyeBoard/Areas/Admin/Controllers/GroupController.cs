@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Profilan.SharedKernel;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
@@ -65,6 +66,15 @@ namespace EyeBoard.Areas.Admin.Controllers
             try
             {
                 var group = ScreenGroup.Create(collection["Title"]);
+                
+                if (collection["Theme"] != "0")
+                {
+                    group.Theme = Enum.Parse(typeof(Theme), collection["Theme"]).ToString();
+                }
+                else
+                {
+                    group.Theme = "Blue";
+                }
                 group.CreatedBy = GetCurrentUser().User.ToString();
                 group.ModifiedBy = group.CreatedBy;
                 _screenGroupRepository.Insert(group);
@@ -109,7 +119,8 @@ namespace EyeBoard.Areas.Admin.Controllers
                     Videos = videos,
                     SelectedVideos = group.Media.Where(v => v.GetType() == typeof(Movie)),
                     Presentations = presentations,
-                    SelectedPresentations = group.Media.Where(p => p.GetType() == typeof(Presentation))
+                    SelectedPresentations = group.Media.Where(p => p.GetType() == typeof(Presentation)),
+                    Theme = group.Theme == null ? Theme.Blue : (Theme)Enum.Parse(typeof(Theme), group.Theme)
                 };
 
                 return View(model);
@@ -204,6 +215,14 @@ namespace EyeBoard.Areas.Admin.Controllers
                 }
 
                 group.Title = collection["Title"];
+                if (collection["Theme"] != "0")
+                {
+                    group.Theme = Enum.Parse(typeof(Theme), collection["Theme"]).ToString();
+                }
+                else
+                {
+                    group.Theme = "Blue";
+                }
                 group.ModifiedBy = GetCurrentUser().User.ToString();
 
                 _screenGroupRepository.Update(group);

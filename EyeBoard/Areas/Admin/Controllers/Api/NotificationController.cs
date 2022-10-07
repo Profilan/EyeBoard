@@ -6,6 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Text.RegularExpressions;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
+using System.Globalization;
 
 namespace EyeBoard.Areas.Admin.Controllers.Api
 {
@@ -24,10 +29,27 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             var notifications = new List<NotificationViewModel>();
             foreach (var item in items)
             {
+                string title = item.Title;
+                // Check for placeholders
+                var paramx = new Regex(@"{([^}]+)}", RegexOptions.Compiled);
+                var paramMatches = paramx.Matches(item.Title);
+                foreach (var paramMatch in paramMatches)
+                {
+                    // Check for SQL placeholders
+                    var sqlx = new Regex(@"[[a-zA-Z_+0-9]+]::[[a-zA-Z_0-9]+]", RegexOptions.Compiled);
+                    var sqlMatches = sqlx.Matches(paramMatch.ToString());
+                    foreach (var sqlMatch in sqlMatches)
+                    {
+                        // Execute query
+                        string result = ExecuteSQL(sqlMatch.ToString());
+                        title = title.Replace(paramMatch.ToString(), result);
+                    }
+                }
+
                 notifications.Add(new NotificationViewModel()
                 {
                     Id = item.Id,
-                    Title = item.Title,
+                    Title = title,
                     PublishUp = item.PublishUp,
                     PublishDown = item.PublishDown
                 });
@@ -63,6 +85,39 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             }
 
             return Content(HttpStatusCode.NoContent, "Notification is succesfully removed.");
+        }
+
+        private string ExecuteSQL(string s)
+        {
+            string connectionstring = ConfigurationManager.ConnectionStrings["db2"].ConnectionString;
+
+
+            
+
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            {
+                string[] separators = new string[] { "::" };
+                string[] parameters = s.Split(separators, StringSplitOptions.None);
+                
+                var query = "SELECT " + parameters[1] + " FROM " + parameters[0];
+
+                SqlCommand command = new SqlCommand(query, connection);
+                try
+                {
+                    connection.Open();
+                    decimal result = Convert.ToDecimal(command.ExecuteScalar());
+
+                    int amount = (int)Math.Round(result, 0);
+
+                    return amount.ToString("N0", CultureInfo.CreateSpecificCulture("nl-NL"));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            return "Error in SQL";
         }
     }
 }

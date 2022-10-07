@@ -40,17 +40,19 @@ namespace EyeBoard.Controllers
             {
                 var screen = _screenRepository.GetByHostName(hostName);
 
-                var viewModel = new BoardViewModel()
+                var viewModel = new BoardViewModel();
+                viewModel.ScreenId = screen.Id;
+                viewModel.RefreshHours = screen.RefreshTime.Hours;
+                viewModel.RefreshMinutes = screen.RefreshTime.Minutes;
+                viewModel.RefreshSeconds = screen.RefreshTime.Seconds;
+                if (screen.Group != null)
                 {
-                    ScreenId = screen.Id,
-                    Presentations = screen.Group.Media.Where(x => x.GetType().Name == "Presentation" || x.GetType().Name == "Movie"),
-                    Group = screen.Group,
-                    FeedUrl = Server.UrlEncode("http://www.nu.nl/rss/Algemeen"),
-                    CityId = 2744819,
-                    RefreshHours = screen.RefreshTime.Hours,
-                    RefreshMinutes = screen.RefreshTime.Minutes,
-                    RefreshSeconds = screen.RefreshTime.Seconds
-                };
+                    viewModel.Presentations = screen.Group.Media.Where(x => x.GetType().Name == "Presentation" || x.GetType().Name == "Movie");
+                    viewModel.Group = screen.Group;
+                    viewModel.FeedUrl = Server.UrlEncode("http://www.nu.nl/rss/Algemeen");
+                    viewModel.CityId = 2744819;
+
+                }
 
                 return View(viewModel);
 

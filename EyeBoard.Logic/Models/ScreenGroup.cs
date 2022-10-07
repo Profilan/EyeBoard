@@ -15,6 +15,7 @@ namespace EyeBoard.Logic.Models
         public virtual string ModifiedBy { get; set; }
 
         public virtual string Title { get; set; }
+        public virtual string Theme { get; set; }
 
         public virtual IList<Screen> Screens { get; set; }
         public virtual IList<Medium> Media { get; set; }

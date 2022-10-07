@@ -32,30 +32,78 @@
         </tr>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.ActionLink(Resources.Edit, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(Resources.Delete, "Delete", new { id = item.Id })
-            </td>
-        </tr>
+            <tr data-id="@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modified)
+                </td>
+                <td>
+                    @Html.ActionLink(Resources.Edit, "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { data_toggle = "modal", data_target = "#deleteModal", data_id = item.Id })
+                </td>
+            </tr>
         }
-     </table>
+    </table>
 }
 else
 {
     @Resources.NoScreens
 }
+
+
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Resources.Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>@Resources.AreYouSure</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resources.Cancel</button>
+                <button id="okBtn" type="button" class="btn btn-primary">@Resources.Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+
+                var id = button.data('id');
+
+                $('#okBtn').data('id', id);
+            });
+
+            $('#okBtn').click(function (event) {
+                event.preventDefault();
+
+                var id = $(this).data('id');
+                $.post('/api/Screen/Delete/' + id, function () {
+                    $('tr[data-id="' + id + '"]').remove();
+                    $('#deleteModal').modal('hide');
+                });
+
+            });
+        });
+    </script>
+}
+
 
 

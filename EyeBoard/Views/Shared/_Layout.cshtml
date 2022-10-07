@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@model EyeBoard.Models.BoardViewModel
+
+@{
+    var groupId = "";
+    if (Model.Group != null)
+    {
+        groupId = Model.Group.Id.ToString().ToUpper();
+    }
+
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,8 +22,22 @@
     @Scripts.Render("~/bundles/bootstrap")
 
 </head>
-<body>
-    
+<body class="theme-@(Model.Group.Theme == null ? "blue" : Model.Group.Theme.ToLower())">
+    @switch (groupId)
+    {
+        case "7819EAD7-3BDD-4BB9-B224-6DC2D760EFA1": // Presentation Only
+
+            break;
+        case "35B3B2A0-2983-472E-8FF5-C4087F9BD267": // Showroom Information
+
+            break;
+        default:
+            <div class="logo">
+                <img src="~/images/@(Model.Group.Theme == null ? "logo_eekhoorn_staand.png" : "logo_eekhoorn_nieuw.png")" />
+            </div>
+            break;
+    }
+
     @RenderBody()
 
     @RenderSection("scripts", required: false)

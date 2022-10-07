@@ -18,6 +18,7 @@ namespace EyeBoard.Logic.Mappings
             Map(x => x.ModifiedBy);
 
             Map(x => x.Title);
+            Map(x => x.Theme).Nullable();
 
             HasMany(x => x.Screens)
                 .Cascade.SaveUpdate()

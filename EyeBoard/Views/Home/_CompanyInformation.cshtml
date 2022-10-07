@@ -1,0 +1,26 @@
+﻿<div class="row">
+    <div class="col-9">
+        <div class="row">
+            @Html.Partial("_PresentationWidget")
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="row">
+            <div id="rightblock1" class="col-12">
+                @Html.Partial("_WeatherWidget")
+            </div>
+            <div id="rightblock2" class="col-12">
+                @Html.Partial("_CalendarWidget")
+            </div>
+            <div id="rightblock3" class="col-12">
+                @Html.Partial("_DeliveredWidget")
+            </div>
+        </div>
+    </div>
+</div>
+<div id="bottom1">
+    @Html.Partial("_VerticalFeedWidget")
+</div>
+<div id="bottom2">
+    @Html.Partial("_TickerWidget")
+</div>

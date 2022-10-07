@@ -38,7 +38,7 @@ namespace EyeBoard.Logic.Repositories
             TimeZoneInfo timeZoneInfo = TimeZoneInfo.Local;
             DateTime now = DateTime.Now;
 
-            var url = "https://ex-eek-zwd-04.zwd.deeekhoorn.com/api/v2.0/me/events?startDateTime=" + now.ToString("yyyy-MM-ddT00:00") + "&endDateTime=" + now.AddMonths(2).ToString("yyyy-MM-ddT00:00");
+            var url = "https://calendar.deeekhoorn.com/api/v2.0/me/events?startDateTime=" + now.ToString("yyyy-MM-ddT00:00") + "&endDateTime=" + now.AddMonths(2).ToString("yyyy-MM-ddT00:00");
             var client = new RestClient(url);
             client.Authenticator = new NtlmAuthenticator(@"EEKZWD\Narrowcasting", "4qhFgbrvxs");
             var request = new RestRequest(Method.GET);

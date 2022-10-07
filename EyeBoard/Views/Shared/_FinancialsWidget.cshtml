@@ -1,0 +1,66 @@
+﻿<div id="financials-widget">
+
+    <h2 class="text-right mb-3">FINANCIALS</h2>
+
+    <div class="row">
+        <div class="col">
+            Orderincome<br />
+            <span class="amount order-income"></span>
+        </div>
+        <div class="col">
+            <span class="widget-text-right">Webshopimport</span><br />
+            <span class="amount webshop-import widget-text-right"></span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            Invoiced Sales<br />
+            <span class="amount invoiced-sales"></span>
+        </div>
+        <div class="col">
+            <span class="widget-text-right">WebshopImportPXL</span><br />
+            <span class="amount webshop-import-pxl widget-text-right"></span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function updateFinancials() {
+        var formatter = new Intl.NumberFormat('nl-NL', {
+           minimumFractionDigits: 0,      
+           maximumFractionDigits: 0,
+        });
+
+        $.get('/api/finance/order-income', function (data) {
+            
+            $('.order-income').text('€ ' + formatter.format(data.TotalToday));
+        });
+
+        $.get('/api/finance/webshop-import', function (data) {
+            
+            
+            $('.webshop-import').text('€ ' + formatter.format(data.TotalToday));
+        });
+
+        $.get('/api/finance/turnover', function (data) {
+            
+            
+            $('.invoiced-sales').text('€ ' + formatter.format(data.TotalToday));
+        });
+
+        $.get('/api/finance/webshop-import-pxl', function (data) {
+            
+            
+            $('.webshop-import-pxl').text('€ ' + formatter.format(data.TotalToday));
+        });
+
+    }
+
+
+    $(document).ready(function () {
+        setInterval(updateFinancials, 5 * 60 * 1000);
+
+        updateFinancials();
+    });
+</script>

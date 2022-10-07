@@ -1,50 +1,49 @@
-﻿<div id="delivered-widget" style="display: table-cell;">
-    
-    <h2 class="text-right">VANDAAG GELEVERD</h2>
-        
+﻿<div id="financials-widget" style="font-size: 24px; color: white;">
+
+    <h2 class="text-right mb-3">VANDAAG GELEVERD</h2>
+
     <div class="row">
-        <div class="col-md-3">
-            <img src="~/images/Delivered-Packages.png" height="150" />
+        <div class="col">
+            # Orders<br />
+            <span class="amount text-right orders"></span>
         </div>
-        <div class="col-md-9">
-            <table style="margin-top: 1em;">
-                <tbody>
-                    <tr>
-                        <td class="delivered-orders-total mt-5" style="text-align: right; margin-right: 15px;"></td>
-                        <td style="padding-left: 1rem;">orders</td>
-                    </tr>
-                    <tr>
-                        <td class="delivered-packages-total mt-5" style="text-align: right; margin-right: 15px;"></td>
-                        <td style="padding-left: 1rem;">pakketten</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="col">
+            <span class="widget-text-right">€ Ordervalue</span><br />
+            <span class="amount ordervalue widget-text-right"></span>
         </div>
     </div>
+    <div class="row mt-3">
+        <div class="col">
+            # Pakketten<br />
+            <span class="amount packages"></span>
+        </div>
+        <div class="col">
+           
+        </div>
+    </div>
+
 </div>
 
 <script>
 
-    function refreshDeliveredPackages() {
-        $.get("/api/delivered-package/total", function (data) {
-            $(".delivered-packages-total").text(data.TotalDeliveredPackages.toLocaleString("nl-NL"));
+    function updateDelivery() {
+        var formatter = new Intl.NumberFormat('nl-NL', {
+            minimumFractionDigits: 0,      
+            maximumFractionDigits: 0,
         });
-    }
 
-    function refreshDeliveredOrders() {
-        $.get("/api/delivered-order/total", function (data) {
-            $(".delivered-orders-total").text(data.TotalDeliveredColli.toLocaleString("nl-NL"));
+        $.get('/api/finance/picked-orders', function (data) {
+
+            $('.orders').text(data.PickedOrdersToday);
+            $('.ordervalue').text('€ ' + formatter.format(data.PickedOrdersValueToday));
+            $('.packages').text(data.PickedPackagesToday.toLocaleString("nl-NL"));
         });
-    }
+     }
 
-    $(function () {
 
-        refreshDeliveredOrders();
-        setInterval(refreshDeliveredOrders, 60 * 1000);
+    $(document).ready(function () {
+        setInterval(updateDelivery, 5 * 60 * 1000);
 
-        refreshDeliveredPackages();
-        setInterval(refreshDeliveredPackages, 60 * 1000);
-
+        updateDelivery();
     });
-
 </script>

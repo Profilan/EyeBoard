@@ -11,7 +11,16 @@ namespace EyeBoard.Logic.Repositories
     {
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (ISession session = SessionFactory.GetNewSession("db1"))
+            {
+                var item = session.Load<Screen>(id);
+
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    session.Delete(item);
+                    transaction.Commit();
+                }
+            }
         }
 
         public Screen GetById(Guid id)
@@ -64,8 +73,11 @@ namespace EyeBoard.Logic.Repositories
                 var screen = session.QueryOver<Screen>()
                     .Where(s => s.HostName == hostName)
                     .SingleOrDefault();
-                NHibernateUtil.Initialize(screen.Group);
-                NHibernateUtil.Initialize(screen.Group.Media);
+                if (screen.Group != null)
+                {
+                    NHibernateUtil.Initialize(screen.Group);
+                    NHibernateUtil.Initialize(screen.Group.Media);
+                }
 
                 return screen;
 
