@@ -148,7 +148,8 @@
                 var progress = proto.find(".progress");
                 progress.html('Bezig met converteren...');
 
-                scheduler.server.runTask(data.result.id);
+                // TODO: Change this to messagebus
+                // scheduler.server.runTask(data.result.id);
              });
 
             $("#fileupload").bind("fileuploadprogressall", function (e, data) {

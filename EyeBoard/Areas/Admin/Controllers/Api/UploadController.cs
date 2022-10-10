@@ -1,4 +1,6 @@
-﻿using EyeBoard.Logic.Models;
+﻿using EyeBoard.Logic.MessageBrokers.Models;
+using EyeBoard.Logic.MessageBrokers.Publishers;
+using EyeBoard.Logic.Models;
 using EyeBoard.Logic.Repositories;
 using Newtonsoft.Json;
 using Profilan.SharedKernel;
@@ -10,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
@@ -20,7 +23,8 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
     public class UploadController : ApiController
     {
         private readonly MediaRepository _mediaRepository = new MediaRepository();
-        private readonly TaskRepository _taskRepository = new TaskRepository();
+        // private readonly TaskRepository _taskRepository = new TaskRepository();
+        private readonly PublisherBase _publisher = MessageBrokerPublisherFactory.Create(MessageBrokerType.RabbitMq);
 
         [Route("api/upload/video")]
         [HttpPost]
@@ -49,8 +53,15 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             string physicalPath = physicalDir + @"/" + fileName;
             string virtualPath = videosFolder + @"/" + userId + @"/" + fileName;
 
-            var task = EyeBoard.Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
-            _taskRepository.Insert(task);
+
+            // TODO: Change this to Messagebus
+            var task = Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
+            var taskMessageJson = JsonConvert.SerializeObject(task);
+            var messageBytes = Encoding.UTF8.GetBytes(taskMessageJson);
+            var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json");
+            await _publisher.Publish(brokerMessage);
+
+            // _taskRepository.Insert(task);
 
             return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = task.Id }, JsonMediaTypeFormatter.DefaultMediaType);
 
@@ -83,8 +94,12 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             string physicalPath = physicalDir + @"/" + fileName;
             string virtualPath = presentationsFolder + @"/" + userId + @"/" + fileName;
 
-            var task = EyeBoard.Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Presentation);
-            _taskRepository.Insert(task);
+            var task = Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
+            var taskMessageJson = JsonConvert.SerializeObject(task);
+            var messageBytes = Encoding.UTF8.GetBytes(taskMessageJson);
+            var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json");
+            await _publisher.Publish(brokerMessage);
+            // _taskRepository.Insert(task);
 
             return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = task.Id }, JsonMediaTypeFormatter.DefaultMediaType);
 

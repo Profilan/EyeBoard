@@ -6,6 +6,7 @@ using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,11 +40,13 @@ namespace EyeBoard.Logic.Repositories
             DateTime now = DateTime.Now;
 
             var url = "https://calendar.deeekhoorn.com/api/v2.0/me/events?startDateTime=" + now.ToString("yyyy-MM-ddT00:00") + "&endDateTime=" + now.AddMonths(2).ToString("yyyy-MM-ddT00:00");
-            var client = new RestClient(url);
-            client.Authenticator = new NtlmAuthenticator(@"EEKZWD\Narrowcasting", "4qhFgbrvxs");
-            var request = new RestRequest(Method.GET);
+            var options = new RestClientOptions(url);
+            options.Credentials = new NetworkCredential(@"EEKZWD\Narrowcasting", "4qhFgbrvxs");
+            var client = new RestClient(options);
+            // client.Authenticator = new NtlmAuthenticator(@"EEKZWD\Narrowcasting", "4qhFgbrvxs");
+            var request = new RestRequest();
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             CalendarApiModel model = JsonConvert.DeserializeObject<CalendarApiModel>(response.Content);
 

@@ -13,13 +13,15 @@ namespace EyeBoard.Logic.Repositories
 {
     public class SpeakapRepository : IRepository<SpeakapMessage, string>
     {
-        private readonly RestClient client = new RestClient();
-        private readonly RestRequest request = new RestRequest(Method.GET);
+        private readonly RestClient client;
+        private readonly RestRequest request = new RestRequest();
 
         private string authorization = "Bearer 304f756b8a000bbc_74c16a7dedad5ca81f4edc54326a1cb2ee94d0deb1bbc5b78858d8a36300af28";
 
         public SpeakapRepository()
         {
+            var options = new RestClientOptions();
+            client = new RestClient(options);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization", "Bearer 304f756b8a000bbc_74c16a7dedad5ca81f4edc54326a1cb2ee94d0deb1bbc5b78858d8a36300af28");
         }
@@ -136,9 +138,9 @@ namespace EyeBoard.Logic.Repositories
 
             var dateNow = DateTime.Now.AddMonths(-2);
 
-            client.BaseUrl = new Uri("https://api.speakap.io/networks/2caf8309fb0004cc/messages/?data_since=" + dateNow.ToString("yyyy-MM-dd"));
+            client.Options.BaseUrl = new Uri("https://api.speakap.io/networks/2caf8309fb0004cc/messages/?data_since=" + dateNow.ToString("yyyy-MM-dd"));
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -147,17 +149,17 @@ namespace EyeBoard.Logic.Repositories
 
                 foreach (var messageLink in messages.Links.Messages)
                 {
-                    client.BaseUrl = new Uri("https://api.speakap.io" + messageLink.Href);
+                    client.Options.BaseUrl = new Uri("https://api.speakap.io" + messageLink.Href);
 
-                    response = client.Execute(request);
+                    response = client.Get(request);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         SpeakapMessageApiModel message = JsonConvert.DeserializeObject<SpeakapMessageApiModel>(response.Content);
 
-                        client.BaseUrl = new Uri("https://api.speakap.io" + message.Links.Author.Href);
+                        client.Options.BaseUrl = new Uri("https://api.speakap.io" + message.Links.Author.Href);
 
-                        response = client.Execute(request);
+                        response = client.Get(request);
 
                         SpeakapAuthorApiModel author = JsonConvert.DeserializeObject<SpeakapAuthorApiModel>(response.Content);
 
@@ -166,14 +168,14 @@ namespace EyeBoard.Logic.Repositories
                         {
                             foreach (var imageLink in message.Links.Images)
                             {
-                                client.BaseUrl = new Uri("https://api.speakap.io" + imageLink.Href);
+                                client.Options.BaseUrl = new Uri("https://api.speakap.io" + imageLink.Href);
 
-                                response = client.Execute(request);
+                                response = client.Get(request);
 
                                 SpeakapImageApiModel image = JsonConvert.DeserializeObject<SpeakapImageApiModel>(response.Content);
 
-                                client.BaseUrl = new Uri(image.SpeakapFile.DisplayUrls.TimelinePreviewSmall);
-                                response = client.Execute(request);
+                                client.Options.BaseUrl = new Uri(image.SpeakapFile.DisplayUrls.TimelinePreviewSmall);
+                                response = client.Get(request);
 
                                 images.Add(Convert.ToBase64String(response.RawBytes));
 
@@ -232,13 +234,14 @@ namespace EyeBoard.Logic.Repositories
 
         public IEnumerable<SpeakapGroup> ListGroups()
         {
-            var client = new RestClient("https://api.speakap.io/networks/2caf8309fb0004cc/groups/?limit=100");
-            var request = new RestRequest(Method.GET);
+            var options = new RestClientOptions("https://api.speakap.io/networks/2caf8309fb0004cc/groups/?limit=100");
+            var client = new RestClient(options);
+            var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization", authorization);
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             var groups = new List<SpeakapGroup>();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -249,7 +252,7 @@ namespace EyeBoard.Logic.Repositories
                 {
                     foreach (var groupLink in model.Links.Groups)
                     {
-                        client.BaseUrl = new Uri("https://api.speakap.io" + groupLink.Href);
+                        client.Options.BaseUrl = new Uri("https://api.speakap.io" + groupLink.Href);
 
                         response = client.Execute(request);
 
@@ -290,12 +293,12 @@ namespace EyeBoard.Logic.Repositories
             var dateNow = DateTime.Now.AddMonths(-2);
 
             var client = new RestClient("https://api.speakap.io/networks/2caf8309fb0004cc/timeline/?group=" + group);
-            var request = new RestRequest(Method.GET);
+            var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization", authorization);
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             SpeakapMessagesApiModel messages = JsonConvert.DeserializeObject<SpeakapMessagesApiModel>(response.Content);
 
@@ -307,13 +310,14 @@ namespace EyeBoard.Logic.Repositories
         {
             var dateNow = DateTime.Now.AddMonths(-2);
 
-            var client = new RestClient("https://api.speakap.io/networks/2caf8309fb0004cc/timeline/?embed=messages.images&group=" + group);
-            var request = new RestRequest(Method.GET);
+            var options = new RestClientOptions("https://api.speakap.io/networks/2caf8309fb0004cc/timeline/?embed=messages.images&group=" + group);
+            var client = new RestClient(options);
+            var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization", authorization);
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             SpeakapEmbeddedMessagesApiModel messages = JsonConvert.DeserializeObject<SpeakapEmbeddedMessagesApiModel>(response.Content);
 
@@ -323,13 +327,14 @@ namespace EyeBoard.Logic.Repositories
 
         public SpeakapAuthorApiModel GetAuthor(string href)
         {
-            var client = new RestClient("https://api.speakap.io" + href);
-            var request = new RestRequest(Method.GET);
+            var options = new RestClientOptions("https://api.speakap.io" + href);
+            var client = new RestClient(options);
+            var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization", authorization);
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             SpeakapAuthorApiModel author = JsonConvert.DeserializeObject<SpeakapAuthorApiModel>(response.Content);
 

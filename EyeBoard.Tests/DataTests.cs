@@ -179,12 +179,15 @@ namespace EyeBoard.Tests
         [TestMethod]
         public void GetCalendarEvents()
         {
-            var client = new RestClient("https://ex-eek-zwd-04.zwd.deeekhoorn.com/api/v2.0/me/calendars");
-            client.Authenticator = new NtlmAuthenticator(@"EEKZWD\narrowcasting", "4qhFgbrvxs");
+            var options = new RestClientOptions("https://ex-eek-zwd-04.zwd.deeekhoorn.com/api/v2.0/me/calendars");
+            options.UseDefaultCredentials = true;
             
-            var request = new RestRequest(Method.GET);
+            var client = new RestClient(options);
+            // client.Authenticator = new NtlmAuthenticator(@"EEKZWD\narrowcasting", "4qhFgbrvxs");
+            
+            var request = new RestRequest();
 
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             CalendarApiModel model = JsonConvert.DeserializeObject<CalendarApiModel>(response.Content);
         }
@@ -192,12 +195,13 @@ namespace EyeBoard.Tests
         [TestMethod]
         public void GetSpeakapGroups()
         {
-            var client = new RestClient("https://api.speakap.io/networks/2caf8309fb0004cc/groups/");
-            var request = new RestRequest(Method.GET);
+            var options = new RestClientOptions("https://api.speakap.io/networks/2caf8309fb0004cc/groups/");
+            var client = new RestClient(options);
+            var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization", "Bearer 304ee848f700060c_182b8b5d41152ccf15e8149ea762ff4e81288ae8438e4f07ed829859e8a7d50f");
-            IRestResponse response = client.Execute(request);
+            var response = client.Execute(request);
 
             SpeakapGroupsApiModel messages = JsonConvert.DeserializeObject<SpeakapGroupsApiModel>(response.Content);
 
@@ -223,18 +227,19 @@ namespace EyeBoard.Tests
         [TestMethod]
         public void GetSpeakapMessages()
         {
-            var client = new RestClient("https://api.speakap.io/networks/2caf8309fb0004cc/messages/");
-            var request = new RestRequest(Method.GET);
+            var options = new RestClientOptions("https://api.speakap.io/networks/2caf8309fb0004cc/messages/");
+            var client = new RestClient(options);
+            var request = new RestRequest();
             
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("Authorization", "Bearer 2dcc4f63a00008c4_c217339e61e08a7512ab261fe3a11f6019a65a1b0e0affee4967bf2002c96ca8");
-            IRestResponse response = client.Execute(request);
+            var response = client.Get(request);
 
             SpeakapMessagesApiModel messages = JsonConvert.DeserializeObject<SpeakapMessagesApiModel>(response.Content);
 
             foreach (var messageLink in messages.Links.Messages)
             {
-                client.BaseUrl = new Uri("https://api.speakap.io" + messageLink.Href);
+                client.Options.BaseUrl = new Uri("https://api.speakap.io" + messageLink.Href);
 
                 response = client.Execute(request);
 
@@ -242,7 +247,7 @@ namespace EyeBoard.Tests
                 {
                     SpeakapMessageApiModel message = JsonConvert.DeserializeObject<SpeakapMessageApiModel>(response.Content);
 
-                    client.BaseUrl = new Uri("https://api.speakap.io" + message.Links.Author.Href);
+                    client.Options.BaseUrl = new Uri("https://api.speakap.io" + message.Links.Author.Href);
 
                     response = client.Execute(request);
 
@@ -252,13 +257,13 @@ namespace EyeBoard.Tests
                     {
                         foreach (var imageLink in message.Links.Images)
                         {
-                            client.BaseUrl = new Uri("https://api.speakap.io" + imageLink.Href);
+                            client.Options.BaseUrl = new Uri("https://api.speakap.io" + imageLink.Href);
 
                             response = client.Execute(request);
 
                             SpeakapImageApiModel image = JsonConvert.DeserializeObject<SpeakapImageApiModel>(response.Content);
 
-                            client.BaseUrl = new Uri(image.SpeakapFile.DisplayUrls.Fullscreen1080p);
+                            client.Options.BaseUrl = new Uri(image.SpeakapFile.DisplayUrls.Fullscreen1080p);
 
 
                             response = client.Execute(request);
@@ -271,15 +276,12 @@ namespace EyeBoard.Tests
         [TestMethod]
         public void GetStockInfo()
         {
-            // var client = new RestClient("https://fcsapi.com/api-v2/forex/latest?id=1&access_key=I2v4XRzrCAXR2oNBrjWc7MKm437Q6u3AYSLx1dlviYJH7h7");
-
-            var client = new RestClient("https://api.apilayer.com/exchangerates_data/latest?base=EUR&symbols=USD");
+            var options = new RestClientOptions("https://api.apilayer.com/exchangerates_data/latest?base=EUR&symbols=USD");
+            var client = new RestClient(options);
             client.AddDefaultHeader("apikey", "OcaEBWtZcn14VOWm4JhVXREenQ9vZ12V");
-            // var client = new RestClient("https://api.exchangeratesapi.io/latest?base=EUR");
-            var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
-
-            var temp = "";
+            
+            var request = new RestRequest();
+            var response = client.Get(request);
         }
 
         [TestMethod]
