@@ -1,11 +1,16 @@
-﻿using EyeBoard.Logic.Models;
+﻿using EyeBoard.Logic.MessageBrokers.Subscribers;
+using EyeBoard.Logic.Models;
 using EyeBoard.Logic.Repositories;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.Owin;
 using Microsoft.Owin.Hosting;
+using Newtonsoft.Json;
+using Profilan.SharedKernel;
 using System;
 using System.Configuration;
 using System.ServiceProcess;
+using System.Threading;
+using System.Timers;
 
 [assembly: OwinStartup(typeof(EyeBoard.Service.Startup))]
 namespace EyeBoard.Service
@@ -36,20 +41,56 @@ namespace EyeBoard.Service
         {
             eventLog1.WriteEntry("EyeBoard Scheduler started", System.Diagnostics.EventLogEntryType.Information, 0);
 
-            try
-            {
-                WebApp.Start(Url);
+            var delay = ConfigurationManager.AppSettings["Delay"];
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = Convert.ToInt32(delay) * 60000;
+            timer.Elapsed += new ElapsedEventHandler(DoWork);
 
-                var connection = new HubConnection(Url);
-                Hub = connection.CreateHubProxy("taskSchedulerHub");
-                Hub.On<string>("runTask", taskId => RunTask(taskId));
-                connection.Start().Wait();
-            }
-            catch (Exception e)
-            {
+            //while (true)
+            //{
+                try
+                {
+                    // WebApp.Start(Url);
 
-                throw new Exception(e.Message);
-            }
+                    // var connection = new HubConnection(Url);
+                    // Hub = connection.CreateHubProxy("taskSchedulerHub");
+                    // Hub.On<string>("runTask", taskId => RunTask(taskId));
+                    // connection.Start().Wait();
+
+                    // System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(Convert.ToInt32(1)));
+
+                    //DoWork();
+                    
+                    //System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(Convert.ToInt32(delay)));
+                }
+                catch (Exception e)
+                {
+
+                    throw new Exception(e.Message);
+                }
+
+            //}
+        }
+
+        protected void DoWork(object sender, ElapsedEventArgs args)
+        {
+            var subscriber = MessageBrokerSubscriberFactory.Create(MessageBrokerType.RabbitMq);
+            subscriber.Subscribe(async (subs, messageReceivedEventArgs) =>
+            {
+                var body = messageReceivedEventArgs.ReceivedMessage.Body;
+                var taskMessageJson = System.Text.Encoding.UTF8.GetString(body);
+                Task task = JsonConvert.DeserializeObject<Task>(taskMessageJson);
+
+                if (task != null)
+                {
+                    var result = task.Run();
+
+                    if (result == true)
+                    {
+                        await subs.Acknowledge(messageReceivedEventArgs.AcknowledgeToken);
+                    }
+                }
+            });
         }
 
         public void AddTask(string inputFile, string outputFile, string originalFile, TaskType taskType)

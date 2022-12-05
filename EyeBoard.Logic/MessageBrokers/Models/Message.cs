@@ -1,16 +1,20 @@
-﻿namespace EyeBoard.Logic.MessageBrokers.Models
+﻿using System;
+
+namespace EyeBoard.Logic.MessageBrokers.Models
 {
     public sealed class Message
     {
         public byte[] Body { get; }
         public string MessageId { get; }
         public string ContentType { get; }
+        public DateTime CreationDateTime { get; }
 
-        public Message(byte[] body, string messageId, string contentType)
+        public Message(byte[] body, string messageId, string contentType, DateTime creationDateTime)
         {
             Body = body;
             MessageId = messageId;
             ContentType = contentType;
+            CreationDateTime = creationDateTime;
         }
     }
 }

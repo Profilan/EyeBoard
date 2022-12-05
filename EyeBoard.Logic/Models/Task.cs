@@ -49,25 +49,28 @@ namespace EyeBoard.Logic.Models
             return task;
         }
 
-        public virtual void Run()
+        public virtual bool Run()
         {
             Active = true;
 
-            var taskStartedEvent = new TaskStartedEvent(this);
-            DomainEvents.Raise(taskStartedEvent);
+            //var taskStartedEvent = new TaskStartedEvent(this);
+            //DomainEvents.Raise(taskStartedEvent);
 
+            bool result = false;
             switch (TaskType)
             {
                 case TaskType.Presentation:
-                    FileHandler.ConvertPPTToMP4(InputFile, OutputFile);
+                    result = FileHandler.ConvertPPTToMP4(InputFile, OutputFile);
                     break;
                 case TaskType.Video:
-                    FileHandler.ConvertVideoToMP4(InputFile, OutputFile);
+                    result = FileHandler.ConvertVideoToMP4(InputFile, OutputFile);
                     break;
             }
 
-            var taskFinishedEvent = new TaskFinishedEvent(this);
-            DomainEvents.Raise(taskFinishedEvent);
+            //var taskFinishedEvent = new TaskFinishedEvent(this);
+            //DomainEvents.Raise(taskFinishedEvent);
+
+            return result;
         }
     }
 

@@ -30,7 +30,8 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
         [HttpPost]
         public async Task<HttpResponseMessage> UploadVideos()
         {
-            var root = HttpContext.Current.Server.MapPath("~/temp/uploads");
+            // var root = HttpContext.Current.Server.MapPath("~/temp/uploads");
+            var root = @"\\ap-dev-01\Eyeboard$\Temp";
             var provider = new MultipartFormDataStreamProvider(root);
             var result = await Request.Content.ReadAsMultipartAsync(provider);
 
@@ -43,7 +44,8 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             var uploadedFileInfo = new FileInfo(result.FileData.First().LocalFileName);
             string path = result.FileData.First().LocalFileName;
 
-            var physicalDir = HttpContext.Current.Server.MapPath(videosFolder) + @"/" + userId;
+            //var physicalDir = HttpContext.Current.Server.MapPath(videosFolder) + @"/" + userId;
+            var physicalDir = @"\\ap-dev-01\Eyeboard$\Videos\" + userId;
             if (!Directory.Exists(physicalDir))
             {
                 Directory.CreateDirectory(physicalDir);
@@ -58,7 +60,7 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             var task = Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
             var taskMessageJson = JsonConvert.SerializeObject(task);
             var messageBytes = Encoding.UTF8.GetBytes(taskMessageJson);
-            var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json");
+            var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json", DateTime.Now);
             await _publisher.Publish(brokerMessage);
 
             // _taskRepository.Insert(task);
@@ -97,7 +99,7 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             var task = Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
             var taskMessageJson = JsonConvert.SerializeObject(task);
             var messageBytes = Encoding.UTF8.GetBytes(taskMessageJson);
-            var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json");
+            var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json", DateTime.Now);
             await _publisher.Publish(brokerMessage);
             // _taskRepository.Insert(task);
 

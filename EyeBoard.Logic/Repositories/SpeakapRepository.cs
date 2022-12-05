@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using NHibernate;
 using Profilan.SharedKernel;
 using RestSharp;
+using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,15 @@ namespace EyeBoard.Logic.Repositories
         private readonly RestRequest request = new RestRequest();
 
         private string authorization = "Bearer 304f756b8a000bbc_74c16a7dedad5ca81f4edc54326a1cb2ee94d0deb1bbc5b78858d8a36300af28";
+        private string token = "304f756b8a000bbc_74c16a7dedad5ca81f4edc54326a1cb2ee94d0deb1bbc5b78858d8a36300af28";
 
         public SpeakapRepository()
         {
             var options = new RestClientOptions();
             client = new RestClient(options);
+            client.Authenticator = new JwtAuthenticator(token);
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", "Bearer 304f756b8a000bbc_74c16a7dedad5ca81f4edc54326a1cb2ee94d0deb1bbc5b78858d8a36300af28");
+            // request.AddHeader("Authorization", "Bearer 304f756b8a000bbc_74c16a7dedad5ca81f4edc54326a1cb2ee94d0deb1bbc5b78858d8a36300af28");
         }
 
         public void Delete(string id)
@@ -235,13 +238,16 @@ namespace EyeBoard.Logic.Repositories
         public IEnumerable<SpeakapGroup> ListGroups()
         {
             var options = new RestClientOptions("https://api.speakap.io/networks/2caf8309fb0004cc/groups/?limit=100");
+            
+            
             var client = new RestClient(options);
+            client.Authenticator = new JwtAuthenticator(token);
             var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", authorization);
+            // request.AddHeader("Authorization", authorization);
 
-            var response = client.Get(request);
+            var response = client.Execute(request);
 
             var groups = new List<SpeakapGroup>();
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -312,10 +318,11 @@ namespace EyeBoard.Logic.Repositories
 
             var options = new RestClientOptions("https://api.speakap.io/networks/2caf8309fb0004cc/timeline/?embed=messages.images&group=" + group);
             var client = new RestClient(options);
+            client.Authenticator = new JwtAuthenticator(token);
             var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", authorization);
+            // request.AddHeader("Authorization", authorization);
 
             var response = client.Get(request);
 
@@ -329,10 +336,11 @@ namespace EyeBoard.Logic.Repositories
         {
             var options = new RestClientOptions("https://api.speakap.io" + href);
             var client = new RestClient(options);
+            client.Authenticator = new JwtAuthenticator(token);
             var request = new RestRequest();
 
             request.AddHeader("cache-control", "no-cache");
-            request.AddHeader("Authorization", authorization);
+            // request.AddHeader("Authorization", authorization);
 
             var response = client.Get(request);
 
