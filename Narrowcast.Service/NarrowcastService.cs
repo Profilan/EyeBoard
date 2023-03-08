@@ -14,7 +14,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
-[assembly: OwinStartup(typeof(Narrowcast.Service.Startup))]
 namespace Narrowcast.Service
 {
     public partial class NarrowcastService : ServiceBase
@@ -31,6 +30,7 @@ namespace Narrowcast.Service
             InitializeComponent();
 
             eventLog1 = new System.Diagnostics.EventLog();
+
             if (!System.Diagnostics.EventLog.SourceExists("EyeBoard Scheduler"))
             {
                 System.Diagnostics.EventLog.CreateEventSource("EyeBoard Scheduler", "EyeBoard Management");
@@ -55,21 +55,9 @@ namespace Narrowcast.Service
 
             eventLog1.WriteEntry("EyeBoard Scheduler started", System.Diagnostics.EventLogEntryType.Information, 0);
 
-            var hubConnectionUrl = ConfigurationManager.AppSettings["HubConnectionUrl"];
-
-            WebApp.Start(hubConnectionUrl);
-
-            // Start SignalR Proxy
-
-            using (var hubConnection = new HubConnection(hubConnectionUrl))
-            {
-                _hubProxy = hubConnection.CreateHubProxy("taskSchedulerHub");
-
-                hubConnection.Start().Wait();
-            }
 
             _timer = new System.Timers.Timer();
-            _timer.Interval = 30000;
+            _timer.Interval = 10000;
             _timer.Elapsed += new ElapsedEventHandler(WorkerThreadFunc);
             _timer.Start();
 
@@ -80,21 +68,6 @@ namespace Narrowcast.Service
         {
             _timer.Enabled = false;
             
-            /*
-            var hubConnectionUrl = ConfigurationManager.AppSettings["HubConnectionUrl"];
-
-            WebApp.Start(hubConnectionUrl);
-
-            // Start SignalR Proxy
-
-            using (var hubConnection = new HubConnection(hubConnectionUrl))
-            {
-                _hubProxy = hubConnection.CreateHubProxy("taskSchedulerHub");
-
-                hubConnection.Start().Wait();
-            }
-            */
-
                 try
                 {
                     _subscriber.Subscribe(async (subs, messageReceivedEventArgs) =>

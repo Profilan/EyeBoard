@@ -9,8 +9,9 @@ namespace Profilan.SharedKernel
 {
     public static class FileHandler
     {
-        public static bool ConvertVideoToMP4(string inputFile, string outputVideo)
+        public static bool ConvertVideoToMP4(string inputFile, string outputVideo, EventLog eventLog)
         {
+            eventLog.WriteEntry("Converting Video " + outputVideo + " started", System.Diagnostics.EventLogEntryType.Information, 1005);
             try
             {
                 Process process = new Process();
@@ -21,12 +22,15 @@ namespace Profilan.SharedKernel
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.UseShellExecute = false;
                 var result = process.Start();
-                process.WaitForExit();
+                //process.WaitForExit();
+
+                eventLog.WriteEntry("Converting Video " + outputVideo + " ended", System.Diagnostics.EventLogEntryType.Information, 1006);
 
                 return result;
             }
             catch (Exception e)
             {
+                eventLog.WriteEntry("EyeBoard Task error: " + e.StackTrace, System.Diagnostics.EventLogEntryType.Error, 1002);
                 throw new Exception(e.Message);
             }
         }

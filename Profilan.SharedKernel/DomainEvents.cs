@@ -29,7 +29,6 @@ namespace Profilan.SharedKernel
 
         public static void Raise<T>(T args) where T : IDomainEvent
         {
-            var temp = Container.WhatDoIHave();
             foreach (var handler in Container.GetAllInstances<IHandle<T>>())
             {
                 handler.Handle(args);

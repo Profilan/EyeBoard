@@ -51,8 +51,8 @@ namespace EyeBoard.Logic.Models
         {
             Active = true;
 
-            //var taskStartedEvent = new TaskStartedEvent(this);
-            //DomainEvents.Raise(taskStartedEvent);
+            var taskStartedEvent = new TaskStartedEvent(this);
+            DomainEvents.Raise(taskStartedEvent);
 
             bool result = false;
             switch (TaskType)
@@ -61,12 +61,12 @@ namespace EyeBoard.Logic.Models
                     result = FileHandler.ConvertPPTToMP4(InputFile, OutputFile, eventLog);
                     break;
                 case TaskType.Video:
-                    result = FileHandler.ConvertVideoToMP4(InputFile, OutputFile);
+                    result = FileHandler.ConvertVideoToMP4(InputFile, OutputFile, eventLog);
                     break;
             }
 
-            //var taskFinishedEvent = new TaskFinishedEvent(this);
-            //DomainEvents.Raise(taskFinishedEvent);
+            var taskFinishedEvent = new TaskFinishedEvent(this);
+            DomainEvents.Raise(taskFinishedEvent);
 
             return result;
         }

@@ -653,6 +653,7 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Produktie Server.pubxml" />
+    <None Include="Properties\PublishProfiles\PROFILANSERVER.pubxml" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />

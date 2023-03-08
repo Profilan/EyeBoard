@@ -28,8 +28,12 @@ namespace Narrowcast.Service
                     x.ConnectImplementationsToTypesClosing(typeof(IHandle<>));
                 });
             });
+
+            var temp = container.WhatDoIHave();
+            Console.WriteLine(temp);
+
             DomainEvents.Container = container;
-            GlobalHost.DependencyResolver.Register(typeof(IHubActivator), () => new HubActivator(container));
+            // GlobalHost.DependencyResolver.Register(typeof(IHubActivator), () => new HubActivator(container));
 
             if (Environment.UserInteractive)
             {

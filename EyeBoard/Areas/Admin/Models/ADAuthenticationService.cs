@@ -58,7 +58,7 @@ namespace EyeBoard.Areas.Admin.Models
 
             if (!isAuthenticated || userPrincipal == null)
             {
-                return new AuthenticationResult("Gebruikersnaam en wachtwoord is niet juis");
+                return new AuthenticationResult("Gebruikersnaam en wachtwoord is niet juist");
             }
 
             if (userPrincipal.IsAccountLockedOut())
