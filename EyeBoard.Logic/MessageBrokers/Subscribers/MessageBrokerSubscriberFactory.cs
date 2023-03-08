@@ -1,5 +1,6 @@
 ﻿using APIWoood.Logic.SharedKernel.Exceptions;
 using Profilan.SharedKernel;
+using Profilan.SharedKernel.Enums;
 using System.Configuration;
 
 namespace EyeBoard.Logic.MessageBrokers.Subscribers
@@ -15,14 +16,14 @@ namespace EyeBoard.Logic.MessageBrokers.Subscribers
             {
                 case MessageBrokerType.RabbitMq:
                     subscriber = new SubscriberRabbitMq();
-                    connectionString = ConfigurationManager.AppSettings["BrokerConnectionString"]; // brokerConnectionStringRabbitMq;
+                    connectionString = ConfigurationManager.AppSettings["MessageBrokerConnectionString"]; // brokerConnectionStringRabbitMq;
                     break;
                 default:
                     throw new MessageBrokerTypeNotSupportedException($"The MessageBrokerType: {messageBrokerType}, is not supported yet");
             }
 
-            var commandTopic = ConfigurationManager.AppSettings["BrokerTopic"];
-            var commandQueue = ConfigurationManager.AppSettings["BrokerQueue"];
+            var commandTopic = ConfigurationManager.AppSettings["MessageBrokerTopic"];
+            var commandQueue = ConfigurationManager.AppSettings["MessageBrokerQueue"];
 
             subscriber.Initialize(connectionString, commandTopic, commandQueue);
             return subscriber;

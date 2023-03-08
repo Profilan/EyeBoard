@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace EyeBoard.Areas.Admin.Controllers
 {
+    
     public class BaseController : Controller
     {
         public BaseController()

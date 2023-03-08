@@ -49,11 +49,4 @@
         Dark = 1,
         Blue = 2
     }
-
-    public enum MessageBrokerType
-    {
-        ServiceBus,
-        RabbitMq,
-        Console
-    }
 }

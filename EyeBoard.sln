@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeBoard.Tests", "EyeBoard.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeEekhoorn.Logic", "DeEekhoorn.Logic\DeEekhoorn.Logic.csproj", "{1888335B-72C0-4684-8A0A-0CBDFFC36611}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeBoard.Service", "EyeBoard.Service\EyeBoard.Service.csproj", "{7C817CC7-EEA7-4DCE-8078-141803EADA10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Narrowcast.Service", "Narrowcast.Service\Narrowcast.Service.csproj", "{D283C088-8BB5-41C8-BD3D-492D060693FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{1888335B-72C0-4684-8A0A-0CBDFFC36611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1888335B-72C0-4684-8A0A-0CBDFFC36611}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1888335B-72C0-4684-8A0A-0CBDFFC36611}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C817CC7-EEA7-4DCE-8078-141803EADA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C817CC7-EEA7-4DCE-8078-141803EADA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C817CC7-EEA7-4DCE-8078-141803EADA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C817CC7-EEA7-4DCE-8078-141803EADA10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D283C088-8BB5-41C8-BD3D-492D060693FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D283C088-8BB5-41C8-BD3D-492D060693FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D283C088-8BB5-41C8-BD3D-492D060693FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D283C088-8BB5-41C8-BD3D-492D060693FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

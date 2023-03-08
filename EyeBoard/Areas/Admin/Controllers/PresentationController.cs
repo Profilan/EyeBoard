@@ -36,7 +36,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 UserId = GetCurrentUser().User.ToString()
             };
 
-            return View(viewModel);
+            return View(@"~\Areas\Admin\Views\Presentation\Index.cshtml", viewModel);
         }
 
         public ActionResult Edit(Guid id)

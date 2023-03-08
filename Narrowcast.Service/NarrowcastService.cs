@@ -5,12 +5,14 @@ using Microsoft.AspNet.SignalR.Client;
 using Microsoft.Owin;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json;
+using Profilan.SharedKernel.Enums;
 using System;
 using System.Configuration;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 [assembly: OwinStartup(typeof(Narrowcast.Service.Startup))]
 namespace Narrowcast.Service
@@ -20,7 +22,7 @@ namespace Narrowcast.Service
         private readonly TaskRepository _taskRepository = new TaskRepository();
         private readonly SubscriberBase _subscriber;
         private ManualResetEvent _shutdownEvent = new ManualResetEvent(false);
-        private Thread _thread;
+        private System.Timers.Timer _timer;
 
         private IHubProxy _hubProxy;
 
@@ -28,29 +30,31 @@ namespace Narrowcast.Service
         {
             InitializeComponent();
 
-            _subscriber = MessageBrokerSubscriberFactory.Create(Profilan.SharedKernel.Enums.MessageBrokerType.RabbitMq);
+            eventLog1 = new System.Diagnostics.EventLog();
+            if (!System.Diagnostics.EventLog.SourceExists("EyeBoard Scheduler"))
+            {
+                System.Diagnostics.EventLog.CreateEventSource("EyeBoard Scheduler", "EyeBoard Management");
+            }
+            eventLog1.Source = "EyeBoard Scheduler";
+            eventLog1.Log = "EyeBoard Management";
+
+            _subscriber = MessageBrokerSubscriberFactory.Create(MessageBrokerType.RabbitMq);
         }
 
         protected override async void OnStart(string[] args)
         {
 
             // Start Video Queue Listener (RabbitMQ)
+
             /*
             _thread = new Thread(WorkerThreadFunc);
             _thread.Name = "Video Queue Listener";
             _thread.IsBackground = true;
             _thread.Start();
             */
-            WorkerThreadFunc();
 
-            while (true)
-            {
+            eventLog1.WriteEntry("EyeBoard Scheduler started", System.Diagnostics.EventLogEntryType.Information, 0);
 
-            }
-        }
-        private void WorkerThreadFunc()
-        {
-            //Task.Delay(60000);
             var hubConnectionUrl = ConfigurationManager.AppSettings["HubConnectionUrl"];
 
             WebApp.Start(hubConnectionUrl);
@@ -64,8 +68,33 @@ namespace Narrowcast.Service
                 hubConnection.Start().Wait();
             }
 
-            while (true)
+            _timer = new System.Timers.Timer();
+            _timer.Interval = 30000;
+            _timer.Elapsed += new ElapsedEventHandler(WorkerThreadFunc);
+            _timer.Start();
+
+            //WorkerThreadFunc();
+        }
+
+        private void WorkerThreadFunc(object sender, ElapsedEventArgs e)
+        {
+            _timer.Enabled = false;
+            
+            /*
+            var hubConnectionUrl = ConfigurationManager.AppSettings["HubConnectionUrl"];
+
+            WebApp.Start(hubConnectionUrl);
+
+            // Start SignalR Proxy
+
+            using (var hubConnection = new HubConnection(hubConnectionUrl))
             {
+                _hubProxy = hubConnection.CreateHubProxy("taskSchedulerHub");
+
+                hubConnection.Start().Wait();
+            }
+            */
+
                 try
                 {
                     _subscriber.Subscribe(async (subs, messageReceivedEventArgs) =>
@@ -85,15 +114,13 @@ namespace Narrowcast.Service
                         }
                     });
 
-                    Task.Delay(25000);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-
-                    throw new Exception(e.Message);
+                    eventLog1.WriteEntry("EyeBoard Task error: " + ex.StackTrace, System.Diagnostics.EventLogEntryType.Error, 1001);
                 }
-            }
         }
+
         public Task<bool> RunTask(string id)
         {
             var result = false;
@@ -101,11 +128,13 @@ namespace Narrowcast.Service
             {
                 var task = _taskRepository.GetById(new Guid(id));
 
-                result = task.Run();
+                eventLog1.WriteEntry("Running Task for " + task.OutputFile, System.Diagnostics.EventLogEntryType.Information, 1003);
+
+                result = task.Run(eventLog1);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
+                eventLog1.WriteEntry("EyeBoard Task error: " + ex.StackTrace, System.Diagnostics.EventLogEntryType.Error, 1002);
             }
 
             return Task.FromResult(result);
@@ -113,11 +142,7 @@ namespace Narrowcast.Service
 
         protected override void OnStop()
         {
-            _shutdownEvent.Set();
-            if (!_thread.Join(3000))
-            { // give the thread 3 seconds to stop
-                _thread.Abort();
-            }
+            eventLog1.WriteEntry("EyeBoard Scheduler stopped", System.Diagnostics.EventLogEntryType.Information, 0);
         }
 
         internal void TestStartupAndStop(string[] args)

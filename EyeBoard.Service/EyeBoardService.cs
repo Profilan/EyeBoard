@@ -41,6 +41,15 @@ namespace EyeBoard.Service
         {
             eventLog1.WriteEntry("EyeBoard Scheduler started", System.Diagnostics.EventLogEntryType.Information, 0);
 
+            WebApp.Start(Url);
+
+            var connection = new HubConnection(Url);
+            Hub = connection.CreateHubProxy("taskSchedulerHub");
+            Hub.On<string>("runTask", taskId => RunTask(taskId));
+            connection.Start().Wait();
+
+            System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(Convert.ToInt32(1)));
+
             var delay = ConfigurationManager.AppSettings["Delay"];
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = Convert.ToInt32(delay) * 60000;
@@ -50,14 +59,6 @@ namespace EyeBoard.Service
             //{
                 try
                 {
-                    // WebApp.Start(Url);
-
-                    // var connection = new HubConnection(Url);
-                    // Hub = connection.CreateHubProxy("taskSchedulerHub");
-                    // Hub.On<string>("runTask", taskId => RunTask(taskId));
-                    // connection.Start().Wait();
-
-                    // System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(Convert.ToInt32(1)));
 
                     //DoWork();
                     

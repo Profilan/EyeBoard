@@ -17,8 +17,8 @@ namespace EyeBoard.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                 defaults: new { controller = "Screen", action = "Index", id = UrlParameter.Optional },
-                namespaces: new[] { "EyeBoard.Areas.Admin.Controllers" }
+                 new { controller = "Screen", action = "Index", id = UrlParameter.Optional },
+                new[] { "EyeBoard.Areas.Admin.Controllers" }
             );
         }
     }

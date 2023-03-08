@@ -3,7 +3,7 @@ using EyeBoard.Logic.MessageBrokers.Publishers;
 using EyeBoard.Logic.Models;
 using EyeBoard.Logic.Repositories;
 using Newtonsoft.Json;
-using Profilan.SharedKernel;
+using Profilan.SharedKernel.Enums;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,7 +23,7 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
     public class UploadController : ApiController
     {
         private readonly MediaRepository _mediaRepository = new MediaRepository();
-        // private readonly TaskRepository _taskRepository = new TaskRepository();
+        private readonly TaskRepository _taskRepository = new TaskRepository();
         private readonly PublisherBase _publisher = MessageBrokerPublisherFactory.Create(MessageBrokerType.RabbitMq);
 
         [Route("api/upload/video")]
@@ -31,13 +31,14 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
         public async Task<HttpResponseMessage> UploadVideos()
         {
             // var root = HttpContext.Current.Server.MapPath("~/temp/uploads");
-            var root = @"\\ap-dev-01\Eyeboard$\Temp";
+            var root = ConfigurationManager.AppSettings["UploadFolder"];
             var provider = new MultipartFormDataStreamProvider(root);
             var result = await Request.Content.ReadAsMultipartAsync(provider);
 
             string userId = result.FormData["userId"];
 
-            var videosFolder = System.Configuration.ConfigurationManager.AppSettings["VideosFolder"];
+            var videosFolder = ConfigurationManager.AppSettings["VideosFolder"];
+            var websiteFolder = System.Configuration.ConfigurationManager.AppSettings["WebsiteFolder"];
 
             var originalFileName = GetDeserializedFileName(result.FileData.First());
 
@@ -45,25 +46,30 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
             string path = result.FileData.First().LocalFileName;
 
             //var physicalDir = HttpContext.Current.Server.MapPath(videosFolder) + @"/" + userId;
-            var physicalDir = @"\\ap-dev-01\Eyeboard$\Videos\" + userId;
+            var physicalDir = websiteFolder + videosFolder.Replace(@"/", @"\") + @"\" + userId;
             if (!Directory.Exists(physicalDir))
             {
                 Directory.CreateDirectory(physicalDir);
             }
             var fileExt = Path.GetExtension(originalFileName);
             var fileName = Path.GetFileNameWithoutExtension(originalFileName) + ".mp4";
-            string physicalPath = physicalDir + @"/" + fileName;
+            string physicalPath = physicalDir + @"\" + fileName;
             string virtualPath = videosFolder + @"/" + userId + @"/" + fileName;
 
 
             // TODO: Change this to Messagebus
             var task = Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
-            var taskMessageJson = JsonConvert.SerializeObject(task);
+            _taskRepository.Insert(task);
+            TaskMessage taskMessage = new TaskMessage()
+            {
+                TaskId = task.Id
+            };
+            var taskMessageJson = JsonConvert.SerializeObject(taskMessage);
             var messageBytes = Encoding.UTF8.GetBytes(taskMessageJson);
             var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json", DateTime.Now);
             await _publisher.Publish(brokerMessage);
 
-            // _taskRepository.Insert(task);
+           
 
             return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = task.Id }, JsonMediaTypeFormatter.DefaultMediaType);
 
@@ -74,34 +80,40 @@ namespace EyeBoard.Areas.Admin.Controllers.Api
         [HttpPost]
         public async Task<HttpResponseMessage> UploadPresentations()
         {
-            var root = HttpContext.Current.Server.MapPath("~/temp/uploads");
+            var root = ConfigurationManager.AppSettings["UploadFolder"];
             var provider = new MultipartFormDataStreamProvider(root);
             var result = await Request.Content.ReadAsMultipartAsync(provider);
 
             string userId = result.FormData["userId"];
 
             var presentationsFolder = System.Configuration.ConfigurationManager.AppSettings["PresentationsFolder"];
+            var websiteFolder = System.Configuration.ConfigurationManager.AppSettings["WebsiteFolder"];
 
             var originalFileName = GetDeserializedFileName(result.FileData.First());
 
             var uploadedFileInfo = new FileInfo(result.FileData.First().LocalFileName);
             string path = result.FileData.First().LocalFileName;
 
-            var physicalDir = HttpContext.Current.Server.MapPath(presentationsFolder) + @"/" + userId;
+            var physicalDir = websiteFolder + presentationsFolder.Replace(@"/", @"\") + @"\" + userId;
             if (!Directory.Exists(physicalDir))
             {
                 Directory.CreateDirectory(physicalDir);
             }
             var fileName = Path.GetFileNameWithoutExtension(originalFileName) + ".mp4";
-            string physicalPath = physicalDir + @"/" + fileName;
+            string physicalPath = physicalDir + @"\" + fileName;
             string virtualPath = presentationsFolder + @"/" + userId + @"/" + fileName;
 
-            var task = Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Video);
-            var taskMessageJson = JsonConvert.SerializeObject(task);
+            var task = Logic.Models.Task.Create(path, physicalPath, originalFileName, TaskType.Presentation);
+            _taskRepository.Insert(task);
+            TaskMessage taskMessage = new TaskMessage()
+            {
+                TaskId = task.Id
+            };
+            var taskMessageJson = JsonConvert.SerializeObject(taskMessage);
             var messageBytes = Encoding.UTF8.GetBytes(taskMessageJson);
             var brokerMessage = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json", DateTime.Now);
             await _publisher.Publish(brokerMessage);
-            // _taskRepository.Insert(task);
+            
 
             return Request.CreateResponse(HttpStatusCode.OK, new { path = virtualPath, name = originalFileName, id = task.Id }, JsonMediaTypeFormatter.DefaultMediaType);
 

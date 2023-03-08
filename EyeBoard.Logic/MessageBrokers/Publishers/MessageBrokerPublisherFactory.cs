@@ -1,5 +1,5 @@
-﻿using Profilan.SharedKernel;
-using APIWoood.Logic.SharedKernel.Exceptions;
+﻿using APIWoood.Logic.SharedKernel.Exceptions;
+using Profilan.SharedKernel.Enums;
 using System.Configuration;
 
 namespace EyeBoard.Logic.MessageBrokers.Publishers
@@ -11,8 +11,8 @@ namespace EyeBoard.Logic.MessageBrokers.Publishers
             switch (messageBrokerType)
             {
                 case MessageBrokerType.RabbitMq:
-                    string brokerConnectionString = ConfigurationManager.AppSettings["BrokerConnectionString"];
-                    string brokerTopic  = ConfigurationManager.AppSettings["BrokerTopic"];
+                    string brokerConnectionString = ConfigurationManager.AppSettings["MessageBrokerConnectionString"];
+                    string brokerTopic  = ConfigurationManager.AppSettings["MessageBrokerTopic"];
                     return new PublisherRabbitMq(brokerConnectionString, brokerTopic);
             }
 

@@ -2,9 +2,7 @@
 using Profilan.SharedKernel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace EyeBoard.Logic.Models
 {
@@ -49,7 +47,7 @@ namespace EyeBoard.Logic.Models
             return task;
         }
 
-        public virtual bool Run()
+        public virtual bool Run(EventLog eventLog)
         {
             Active = true;
 
@@ -60,7 +58,7 @@ namespace EyeBoard.Logic.Models
             switch (TaskType)
             {
                 case TaskType.Presentation:
-                    result = FileHandler.ConvertPPTToMP4(InputFile, OutputFile);
+                    result = FileHandler.ConvertPPTToMP4(InputFile, OutputFile, eventLog);
                     break;
                 case TaskType.Video:
                     result = FileHandler.ConvertVideoToMP4(InputFile, OutputFile);

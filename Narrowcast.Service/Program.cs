@@ -17,7 +17,7 @@ namespace Narrowcast.Service
         /// </summary>
         static void Main(string[] args)
         {
-            Thread.Sleep(30000);
+            //Thread.Sleep(30000);
             IContainer container = new Container(_ =>
             {
                 _.Scan(x =>
@@ -33,15 +33,6 @@ namespace Narrowcast.Service
 
             if (Environment.UserInteractive)
             {
-
-                Debugger.Launch();
-
-                Console.WriteLine("Waiting for debugger to attach");
-                while (!Debugger.IsAttached)
-                {
-                    Thread.Sleep(100);
-                }
-                Console.WriteLine("Debugger attached");
 
                 NarrowcastService service = new NarrowcastService();
                 service.TestStartupAndStop(args);

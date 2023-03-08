@@ -31,8 +31,10 @@ namespace Profilan.SharedKernel
             }
         }
 
-        public static bool ConvertPPTToMP4(string inputFile, string outputVideo)
+        public static bool ConvertPPTToMP4(string inputFile, string outputVideo, EventLog eventLog)
         {
+            eventLog.WriteEntry("Converting PowerPoint " + outputVideo + " started", System.Diagnostics.EventLogEntryType.Information, 1005);
+
             try
             {
                 var objApp = new PowerPoint.Application();
@@ -50,11 +52,14 @@ namespace Profilan.SharedKernel
                         System.Threading.Thread.Sleep(10000);
                     }
 
+                    eventLog.WriteEntry("Converting PowerPoint " + outputVideo + " ended", System.Diagnostics.EventLogEntryType.Information, 1006);
+
+
                     return true;
                 }
                 catch (Exception e)
                 {
-                    var temp = e;
+                    eventLog.WriteEntry("EyeBoard Task error: " + e.StackTrace, System.Diagnostics.EventLogEntryType.Error, 1002);
                     throw new Exception(e.Message);
                 }
                 finally
@@ -65,8 +70,9 @@ namespace Profilan.SharedKernel
             }
             catch (Exception e)
             {
-                var temp = e;
-                 return false;
+                eventLog.WriteEntry("EyeBoard Task error: " + e.StackTrace, System.Diagnostics.EventLogEntryType.Error, 1002);
+
+                throw new Exception(e.Message);
             }
         }
 

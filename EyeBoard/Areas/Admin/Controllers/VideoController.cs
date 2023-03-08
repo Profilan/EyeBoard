@@ -10,6 +10,7 @@ using System.Web.Mvc;
 namespace EyeBoard.Areas.Admin.Controllers
 {
     [Authorize(Roles = "GRolNarrowcastBeheerder, GRolNarrowcastRedacteur")]
+
     public class VideoController : BaseController
     {
         private readonly MediaRepository _mediaRepository = new MediaRepository();
@@ -28,7 +29,7 @@ namespace EyeBoard.Areas.Admin.Controllers
                 UserId = GetCurrentUser().User.ToString()
             };
 
-            return View(viewModel);
+            return View(@"~\Areas\Admin\Views\Video\Index.cshtml", viewModel);
         }
 
 
